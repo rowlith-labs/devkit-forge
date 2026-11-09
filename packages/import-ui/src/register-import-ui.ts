@@ -255,12 +255,12 @@ export function registerImportUI(
         note.textContent = "Load a file to configure source-to-schema mappings.";
         container.append(note);
       } else {
-        for (const header of this.headers) {
+        for (const [headerIndex, header] of this.headers.entries()) {
           const row = document.createElement("div");
           row.className = "mapping-row";
           const label = document.createElement("label");
           const select = document.createElement("select");
-          const id = `df-map-${this.headers.indexOf(header)}`;
+          const id = `df-map-${headerIndex}`;
           label.htmlFor = id;
           label.textContent = header || "(empty header)";
           select.id = id;
@@ -277,8 +277,12 @@ export function registerImportUI(
           select.value = this.mapping?.[header] ?? "";
           select.addEventListener("change", () => {
             const next = { ...(this.mapping ?? {}) };
-            if (select.value) next[header] = select.value;
-            else delete next[header];
+            if (select.value) {
+              for (const sourceHeader of Object.keys(next)) {
+                if (next[sourceHeader] === select.value) delete next[sourceHeader];
+              }
+              next[header] = select.value;
+            } else delete next[header];
             this.setMapping(next);
           });
           row.append(label, select);
@@ -331,8 +335,8 @@ export function registerImportUI(
         for (const column of this.config!.columns) {
           const td = document.createElement("td");
           const header = this.mapping === undefined
-            ? this.headers.find((name) => name.trim().toLowerCase() === column.label.trim().toLowerCase()
-              || name.trim().toLowerCase() === column.key.toLowerCase())
+            ? this.headers.find((name) => normalizeHeader(name) === normalizeHeader(column.label)
+              || normalizeHeader(name) === normalizeHeader(column.key))
             : Object.keys(this.mapping).find((name) => this.mapping?.[name] === column.key);
           td.textContent = header ? String(source[header] ?? "") : "";
           tr.append(td);
