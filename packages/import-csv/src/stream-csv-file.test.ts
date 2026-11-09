@@ -44,6 +44,7 @@ describe("streamCsvFile", () => {
   it("rejects when the consumer callback throws", async () => {
     await expect(
       streamCsvFile(createFile("name\nAda"), {
+        delimiter: ",",
         onRows() {
           throw new Error("consumer failed");
         },
