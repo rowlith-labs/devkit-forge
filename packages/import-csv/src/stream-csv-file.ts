@@ -113,9 +113,10 @@ export function streamCsvFile(
       complete(results) {
         if (settled) return;
         try {
-          // Papa Parse may deliver a sub-chunk-sized File only through complete().
-          if (!chunkCallbackUsed && results?.data?.length) {
+          // Papa Parse may deliver a final sub-chunk through complete() rather than chunk().
+          if (results?.data?.length && rowCount === 0) {
             const rows = results.data;
+            let firstDataIndex = 0;
             if (!headerParsed && rows.length > 0) {
               const shouldTrim = options.trimHeaders ?? true;
               headers = (rows[0] ?? []).map((value) =>
@@ -123,8 +124,9 @@ export function streamCsvFile(
               );
               inspectHeaders(headers, issues);
               headerParsed = true;
+              firstDataIndex = 1;
             }
-            const batch = headerParsed ? rows.slice(1) : [];
+            const batch = rows.slice(firstDataIndex);
             batch.forEach((values, batchIndex) => {
               if (values.length !== headers.length) {
                 issues.push({
@@ -138,7 +140,7 @@ export function streamCsvFile(
               options.onRows(batch, 0);
               rowCount = batch.length;
             }
-            results.errors.forEach((error) => {
+          results.errors.forEach((error) => {
               issues.push({
                 code: "parser-error",
                 message: error.message,
