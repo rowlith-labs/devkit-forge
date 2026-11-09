@@ -14,7 +14,7 @@ function inspectHeaders(headers: string[], issues: CsvIssue[]): void {
     if (!header) {
       issues.push({
         code: "empty-header",
-        message: `Header at column ${columnIndex + 1} is empty.`,
+        message: \`Header at column \${columnIndex + 1} is empty.\`,
         columnIndex,
       });
       return;
@@ -24,7 +24,7 @@ function inspectHeaders(headers: string[], issues: CsvIssue[]): void {
     if (firstIndex !== undefined) {
       issues.push({
         code: "duplicate-header",
-        message: `Header "${header}" is duplicated (columns ${firstIndex + 1} and ${columnIndex + 1}).`,
+        message: \`Header "\${header}" is duplicated (columns \${firstIndex + 1} and \${columnIndex + 1}).\`,
         columnIndex,
       });
     } else {
@@ -35,20 +35,28 @@ function inspectHeaders(headers: string[], issues: CsvIssue[]): void {
 
 /**
  * Streams a browser File in parser chunks without accumulating all rows in memory.
- * The first non-empty parsed row is treated as the header row.
+ * The first parsed row is treated as the header row. Row offsets passed to
+ * onRows and rowIndex values in issues are zero-based data-row indexes.
  */
 export function streamCsvFile(
   file: File,
   options: CsvStreamOptions,
 ): Promise<CsvStreamResult> {
+  const chunkSize = options.chunkSize ?? 1024 * 1024;
+  if (!Number.isSafeInteger(chunkSize) || chunkSize <= 0) {
+    return Promise.reject(
+      new RangeError("chunkSize must be a positive safe integer."),
+    );
+  }
+
   return new Promise((resolve, reject) => {
     const issues: CsvIssue[] = [];
     let headers: string[] = [];
     let headerParsed = false;
     let rowCount = 0;
+    let sourceRowCount = 0;
     let delimiter = options.delimiter ?? ",";
     let settled = false;
-    let chunkCallbackUsed = false;
 
     const fail = (error: unknown) => {
       if (settled) return;
@@ -60,19 +68,30 @@ export function streamCsvFile(
       header: false,
       dynamicTyping: false,
       worker: false,
-      chunkSize: options.chunkSize ?? 1024 * 1024,
+      chunkSize,
       skipEmptyLines: options.skipEmptyLines ?? "greedy",
       ...(options.delimiter ? { delimiter: options.delimiter } : {}),
       chunk(results, parser) {
-        chunkCallbackUsed = true;
+        if (settled) {
+          parser.abort();
+          return;
+        }
+
         try {
           delimiter = results.meta.delimiter || delimiter;
-          results?.errors?.forEach((error) => {
+          const chunkSourceRowOffset = sourceRowCount;
+
+          results.errors.forEach((error) => {
+            const sourceRowIndex =
+              typeof error.row === "number"
+                ? chunkSourceRowOffset + error.row
+                : undefined;
+
             issues.push({
               code: "parser-error",
               message: error.message,
-              ...(typeof error.row === "number"
-                ? { rowIndex: rowCount + error.row }
+              ...(sourceRowIndex !== undefined && sourceRowIndex > 0
+                ? { rowIndex: sourceRowIndex - 1 }
                 : {}),
             });
           });
@@ -95,7 +114,7 @@ export function streamCsvFile(
             if (values.length !== headers.length) {
               issues.push({
                 code: "row-width",
-                message: `Row has ${values.length} cells; expected ${headers.length}.`,
+                message: \`Row has \${values.length} cells; expected \${headers.length}.\`,
                 rowIndex: rowCount + batchIndex,
               });
             }
@@ -105,55 +124,16 @@ export function streamCsvFile(
             options.onRows(batch, rowCount);
             rowCount += batch.length;
           }
+
+          sourceRowCount += rows.length;
         } catch (error) {
           parser.abort();
           fail(error);
         }
       },
-      complete(results) {
+      complete() {
         if (settled) return;
-        try {
-          // Papa Parse may deliver a final sub-chunk through complete() rather than chunk().
-          if (results?.data?.length && rowCount === 0) {
-            delimiter = results.meta.delimiter || delimiter;
-            const rows = results.data;
-            let firstDataIndex = 0;
-            if (!headerParsed && rows.length > 0) {
-              const shouldTrim = options.trimHeaders ?? true;
-              headers = (rows[0] ?? []).map((value) =>
-                shouldTrim ? value.trim() : value,
-              );
-              inspectHeaders(headers, issues);
-              headerParsed = true;
-              firstDataIndex = 1;
-            }
-            const batch = rows.slice(firstDataIndex);
-            batch.forEach((values, batchIndex) => {
-              if (values.length !== headers.length) {
-                issues.push({
-                  code: "row-width",
-                  message: `Row has ${values.length} cells; expected ${headers.length}.`,
-                  rowIndex: batchIndex,
-                });
-              }
-            });
-            if (batch.length > 0) {
-              options.onRows(batch, 0);
-              rowCount = batch.length;
-            }
-          }
-          results?.errors?.forEach((error) => {
-            issues.push({
-              code: "parser-error",
-              message: error.message,
-              ...(typeof error.row === "number" ? { rowIndex: error.row } : {}),
-            });
-          });
-          settled = true;
-        } catch (error) {
-          fail(error);
-          return;
-        }
+        settled = true;
         resolve({
           headers,
           issues,
