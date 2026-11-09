@@ -20,7 +20,7 @@ const summary = await streamCsvFile(file, {
 console.log(summary.rowCount, summary.issues);
 ```
 
-The callback is synchronous by design. If it throws, parsing is aborted and the promise rejects.
+The callback is synchronous by design. `rowOffset` and issue `rowIndex` values are zero-based data-row indexes; the header row is excluded. If the callback throws, parsing is aborted and the promise rejects. `chunkSize` must be a positive safe integer.
 
 ## Keep memory bounded
 
