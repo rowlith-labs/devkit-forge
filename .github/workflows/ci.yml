@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  core:
+  packages:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,9 +17,15 @@ jobs:
           node-version: 20
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
-      - name: Typecheck
+      - name: Typecheck core
         run: pnpm --filter @devkit-forge/import-core typecheck
-      - name: Test
+      - name: Test core
         run: pnpm --filter @devkit-forge/import-core test
-      - name: Build
+      - name: Build core
         run: pnpm --filter @devkit-forge/import-core build
+      - name: Typecheck CSV
+        run: pnpm --filter @devkit-forge/import-csv typecheck
+      - name: Test CSV
+        run: pnpm --filter @devkit-forge/import-csv test
+      - name: Build CSV
+        run: pnpm --filter @devkit-forge/import-csv build
