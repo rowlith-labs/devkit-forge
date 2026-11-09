@@ -51,6 +51,14 @@ describe("parseCsvText", () => {
     expect(Object.getPrototypeOf(result.records![0]!)).toBe(Object.prototype);
   });
 
+  it("reports parser errors with zero-based data-row indexes", () => {
+    const result = parseCsvText('name,note\\nAda,ok\\nGrace,"unterminated');
+
+    expect(result.issues).toEqual(expect.arrayContaining([
+      expect.objectContaining({ code: "parser-error", rowIndex: 1 }),
+    ]));
+  });
+
   it("allows an explicit delimiter", () => {
     const result = parseCsvText("name|age\nAda|37", { delimiter: "|" });
     expect(result.delimiter).toBe("|");
