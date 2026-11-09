@@ -15,6 +15,7 @@ React 18 and 19 are supported as peer dependencies.
 Creates a hook instance backed by `@devkit-forge/import-core`.
 
 ```tsx
+import { useEffect } from "react";
 import { useDataImporter } from "@devkit-forge/import-react";
 import type { ImportConfig } from "@devkit-forge/import-core";
 
@@ -33,8 +34,11 @@ const config: ImportConfig<Contact> = {
 function ContactImport({ records }: { records: Record<string, unknown>[] }) {
   const importer = useDataImporter<Contact>({ config });
 
-  function validate() {
+  useEffect(() => {
     importer.setRows(records);
+  }, [importer.setRows, records]);
+
+  function validate() {
     const result = importer.process();
     console.log(result.validRows, result.invalidRows);
   }
