@@ -77,6 +77,14 @@ export default function App() {
 
   async function loadFile(file?: File) {
     if (!file) return;
+    if (!file.name.toLowerCase().endsWith(".csv") && file.type !== "text/csv") {
+      setCsvIssues(["Please choose a CSV file."]);
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      setCsvIssues(["This playground accepts files up to 10 MiB. Use streamCsvFile from the CSV package for larger files."]);
+      return;
+    }
     setBusy(true);
     setCsvIssues([]);
     setFilter("all");
