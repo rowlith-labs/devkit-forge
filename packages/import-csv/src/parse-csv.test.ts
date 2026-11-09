@@ -42,6 +42,15 @@ describe("parseCsvText", () => {
     expect(result.rowCount).toBe(1);
   });
 
+  it("preserves a __proto__ header as an own data property", () => {
+    const result = parseCsvText("__proto__,name\\nsafe,Ada");
+
+    expect(result.records).toHaveLength(1);
+    expect(Object.hasOwn(result.records![0]!, "__proto__")).toBe(true);
+    expect(result.records![0]!["__proto__"]).toBe("safe");
+    expect(Object.getPrototypeOf(result.records![0]!)).toBe(Object.prototype);
+  });
+
   it("allows an explicit delimiter", () => {
     const result = parseCsvText("name|age\nAda|37", { delimiter: "|" });
     expect(result.delimiter).toBe("|");
