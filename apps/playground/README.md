@@ -22,4 +22,4 @@ Then open the local Vite URL printed in the terminal.
 - Required-field, email-format, and duplicate detection
 - Valid-row CSV export and row-level error report export
 
-Files are parsed and processed in the browser. No CSV data is sent to a server.
+Files are parsed and processed in the browser. No CSV data is sent to a server. The demo intentionally limits uploads to 10 MiB because it uses the in-memory parsing and React state APIs; use `streamCsvFile` for larger files.
