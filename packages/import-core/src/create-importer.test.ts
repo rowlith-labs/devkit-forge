@@ -82,6 +82,20 @@ describe("createImporter", () => {
     expect(result.invalidRows[0]?.issues).toHaveLength(2);
   });
 
+  it("preserves schema fields named __proto__ as ordinary own properties", () => {
+    type PrototypeKey = { ["__proto__"]: string };
+    const importer = createImporter<PrototypeKey>({
+      columns: [{ key: "__proto__", label: "Prototype value", required: true }],
+    });
+    const source = { ["Prototype value"]: "safe" };
+    const result = importer.processRows([source]);
+
+    expect(result.validRows).toHaveLength(1);
+    expect(Object.hasOwn(result.validRows[0]!, "__proto__")).toBe(true);
+    expect(result.validRows[0]!["__proto__"]).toBe("safe");
+    expect(Object.getPrototypeOf(result.validRows[0]!)).toBe(Object.prototype);
+  });
+
   it("rejects duplicate schema keys and unknown duplicate keys", () => {
     expect(() => createImporter<Customer>({
       columns: [
