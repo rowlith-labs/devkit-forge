@@ -1,4 +1,4 @@
-import ExcelJS from "exceljs";
+import ExcelJS from "exceljs-hardened";
 import { describe, expect, it } from "vitest";
 import { parseXlsxFile } from "./parse-xlsx-file.js";
 
