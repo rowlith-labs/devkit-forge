@@ -67,7 +67,7 @@ export function streamCsvFile(
         chunkCallbackUsed = true;
         try {
           delimiter = results.meta.delimiter || delimiter;
-          results.errors.forEach((error) => {
+          results?.errors?.forEach((error) => {
             issues.push({
               code: "parser-error",
               message: error.message,
