@@ -22,10 +22,15 @@ function createRows(count) {
   }));
 }
 
-// Warm up the same code path before collecting measurements.
-importer.processRows(createRows(2_000));
+function median(values) {
+  const sorted = [...values].sort((a, b) => a - b);
+  const middle = Math.floor(sorted.length / 2);
+  return sorted.length % 2 === 0
+    ? (sorted[middle - 1] + sorted[middle]) / 2
+    : sorted[middle];
+}
 
-for (const count of [10_000, 50_000, 100_000]) {
+function measure(count) {
   const rows = createRows(count);
   globalThis.gc?.();
   const heapBefore = process.memoryUsage().heapUsed;
@@ -34,14 +39,33 @@ for (const count of [10_000, 50_000, 100_000]) {
   const elapsedMs = performance.now() - start;
   const heapGrowthMb =
     (process.memoryUsage().heapUsed - heapBefore) / (1024 * 1024);
-  const rowsPerSecond = Math.round(count / (elapsedMs / 1_000));
+
+  return {
+    elapsedMs,
+    heapGrowthMb,
+    validCount: result.validCount,
+    invalidCount: result.invalidCount,
+  };
+}
+
+// Warm up the same code path before collecting measurements.
+importer.processRows(createRows(2_000));
+
+for (const count of [10_000, 50_000, 100_000]) {
+  const samples = Array.from({ length: 3 }, () => measure(count));
+  const medianMs = median(samples.map((sample) => sample.elapsedMs));
+  const medianHeapGrowthMb = median(
+    samples.map((sample) => sample.heapGrowthMb),
+  );
+  const rowsPerSecond = Math.round(count / (medianMs / 1_000));
+  const { validCount, invalidCount } = samples[0];
 
   console.log(
-    count.toLocaleString() + " rows: " +
-    elapsedMs.toFixed(1) + " ms; " +
+    count.toLocaleString() + " rows (median of 3): " +
+    medianMs.toFixed(1) + " ms; " +
     rowsPerSecond.toLocaleString() + " rows/sec; " +
-    result.validCount.toLocaleString() + " valid; " +
-    result.invalidCount.toLocaleString() + " invalid; " +
-    heapGrowthMb.toFixed(1) + " MiB approximate heap growth",
+    validCount.toLocaleString() + " valid; " +
+    invalidCount.toLocaleString() + " invalid; " +
+    medianHeapGrowthMb.toFixed(1) + " MiB approximate heap growth",
   );
 }
