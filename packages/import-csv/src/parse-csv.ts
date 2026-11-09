@@ -2,6 +2,15 @@ import Papa from "papaparse";
 import type { RawImportRow } from "@devkit-forge/import-core";
 import type { CsvIssue, CsvParseOptions, CsvParseResult } from "./types.js";
 
+function setOwnValue(target: Record<string, unknown>, key: string, value: unknown): void {
+  Object.defineProperty(target, key, {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value,
+  });
+}
+
 export function parseCsvText(
   input: string,
   options: CsvParseOptions = {},
@@ -69,7 +78,7 @@ export function parseCsvText(
     ? data.map((values) => {
         const record: RawImportRow = {};
         headers.forEach((header, index) => {
-          record[header] = values[index] ?? "";
+          setOwnValue(record, header, values[index] ?? "");
         });
         return record;
       })
