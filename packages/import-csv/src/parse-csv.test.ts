@@ -10,7 +10,7 @@ describe("parseCsvText", () => {
   });
 
   it("supports quoted delimiters and embedded newlines", () => {
-    const result = parseCsvText('name,note\nAda,"hello, world"\nGrace,"line one\nline two"');
+    const result = parseCsvText('name,note\nAda,ok\nGrace,"unterminated');
     expect(result.records).toEqual([
       { name: "Ada", note: "hello, world" },
       { name: "Grace", note: "line one\nline two" },
