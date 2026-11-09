@@ -236,7 +236,8 @@ export async function parseXlsxFile(
 
   for (let offset = 0; offset < rowsToRead; offset += 1) {
     const sourceRow = selectedWorksheet.getRow(headerRow + offset + 1);
-    const sourceWidth = Math.max(headerCount, sourceRow.cellCount);
+    const sourceCellCount = sourceRow.cellCount;
+    const sourceWidth = Math.max(headerCount, sourceCellCount);
     const values = Array.from({ length: sourceWidth }, (_, columnIndex) =>
       cellValue(
         sourceRow.getCell(columnIndex + 1).value,
@@ -250,10 +251,10 @@ export async function parseXlsxFile(
     const isEmpty = values.every(isBlank);
     if (isEmpty && emptyRows === "skip") continue;
 
-    if (sourceWidth > headerCount) {
+    if (!isEmpty && sourceCellCount !== headerCount) {
       addIssue({
         code: "row-width",
-        message: `Row has ${sourceWidth} cells; expected ${headerCount}.`,
+        message: `Row has ${sourceCellCount} cells; expected ${headerCount}.`,
         rowIndex: offset,
       });
     }
