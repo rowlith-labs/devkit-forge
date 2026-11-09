@@ -12,6 +12,7 @@ pnpm add @devkit-forge/import-ui @devkit-forge/import-core @devkit-forge/import-
 
 ```ts
 import { registerImportUI } from "@devkit-forge/import-ui";
+import type { ImportUIElement } from "@devkit-forge/import-ui";
 import type { ImportConfig } from "@devkit-forge/import-core";
 
 interface Customer {
@@ -28,7 +29,7 @@ const config: ImportConfig<Customer> = {
 };
 
 registerImportUI();
-document.querySelector("df-data-importer")?.configure(config);
+document.querySelector<ImportUIElement>("df-data-importer")?.configure(config);
 ```
 
 Add `<df-data-importer></df-data-importer>` to the page. Registration is explicit, making package imports safe in server-rendered applications. Call it from a browser-only entry point.
