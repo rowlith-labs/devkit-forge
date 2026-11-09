@@ -60,4 +60,4 @@ Run the reproducible local benchmark against 10k, 50k, and 100k rows:
 pnpm --filter @devkit-forge/import-core benchmark
 ```
 
-The benchmark reports elapsed time, throughput, and approximate heap growth during processing on the current machine. The heap figure is neither retained memory nor peak memory usage; it is a rough allocation signal. CI runs the same benchmark to keep a visible baseline in its logs. Treat all measurements as comparative signals, not cross-machine performance guarantees; compare runs under similar Node.js versions and hardware.
+The benchmark reports the median elapsed time, throughput, and approximate heap growth across three samples on the current machine. The heap figure is neither retained memory nor peak memory usage; it is a rough allocation signal. CI runs the same benchmark to keep a visible baseline in its logs. Treat all measurements as comparative signals, not cross-machine performance guarantees; compare runs under similar Node.js versions and hardware.
