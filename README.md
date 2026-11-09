@@ -39,7 +39,7 @@ Requirements: Node.js 20+ and pnpm 9+.
 pnpm install
 pnpm test
 pnpm typecheck
-pnpm exec playwright install chromium
+pnpm exec playwright install chromium firefox webkit
 pnpm test:e2e
 ```
 
