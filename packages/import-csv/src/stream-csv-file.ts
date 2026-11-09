@@ -8,12 +8,12 @@ import type {
 } from "./types.js";
 
 /** Collect header diagnostics without changing the original header order. */
-function inspectHeaders(headers: string[], issues: CsvIssue[]): void {
+function inspectHeaders(headers: string[], addIssue: (issue: CsvIssue) => void): void {
   const seen = new Map<string, number>();
 
   headers.forEach((header, columnIndex) => {
     if (!header) {
-      issues.push({
+      addIssue({
         code: "empty-header",
         message: `Header at column ${columnIndex + 1} is empty.`,
         columnIndex,
@@ -23,7 +23,7 @@ function inspectHeaders(headers: string[], issues: CsvIssue[]): void {
 
     const firstIndex = seen.get(header);
     if (firstIndex !== undefined) {
-      issues.push({
+      addIssue({
         code: "duplicate-header",
         message: `Header "${header}" is duplicated (columns ${firstIndex + 1} and ${columnIndex + 1}).`,
         columnIndex,
@@ -44,14 +44,36 @@ export function streamCsvFile(
   options: CsvStreamOptions,
 ): Promise<CsvStreamResult> {
   const chunkSize = options.chunkSize ?? 1024 * 1024;
+  const maxIssues = options.maxIssues ?? 1000;
   if (!Number.isSafeInteger(chunkSize) || chunkSize <= 0) {
     return Promise.reject(
       new RangeError("chunkSize must be a positive safe integer."),
     );
   }
 
+  if (!Number.isSafeInteger(maxIssues) || maxIssues <= 0) {
+    return Promise.reject(
+      new RangeError("maxIssues must be a positive safe integer."),
+    );
+  }
+
   return new Promise((resolve, reject) => {
     const issues: CsvIssue[] = [];
+    let totalIssueCount = 0;
+    let issuesTruncated = false;
+
+    const addIssue = (issue: CsvIssue) => {
+      totalIssueCount += 1;
+      if (issues.length < maxIssues) {
+        issues.push(issue);
+      } else if (!issuesTruncated) {
+        issuesTruncated = true;
+        issues[issues.length - 1] = {
+          code: "issues-truncated",
+          message: "Additional diagnostics omitted after retaining " + (maxIssues - 1) + " issue(s).",
+        };
+      }
+    };
     let headers: string[] = [];
     let headerParsed = false;
     let rowCount = 0;
@@ -84,7 +106,7 @@ export function streamCsvFile(
               ? chunkSourceRowOffset + error.row
               : undefined;
 
-          issues.push({
+          addIssue({
             code: "parser-error",
             message: error.message,
             ...(sourceRowIndex !== undefined && sourceRowIndex > 0
@@ -101,7 +123,7 @@ export function streamCsvFile(
           headers = (rows[0] ?? []).map((value) =>
             shouldTrim ? value.trim() : value,
           );
-          inspectHeaders(headers, issues);
+          inspectHeaders(headers, addIssue);
           headerParsed = true;
           firstDataIndex = 1;
         }
@@ -109,7 +131,7 @@ export function streamCsvFile(
         const batch = rows.slice(firstDataIndex);
         batch.forEach((values, batchIndex) => {
           if (values.length !== headers.length) {
-            issues.push({
+            addIssue({
               code: "row-width",
               message: `Row has ${values.length} cells; expected ${headers.length}.`,
               rowIndex: rowCount + batchIndex,
@@ -154,7 +176,9 @@ export function streamCsvFile(
           issues,
           delimiter,
           rowCount,
-          hasErrors: issues.length > 0,
+          hasErrors: totalIssueCount > 0,
+          totalIssueCount,
+          issuesTruncated,
         });
       },
       error(error) {
