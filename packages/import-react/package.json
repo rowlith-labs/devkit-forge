@@ -13,14 +13,15 @@
       "import": "./dist/index.js"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "vitest run",
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "peerDependencies": {
-    "@devkit-forge/import-core": "^0.1.0",
     "react": "^18.0.0 || ^19.0.0"
   },
   "devDependencies": {
@@ -32,5 +33,8 @@
     "react-dom": "^19.0.0",
     "typescript": "^5.7.3",
     "vitest": "^3.0.5"
+  },
+  "dependencies": {
+    "@devkit-forge/import-core": "workspace:*"
   }
 }
