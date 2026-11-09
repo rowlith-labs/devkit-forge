@@ -46,6 +46,6 @@ jobs:
       - name: Build documentation
         run: pnpm --filter @devkit-forge/docs build
       - name: Install Chromium for browser tests
-        run: pnpm exec playwright install --with-deps chromium
+        run: pnpm exec playwright install --with-deps chromium firefox webkit
       - name: Run playground browser tests
         run: pnpm test:e2e
