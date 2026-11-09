@@ -61,4 +61,73 @@ describe("streamCsvFile", () => {
       }),
     ).rejects.toThrow("consumer failed");
   });
+  it("preserves row offsets across small chunks and quoted newlines", async () => {
+    const batches: Array<{ rows: string[][]; offset: number }> = [];
+    const csv = [
+      "name,note",
+      'Ada,"line one\nline two"',
+      "Grace,works",
+      "Linus,ok",
+    ].join("\n");
+
+    const result = await streamCsvFile(createFile(csv), {
+      chunkSize: 7,
+      onRows(rows, offset) {
+        batches.push({ rows, offset });
+      },
+    });
+
+    expect(result.rowCount).toBe(3);
+    expect(batches.flatMap((batch) => batch.rows)).toEqual([
+      ["Ada", "line one\nline two"],
+      ["Grace", "works"],
+      ["Linus", "ok"],
+    ]);
+
+    let expectedOffset = 0;
+    for (const batch of batches) {
+      expect(batch.offset).toBe(expectedOffset);
+      expectedOffset += batch.rows.length;
+    }
+    expect(expectedOffset).toBe(3);
+  });
+
+  it("reports row-width issues with data-row indexes across chunks", async () => {
+    const result = await streamCsvFile(
+      createFile("name,age\nAda,37\nGrace\nLinus,56"),
+      { chunkSize: 8, onRows() {} },
+    );
+
+    expect(result.issues).toContainEqual(expect.objectContaining({
+      code: "row-width",
+      rowIndex: 1,
+    }));
+  });
+
+  it("stops parsing after the consumer callback fails", async () => {
+    let calls = 0;
+    await expect(
+      streamCsvFile(
+        createFile("name\nAda\nGrace\nLinus"),
+        {
+          chunkSize: 5,
+          onRows() {
+            calls += 1;
+            throw new Error("stop now");
+          },
+        },
+      ),
+    ).rejects.toThrow("stop now");
+    expect(calls).toBe(1);
+  });
+
+  it.each([0, -1, 1.5, Number.MAX_SAFE_INTEGER + 1])(
+    "rejects invalid chunk size %s",
+    async (chunkSize) => {
+      await expect(
+        streamCsvFile(createFile("name\nAda"), { chunkSize, onRows() {} }),
+      ).rejects.toThrow("chunkSize must be a positive safe integer");
+    },
+  );
+
 });
