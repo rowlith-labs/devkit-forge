@@ -33,6 +33,16 @@ export interface XlsxParseOptions {
   maxRows?: number;
   /** Maximum retained diagnostics. Defaults to 1,000. */
   maxIssues?: number;
+  /** Maximum uncompressed bytes per ZIP entry. Defaults to 16 MiB. */
+  maxEntryUncompressedSize?: number;
+  /** Maximum total uncompressed ZIP bytes. Defaults to 64 MiB. */
+  maxTotalUncompressedSize?: number;
+  /** Maximum merged cells per worksheet. Defaults to 100,000. */
+  maxMergeCells?: number;
+  /** Maximum cells covered by data-validation ranges. Defaults to 100,000. */
+  maxDataValidationCells?: number;
+  /** Maximum cells covered by defined-name ranges. Defaults to 100,000. */
+  maxDefinedNameCells?: number;
 }
 
 export interface XlsxIssue {
