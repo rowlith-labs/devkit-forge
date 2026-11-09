@@ -42,7 +42,7 @@ pnpm typecheck
 
 ## Current scope
 
-The initial packages are `@devkit-forge/import-core`, `@devkit-forge/import-csv`, and `@devkit-forge/import-react`. The React adapter is headless; UI components, XLSX parsing, browser demos, and commercial packaging remain future work.
+The initial packages are `@devkit-forge/import-core`, `@devkit-forge/import-csv`, and `@devkit-forge/import-react`. The React adapter remains headless; the browser playground is a separate example application. XLSX parsing and commercial packaging remain future work.
 
 ## Licence
 
