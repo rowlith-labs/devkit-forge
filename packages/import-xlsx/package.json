@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@devkit-forge/import-core": "workspace:*",
-    "exceljs": "^4.4.0"
+    "exceljs-hardened": "^5.1.0"
   },
   "devDependencies": {
     "typescript": "^5.7.3",
