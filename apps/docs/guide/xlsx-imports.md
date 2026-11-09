@@ -32,7 +32,7 @@ Duplicate and empty headers are preserved in `headers` and `data`, but `records`
 
 ## Resource limits
 
-The parser loads the workbook into memory and is not a streaming XLSX parser. Defaults are 25 MiB per workbook, 100,000 data rows, and 1,000 retained issues. Configure `maxFileSizeBytes`, `maxRows`, and `maxIssues` to stricter positive safe integers for your application. Files above the size limit return a `file-too-large` issue; excess rows are not materialized and produce a `row-limit` issue. Corrupt or unsupported workbook data rejects the promise.
+The parser loads the workbook into memory and is not a streaming XLSX parser. It uses `exceljs-hardened`, an unofficial security-maintained fork rather than upstream ExcelJS, because upstream releases have unresolved security reports. The fork is not affiliated with the original maintainers; review its security policy before upgrading it. Defaults are 25 MiB per uploaded workbook, 16 MiB per decompressed ZIP entry, 64 MiB total decompressed content, 100,000 data rows, and 1,000 retained issues. Merged-cell, data-validation, and defined-name range limits default to 100,000 cells each. Configure `maxFileSizeBytes`, `maxRows`, and `maxIssues` to stricter positive safe integers for your application. Files above the size limit return a `file-too-large` issue; excess rows are not materialized and produce a `row-limit` issue. Corrupt or unsupported workbook data rejects the promise.
 
 Use this parser for workbooks that fit your memory budget. For very large spreadsheets, use a server-side or purpose-built streaming workflow rather than raising limits without profiling.
 
