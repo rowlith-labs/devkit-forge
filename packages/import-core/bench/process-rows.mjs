@@ -32,8 +32,7 @@ for (const count of [10_000, 50_000, 100_000]) {
   const start = performance.now();
   const result = importer.processRows(rows);
   const elapsedMs = performance.now() - start;
-  globalThis.gc?.();
-  const retainedHeapDeltaMb =
+  const heapGrowthMb =
     (process.memoryUsage().heapUsed - heapBefore) / (1024 * 1024);
   const rowsPerSecond = Math.round(count / (elapsedMs / 1_000));
 
@@ -43,6 +42,6 @@ for (const count of [10_000, 50_000, 100_000]) {
     rowsPerSecond.toLocaleString() + " rows/sec; " +
     result.validCount.toLocaleString() + " valid; " +
     result.invalidCount.toLocaleString() + " invalid; " +
-    retainedHeapDeltaMb.toFixed(1) + " MiB retained heap delta",
+    heapGrowthMb.toFixed(1) + " MiB approximate heap growth",
   );
 }
