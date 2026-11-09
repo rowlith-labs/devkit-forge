@@ -29,3 +29,9 @@ jobs:
         run: pnpm --filter @devkit-forge/import-csv test
       - name: Build CSV
         run: pnpm --filter @devkit-forge/import-csv build
+      - name: Typecheck React adapter
+        run: pnpm --filter @devkit-forge/import-react typecheck
+      - name: Test React adapter
+        run: pnpm --filter @devkit-forge/import-react test
+      - name: Build React adapter
+        run: pnpm --filter @devkit-forge/import-react build
