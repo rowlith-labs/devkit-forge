@@ -37,6 +37,8 @@ jobs:
         run: pnpm --filter @devkit-forge/import-react build
       - name: Typecheck playground
         run: pnpm --filter @devkit-forge/playground typecheck
+      - name: Test playground exports
+        run: pnpm --filter @devkit-forge/playground test
       - name: Build playground
         run: pnpm --filter @devkit-forge/playground build
       - name: Build documentation
