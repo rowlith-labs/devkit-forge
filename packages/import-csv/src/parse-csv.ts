@@ -26,7 +26,7 @@ export function parseCsvText(
   const issues: CsvIssue[] = parsed.errors.map((error) => ({
     code: "parser-error",
     message: error.message,
-    ...(typeof error.row === "number" ? { rowIndex: error.row } : {}),
+    ...(typeof error.row === "number" && error.row > 0 ? { rowIndex: error.row - 1 } : {}),
   }));
 
   if (source.length === 0) {
