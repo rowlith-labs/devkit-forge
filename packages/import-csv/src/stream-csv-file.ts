@@ -14,7 +14,7 @@ function inspectHeaders(headers: string[], issues: CsvIssue[]): void {
     if (!header) {
       issues.push({
         code: "empty-header",
-        message: \`Header at column \${columnIndex + 1} is empty.\`,
+        message: `Header at column ${columnIndex + 1} is empty.`,
         columnIndex,
       });
       return;
@@ -24,7 +24,7 @@ function inspectHeaders(headers: string[], issues: CsvIssue[]): void {
     if (firstIndex !== undefined) {
       issues.push({
         code: "duplicate-header",
-        message: \`Header "\${header}" is duplicated (columns \${firstIndex + 1} and \${columnIndex + 1}).\`,
+        message: `Header "${header}" is duplicated (columns ${firstIndex + 1} and ${columnIndex + 1}).`,
         columnIndex,
       });
     } else {
@@ -114,7 +114,7 @@ export function streamCsvFile(
             if (values.length !== headers.length) {
               issues.push({
                 code: "row-width",
-                message: \`Row has \${values.length} cells; expected \${headers.length}.\`,
+                message: `Row has ${values.length} cells; expected ${headers.length}.`,
                 rowIndex: rowCount + batchIndex,
               });
             }
