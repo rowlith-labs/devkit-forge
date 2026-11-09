@@ -26,7 +26,7 @@ The CSV package turns CSV text or browser files into records. It reports parser 
 
 For files too large to hold as one parsed object array, `streamCsvFile` emits row batches to a synchronous callback. The consumer must process each batch and avoid retaining it if bounded memory is the goal.
 
-## React adapter
+## XLSX adapter\n\nThe XLSX package loads a workbook, exposes worksheet names, selects a worksheet, reads a configurable header row, and converts cell values into source records. It is an optional parser adapter and does not add spreadsheet dependencies to core. It is currently an in-memory parser with configurable file-size and row limits.\n\n## React adapter
 
 The React package wraps the core importer in a hook. It stores rows, mappings, and the latest processing result. It does not parse files or render UI.
 
@@ -41,4 +41,4 @@ The React package wraps the core importer in a hook. It stores rows, mappings, a
 
 ## Error boundaries
 
-CSV issues describe source-file problems such as duplicate headers, empty headers, malformed parser input, or row-width mismatches. Core issues describe schema mapping and validation problems such as required values, invalid values, duplicate destination keys, unmapped fields, and ambiguous headers.
+CSV and XLSX issues describe source-file problems such as duplicate headers, empty headers, malformed parser input, or row-width mismatches. Core issues describe schema mapping and validation problems such as required values, invalid values, duplicate destination keys, unmapped fields, and ambiguous headers.
