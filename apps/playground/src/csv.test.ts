@@ -14,6 +14,11 @@ describe("serializeCsv", () => {
     },
   );
 
+  it("neutralizes formulas after newline and Unicode whitespace prefixes", () => {
+    expect(serializeCsv(["value"], [["\n=1+1"]])).toBe('value\r\n"\'\n=1+1"');
+    expect(serializeCsv(["value"], [["\u00a0=1+1"]])).toBe("value\r\n'\u00a0=1+1");
+  });
+
   it("preserves ordinary text and empty values", () => {
     expect(serializeCsv(["value"], [["hello"], [null], [42]])).toBe("value\r\nhello\r\n\r\n42");
   });
