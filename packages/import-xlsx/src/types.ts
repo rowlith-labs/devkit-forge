@@ -48,7 +48,7 @@ export interface XlsxParseOptions {
 export interface XlsxIssue {
   code: XlsxIssueCode;
   message: string;
-  /** Zero-based data-row index relative to the selected header row. */
+  /** Zero-based worksheet row offset after the header; blank rows count even when skipped. */
   rowIndex?: number;
   /** Zero-based worksheet column index. */
   columnIndex?: number;
