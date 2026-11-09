@@ -20,7 +20,7 @@ const summary = await streamCsvFile(file, {
 console.log(summary.rowCount, summary.issues);
 ```
 
-The callback is synchronous by design. `rowOffset` and issue `rowIndex` values are zero-based data-row indexes; the header row is excluded. If the callback throws, parsing is aborted and the promise rejects. `chunkSize` must be a positive safe integer.
+The callback is synchronous by design. `rowOffset` and issue `rowIndex` values are zero-based data-row indexes; the header row is excluded. If the callback throws, parsing is aborted and the promise rejects. `chunkSize` and `maxIssues` must be positive safe integers. Streaming retains at most 1,000 diagnostics by default. Additional issues are summarized with `issues-truncated`; `totalIssueCount` still reports the full number encountered. Set `maxIssues` to change the cap.
 
 ## Keep memory bounded
 
