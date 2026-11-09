@@ -15,7 +15,7 @@ apps/
   playground/
 packages/
   import-core/
-  import-react/     # planned
+  import-react/     # headless React adapter
   import-ui/        # planned
   import-xlsx/      # planned
 examples/
@@ -42,7 +42,7 @@ pnpm typecheck
 
 ## Current scope
 
-The first package, `@devkit-forge/import-core`, is being built first. CSV/XLSX parsing, React components, browser demos, and commercial packaging will be added only after the core API and tests are stable.
+The initial packages are `@devkit-forge/import-core`, `@devkit-forge/import-csv`, and `@devkit-forge/import-react`. The React adapter is headless; UI components, XLSX parsing, browser demos, and commercial packaging remain future work.
 
 ## Licence
 
