@@ -63,7 +63,7 @@ describe("parseXlsxFile", () => {
     const bytes = new Uint8Array(await workbook.xlsx.writeBuffer());
 
     const cached = await parseXlsxFile(bytes);
-    expect(cached.data[0]).toEqual([2, ""]);
+    expect(cached.data[0]).toEqual([2, ""]);\n    expect(cached.issues.some((issue) => issue.code === "formula-no-cache")).toBe(true);
 
     const formulaText = await parseXlsxFile(bytes, { formulaPolicy: "formula-text" });
     expect(formulaText.data[0]).toEqual(["=1+1", "=1+1"]);
@@ -71,6 +71,36 @@ describe("parseXlsxFile", () => {
     const rejected = await parseXlsxFile(bytes, { formulaPolicy: "reject" });
     expect(rejected.data[0]).toEqual(["", ""]);
     expect(rejected.issues.filter((issue) => issue.code === "formula-rejected")).toHaveLength(2);
+  });
+
+  it("supports a one-based header row and preserves cells beyond the header width", async () => {
+    const workbook = new ExcelJS.Workbook();
+    const sheet = workbook.addWorksheet("Offsets");
+    sheet.addRow(["Workbook title"]);
+    sheet.addRow(["Name", "Email"]);
+    sheet.addRow(["Ada", "ada@example.com", "unexpected"]);
+    const result = await parseXlsxFile(new Uint8Array(await workbook.xlsx.writeBuffer()), { headerRow: 2 });
+
+    expect(result.headers).toEqual(["Name", "Email"]);
+    expect(result.data[0]).toEqual(["Ada", "ada@example.com", "unexpected"]);
+    expect(result.issues[0]).toMatchObject({ code: "row-width", rowIndex: 0 });
+  });
+
+  it("caps retained diagnostics and reports the total", async () => {
+    const workbook = new ExcelJS.Workbook();
+    const sheet = workbook.addWorksheet("Many issues");
+    sheet.addRow(["Name", "Name", "Name"]);
+    sheet.addRow(["Ada", "Grace", "Katherine"]);
+    const result = await parseXlsxFile(new Uint8Array(await workbook.xlsx.writeBuffer()), { maxIssues: 1 });
+
+    expect(result.totalIssueCount).toBe(2);
+    expect(result.issues).toHaveLength(2);
+    expect(result.issues[1]?.code).toBe("issues-truncated");
+    expect(result.issuesTruncated).toBe(true);
+  });
+
+  it("rejects corrupt workbook data", async () => {
+    await expect(parseXlsxFile(new Uint8Array([1, 2, 3]))).rejects.toThrow();
   });
 
   it("skips blank rows by default and can preserve them", async () => {
