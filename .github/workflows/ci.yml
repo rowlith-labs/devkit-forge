@@ -23,6 +23,8 @@ jobs:
         run: pnpm --filter @devkit-forge/import-core test
       - name: Build core
         run: pnpm --filter @devkit-forge/import-core build
+      - name: Benchmark core processing
+        run: pnpm --filter @devkit-forge/import-core benchmark
       - name: Typecheck CSV
         run: pnpm --filter @devkit-forge/import-csv typecheck
       - name: Test CSV
