@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import type { ChangeEvent, DragEvent } from "react";
-import { createImporter } from "@devkit-forge/import-core";
-import type { ColumnMapping, ImportColumn, RawImportRow } from "@devkit-forge/import-core";
+import type { ColumnMapping, ImportColumn, ImportConfig } from "@devkit-forge/import-core";
 import { parseCsvText } from "@devkit-forge/import-csv";
 import { useDataImporter } from "@devkit-forge/import-react";
 
@@ -23,7 +22,7 @@ const columns: ImportColumn<Contact>[] = [
   },
   { key: "company", label: "Company" },
 ];
-const config = { columns, duplicateKeys: ["email"] as const };
+const config: ImportConfig<Contact> = { columns, duplicateKeys: ["email"] };
 const sampleCsv = "Full name,Email address,Company\nAda Lovelace,ada@example.com,Analytical Engines\nGrace Hopper,grace@example.com,US Navy\n,missing@example.com,Unknown\nAlan Turing,ada@example.com,Bletchley Park\n";
 
 function csvCell(value: unknown): string {
@@ -68,7 +67,7 @@ export default function App() {
   const mapping = mappingEdited ? importer.mapping : suggestedMapping;
   const result = importer.result;
   const issuesByRow = useMemo(() => {
-    const map = new Map<number, typeof result extends null ? never : NonNullable<typeof result>["invalidRows"][number]["issues"]>();
+    const map = new Map<number, NonNullable<typeof result>["invalidRows"][number]["issues"]>();
     result?.invalidRows.forEach((row) => map.set(row.rowIndex, row.issues));
     return map;
   }, [result]);
@@ -114,10 +113,6 @@ export default function App() {
   }
 
   function processRows() {
-    if (!mappingEdited) {
-      importer.process();
-      return;
-    }
     importer.process();
   }
 
