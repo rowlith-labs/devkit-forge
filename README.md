@@ -45,7 +45,7 @@ pnpm test:e2e
 
 ## Current scope
 
-The initial packages are `@devkit-forge/import-core`, `@devkit-forge/import-csv`, and `@devkit-forge/import-react`. The React adapter remains headless; the browser playground and VitePress documentation site are separate applications. XLSX parsing and commercial packaging remain future work.
+The current packages are `@devkit-forge/import-core`, `@devkit-forge/import-csv`, `@devkit-forge/import-react`, and `@devkit-forge/import-xlsx`. The React adapter remains headless; the browser playground and VitePress documentation site are separate applications. The XLSX adapter is an in-memory parser with explicit file-size and row limits; it is separate from the core package. Commercial packaging remains future work.
 
 ## Licence
 
