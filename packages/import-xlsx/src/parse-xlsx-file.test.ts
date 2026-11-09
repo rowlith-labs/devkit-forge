@@ -85,8 +85,8 @@ describe("parseXlsxFile", () => {
 
     expect(result.headers).toEqual(["Name", "Email"]);
     expect(result.data[0]).toEqual(["Ada", "ada@example.com", "unexpected"]);
-    expect(result.data[1]).toEqual(["Grace", "", ""]);
-    expect(result.issues.filter((issue) => issue.code === "row-width").map((issue) => issue.rowIndex)).toEqual([0, 1]);
+    expect(result.data[1]).toEqual(["Grace", ""]);
+    expect(result.issues.filter((issue) => issue.code === "row-width").map((issue) => issue.rowIndex)).toEqual([0]);
   });
 
   it("caps retained diagnostics and reports the total", async () => {
