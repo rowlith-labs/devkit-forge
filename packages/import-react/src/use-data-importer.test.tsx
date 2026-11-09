@@ -55,6 +55,25 @@ describe("useDataImporter", () => {
     expect(result.current.result).toBeNull();
   });
 
+  it("keeps automatic header detection until a mapping is explicitly supplied", () => {
+    const { result } = renderHook(() => useDataImporter<Contact>({
+      config,
+      initialRows: [{ Email: "ada@example.com", Name: "Ada" }],
+    }));
+
+    let automaticResult: ReturnType<typeof result.current.process> | undefined;
+    act(() => { automaticResult = result.current.process(); });
+    expect(automaticResult?.validRows).toEqual([
+      { email: "ada@example.com", name: "Ada" },
+    ]);
+
+    act(() => { result.current.setMapping({}); });
+    let explicitEmptyResult: ReturnType<typeof result.current.process> | undefined;
+    act(() => { explicitEmptyResult = result.current.process(); });
+    expect(explicitEmptyResult?.validCount).toBe(0);
+    expect(explicitEmptyResult?.invalidCount).toBe(1);
+  });
+
   it("uses explicit mappings and resets to an empty source with the initial mapping", () => {
     const initialMapping = { email_address: "email", full_name: "name" } as const;
     const { result } = renderHook(() => useDataImporter<Contact>({
