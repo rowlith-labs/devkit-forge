@@ -30,6 +30,16 @@ describe("streamCsvFile", () => {
     expect(batches[0]?.offset).toBe(0);
   });
 
+  it("handles header-only and empty files without inventing records", async () => {
+    const headerOnly = await streamCsvFile(createFile("name,age"), { onRows() {} });
+    expect(headerOnly.headers).toEqual(["name", "age"]);
+    expect(headerOnly.rowCount).toBe(0);
+
+    const empty = await streamCsvFile(createFile(""), { onRows() {} });
+    expect(empty.headers).toEqual([]);
+    expect(empty.rowCount).toBe(0);
+  });
+
   it("reports duplicate headers and row width issues", async () => {
     const result = await streamCsvFile(
       createFile("name,name\nAda,Grace\nOnlyOneCell"),
