@@ -27,9 +27,14 @@ importer.processRows(createRows(2_000));
 
 for (const count of [10_000, 50_000, 100_000]) {
   const rows = createRows(count);
+  globalThis.gc?.();
+  const heapBefore = process.memoryUsage().heapUsed;
   const start = performance.now();
   const result = importer.processRows(rows);
   const elapsedMs = performance.now() - start;
+  globalThis.gc?.();
+  const retainedHeapDeltaMb =
+    (process.memoryUsage().heapUsed - heapBefore) / (1024 * 1024);
   const rowsPerSecond = Math.round(count / (elapsedMs / 1_000));
 
   console.log(
@@ -37,6 +42,7 @@ for (const count of [10_000, 50_000, 100_000]) {
     elapsedMs.toFixed(1) + " ms; " +
     rowsPerSecond.toLocaleString() + " rows/sec; " +
     result.validCount.toLocaleString() + " valid; " +
-    result.invalidCount.toLocaleString() + " invalid",
+    result.invalidCount.toLocaleString() + " invalid; " +
+    retainedHeapDeltaMb.toFixed(1) + " MiB retained heap delta",
   );
 }
