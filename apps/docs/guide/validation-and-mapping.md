@@ -61,4 +61,4 @@ interface ProcessRowsResult<T> {
 }
 ```
 
-Issue codes currently include `required`, `invalid`, `duplicate`, `unmapped`, and `ambiguous`.
+Issue codes currently include `required`, `invalid`, `duplicate`, and `ambiguous`. The exported issue-code type also reserves `unmapped` for future use.
