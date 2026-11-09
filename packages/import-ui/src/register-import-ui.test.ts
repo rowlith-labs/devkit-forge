@@ -54,6 +54,16 @@ describe("registerImportUI", () => {
       .toContain("1 valid, 2 invalid");
   });
 
+  it("uses core header normalization and does not duplicate listeners after reconnect", () => {
+    const listener = vi.fn();
+    element.addEventListener("df:validated", listener);
+    element.remove();
+    document.body.append(element);
+    element.setRows([{ "Full-name": "Ada", Email: "ada@example.com" }]);
+    expect(element.validate().validCount).toBe(1);
+    expect(listener).toHaveBeenCalledOnce();
+  });
+
   it("supports explicit mappings and reset", () => {
     element.setRows([{ contact: "ada@example.com", customer: "Ada" }]);
     element.setMapping({ contact: "email", customer: "name" });
