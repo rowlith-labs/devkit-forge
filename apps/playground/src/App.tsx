@@ -26,13 +26,8 @@ const columns: ImportColumn<Contact>[] = [
 const config: ImportConfig<Contact> = { columns, duplicateKeys: ["email"] };
 const sampleCsv = "Full name,Email address,Company\nAda Lovelace,ada@example.com,Analytical Engines\nGrace Hopper,grace@example.com,US Navy\n,missing@example.com,Unknown\nAlan Turing,ada@example.com,Bletchley Park\n";
 
-function csvCell(value: unknown): string {
-  const text = value == null ? "" : String(value);
-  return /[",\r\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
-}
-
 function downloadCsv(filename: string, headers: string[], rows: unknown[][]) {
-  const content = [headers, ...rows].map((row) => row.map(csvCell).join(",")).join("\r\n");
+  const content = serializeCsv(headers, rows);
   const url = URL.createObjectURL(new Blob([content], { type: "text/csv;charset=utf-8" }));
   const anchor = document.createElement("a");
   anchor.href = url;
