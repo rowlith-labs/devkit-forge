@@ -13,10 +13,12 @@
     "lint": "pnpm -r lint",
     "docs:dev": "pnpm --filter @devkit-forge/docs dev",
     "docs:build": "pnpm --filter @devkit-forge/docs build",
-    "docs:preview": "pnpm --filter @devkit-forge/docs preview"
+    "docs:preview": "pnpm --filter @devkit-forge/docs preview",
+    "test:e2e": "playwright test"
   },
   "devDependencies": {
     "typescript": "^5.7.3",
-    "vitest": "^3.0.5"
+    "vitest": "^3.0.5",
+    "@playwright/test": "^1.56.1"
   }
 }
