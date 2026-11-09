@@ -41,6 +41,12 @@ jobs:
         run: pnpm --filter @devkit-forge/import-xlsx test
       - name: Build XLSX adapter
         run: pnpm --filter @devkit-forge/import-xlsx build
+      - name: Typecheck import UI
+        run: pnpm --filter @devkit-forge/import-ui typecheck
+      - name: Test import UI
+        run: pnpm --filter @devkit-forge/import-ui test
+      - name: Build import UI
+        run: pnpm --filter @devkit-forge/import-ui build
       - name: Typecheck React adapter
         run: pnpm --filter @devkit-forge/import-react typecheck
       - name: Test React adapter
