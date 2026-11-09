@@ -1,10 +1,11 @@
 export type RawImportRow = Record<string, unknown>;
 
 export interface ImportIssue {
+  /** Zero-based index in the input array. */
   rowIndex: number;
   column: string;
   value: unknown;
-  code: "required" | "invalid" | "duplicate" | "unmapped";
+  code: "required" | "invalid" | "duplicate" | "unmapped" | "ambiguous";
   message: string;
 }
 
@@ -13,24 +14,27 @@ export interface ImportColumn<T extends object> {
   label: string;
   required?: boolean;
   transform?: (value: unknown, sourceRow: RawImportRow) => unknown;
-  validate?: (
-    value: unknown,
-    row: Partial<T>,
-  ) => string | undefined;
+  validate?: (value: unknown, row: Partial<T>) => string | undefined;
 }
 
-export type ColumnMapping<T extends object> = Partial<
-  Record<string, keyof T & string>
->;
+/** Maps source header names to destination schema keys. */
+export type ColumnMapping<T extends object> = Partial<Record<string, keyof T & string>>;
 
 export interface ImportConfig<T extends object> {
   columns: ImportColumn<T>[];
+  /** Values are compared case-insensitively after trimming and string conversion. */
   duplicateKeys?: (keyof T & string)[];
+}
+
+export interface InvalidImportRow<T extends object> {
+  rowIndex: number;
+  row: Partial<T>;
+  issues: ImportIssue[];
 }
 
 export interface ProcessRowsResult<T extends object> {
   validRows: T[];
-  invalidRows: Array<{ rowIndex: number; row: Partial<T>; issues: ImportIssue[] }>;
+  invalidRows: InvalidImportRow<T>[];
   totalRows: number;
   validCount: number;
   invalidCount: number;
