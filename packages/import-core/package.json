@@ -20,7 +20,7 @@
     "build": "tsc -p tsconfig.json",
     "test": "vitest run",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "benchmark": "pnpm build && node ./bench/process-rows.mjs"
+    "benchmark": "pnpm build && node --expose-gc ./bench/process-rows.mjs"
   },
   "devDependencies": {
     "typescript": "^5.7.3",
