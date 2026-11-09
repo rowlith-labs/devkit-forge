@@ -142,7 +142,7 @@ export function streamCsvFile(
               rowCount = batch.length;
             }
           }
-          results.errors.forEach((error) => {
+          results?.errors?.forEach((error) => {
             issues.push({
               code: "parser-error",
               message: error.message,
