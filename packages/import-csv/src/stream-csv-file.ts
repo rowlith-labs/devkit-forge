@@ -124,8 +124,10 @@ export function streamCsvFile(
 
         sourceRowCount += rows.length;
       } catch (error) {
-        parser?.abort();
+        // Settle before aborting: Papa Parse may invoke complete() synchronously
+        // as part of abort(), and that callback must not resolve this promise.
         fail(error);
+        parser?.abort();
       }
     };
 
