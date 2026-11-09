@@ -60,4 +60,4 @@ Run the reproducible local benchmark against 10k, 50k, and 100k rows:
 pnpm --filter @devkit-forge/import-core benchmark
 ```
 
-The benchmark reports elapsed time and throughput for the current machine. Treat results as local baselines, not cross-machine performance guarantees. Run it under comparable Node.js versions and hardware when evaluating changes.
+The benchmark reports elapsed time, throughput, and retained heap delta for the result on the current machine. The heap figure is not peak memory usage. CI runs the same benchmark to keep a visible baseline in its logs. Treat all measurements as comparative signals, not cross-machine performance guarantees; compare runs under similar Node.js versions and hardware.
