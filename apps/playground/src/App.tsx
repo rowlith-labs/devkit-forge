@@ -3,6 +3,7 @@ import type { ChangeEvent, DragEvent } from "react";
 import type { ColumnMapping, ImportColumn, ImportConfig } from "@devkit-forge/import-core";
 import { parseCsvText } from "@devkit-forge/import-csv";
 import { useDataImporter } from "@devkit-forge/import-react";
+import { serializeCsv } from "./csv.js";
 
 type Contact = {
   name: string;
