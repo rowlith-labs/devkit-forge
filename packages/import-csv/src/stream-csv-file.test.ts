@@ -133,6 +133,29 @@ describe("streamCsvFile", () => {
     expect(calls).toBe(1);
   });
 
+  it("bounds retained diagnostics while preserving the total count", async () => {
+    const result = await streamCsvFile(
+      createFile("name,name\nAda\nGrace"),
+      { maxIssues: 2, onRows() {} },
+    );
+
+    expect(result.issues).toHaveLength(2);
+    expect(result.issues[0]?.code).toBe("duplicate-header");
+    expect(result.issues[1]?.code).toBe("issues-truncated");
+    expect(result.totalIssueCount).toBe(3);
+    expect(result.issuesTruncated).toBe(true);
+    expect(result.hasErrors).toBe(true);
+  });
+
+  it.each([0, -1, 1.5, Number.MAX_SAFE_INTEGER + 1])(
+    "rejects invalid max issue count %s",
+    async (maxIssues) => {
+      await expect(
+        streamCsvFile(createFile("name\nAda"), { maxIssues, onRows() {} }),
+      ).rejects.toThrow("maxIssues must be a positive safe integer");
+    },
+  );
+
   it.each([0, -1, 1.5, Number.MAX_SAFE_INTEGER + 1])(
     "rejects invalid chunk size %s",
     async (chunkSize) => {
