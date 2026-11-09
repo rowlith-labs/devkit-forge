@@ -63,7 +63,8 @@ describe("parseXlsxFile", () => {
     const bytes = new Uint8Array(await workbook.xlsx.writeBuffer());
 
     const cached = await parseXlsxFile(bytes);
-    expect(cached.data[0]).toEqual([2, ""]);\n    expect(cached.issues.some((issue) => issue.code === "formula-no-cache")).toBe(true);
+    expect(cached.data[0]).toEqual([2, ""]);
+    expect(cached.issues.some((issue) => issue.code === "formula-no-cache")).toBe(true);
 
     const formulaText = await parseXlsxFile(bytes, { formulaPolicy: "formula-text" });
     expect(formulaText.data[0]).toEqual(["=1+1", "=1+1"]);
