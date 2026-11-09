@@ -46,6 +46,10 @@ parseCsvText(csvText, {
 
 Quoted delimiters, escaped quotes, and quoted newlines are supported by the underlying parser.
 
+## Spreadsheet export safety in the playground
+
+The playground neutralizes cell values beginning with spreadsheet formula prefixes (`=`, `+`, `-`, or `@`) before exporting CSV. This is a defense against formula injection when exported files are opened in spreadsheet software. Applications that build their own CSV exports should apply an equivalent policy to untrusted values; CSV quoting alone does not prevent formula execution.
+
 ## Important distinction
 
 CSV parser issues are not the same as core validation issues. A file can parse successfully and still contain rows that fail your destination schema. Check both layers before accepting an import.
