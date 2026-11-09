@@ -238,20 +238,19 @@ export async function parseXlsxFile(
     const sourceRow = selectedWorksheet.getRow(headerRow + offset + 1);
     const sourceCellCount = sourceRow.cellCount;
     const sourceWidth = Math.max(headerCount, sourceCellCount);
-    const values = Array.from({ length: sourceWidth }, (_, columnIndex) =>
-      cellValue(
-        sourceRow.getCell(columnIndex + 1).value,
-        formulaPolicy,
-        offset,
-        columnIndex,
-        addIssue,
-      ),
+    const rawValues = Array.from({ length: sourceWidth }, (_, columnIndex) =>
+      sourceRow.getCell(columnIndex + 1).value,
     );
-
-    const isEmpty = values.every(isBlank);
+    const isEmpty = rawValues.every(isBlank);
     if (isEmpty && emptyRows === "skip") continue;
 
-    if (!isEmpty && sourceCellCount !== headerCount) {
+    const values = rawValues.map((value, columnIndex) =>
+      cellValue(value, formulaPolicy, offset, columnIndex, addIssue),
+    );
+
+    // Excel stores trailing blank cells implicitly, so only excess populated columns
+    // can be identified reliably as a row-width mismatch.
+    if (sourceCellCount > headerCount) {
       addIssue({
         code: "row-width",
         message: `Row has ${sourceCellCount} cells; expected ${headerCount}.`,
