@@ -48,6 +48,7 @@ export function streamCsvFile(
     let rowCount = 0;
     let delimiter = options.delimiter ?? ",";
     let settled = false;
+    let chunkCallbackUsed = false;
 
     const fail = (error: unknown) => {
       if (settled) return;
@@ -63,6 +64,7 @@ export function streamCsvFile(
       skipEmptyLines: options.skipEmptyLines ?? "greedy",
       ...(options.delimiter ? { delimiter: options.delimiter } : {}),
       chunk(results, parser) {
+        chunkCallbackUsed = true;
         try {
           delimiter = results.meta.delimiter || delimiter;
           results.errors.forEach((error) => {
@@ -108,9 +110,47 @@ export function streamCsvFile(
           fail(error);
         }
       },
-      complete() {
+      complete(results) {
         if (settled) return;
-        settled = true;
+        try {
+          // Papa Parse may deliver a sub-chunk-sized File only through complete().
+          if (!chunkCallbackUsed && results?.data?.length) {
+            const rows = results.data;
+            if (!headerParsed && rows.length > 0) {
+              const shouldTrim = options.trimHeaders ?? true;
+              headers = (rows[0] ?? []).map((value) =>
+                shouldTrim ? value.trim() : value,
+              );
+              inspectHeaders(headers, issues);
+              headerParsed = true;
+            }
+            const batch = headerParsed ? rows.slice(1) : [];
+            batch.forEach((values, batchIndex) => {
+              if (values.length !== headers.length) {
+                issues.push({
+                  code: "row-width",
+                  message: `Row has ${values.length} cells; expected ${headers.length}.`,
+                  rowIndex: batchIndex,
+                });
+              }
+            });
+            if (batch.length > 0) {
+              options.onRows(batch, 0);
+              rowCount = batch.length;
+            }
+            results.errors.forEach((error) => {
+              issues.push({
+                code: "parser-error",
+                message: error.message,
+                ...(typeof error.row === "number" ? { rowIndex: error.row } : {}),
+              });
+            });
+          }
+          settled = true;
+        } catch (error) {
+          fail(error);
+          return;
+        }
         resolve({
           headers,
           issues,
