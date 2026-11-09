@@ -24,8 +24,11 @@ Reads a browser `Blob`/`File`, `ArrayBuffer`, or `Uint8Array` and returns worksh
 - `maxFileSizeBytes`: defaults to 25 MiB.
 - `maxRows`: defaults to 100,000.
 - `maxIssues`: defaults to 1,000.
+- `maxEntryUncompressedSize`: defaults to 16 MiB.
+- `maxTotalUncompressedSize`: defaults to 64 MiB.
+- `maxMergeCells`, `maxDataValidationCells`, `maxDefinedNameCells`: default to 100,000 each.
 
-All numeric limits must be positive safe integers.
+All numeric limits must be positive safe integers. The implementation depends on the unofficial security-maintained `exceljs-hardened` fork and configures its ZIP expansion and workbook-range guards explicitly.
 
 ## Types
 
