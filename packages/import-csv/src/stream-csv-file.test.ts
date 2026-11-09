@@ -104,6 +104,18 @@ describe("streamCsvFile", () => {
     }));
   });
 
+  it("offsets parser errors to zero-based data-row indexes across chunks", async () => {
+    const result = await streamCsvFile(
+      createFile('name,note\nAda,ok\nGrace,"unterminated'),
+      { chunkSize: 8, onRows() {} },
+    );
+
+    expect(result.issues).toContainEqual(expect.objectContaining({
+      code: "parser-error",
+      rowIndex: 1,
+    }));
+  });
+
   it("stops parsing after the consumer callback fails", async () => {
     let calls = 0;
     await expect(
