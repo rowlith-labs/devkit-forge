@@ -35,3 +35,7 @@ jobs:
         run: pnpm --filter @devkit-forge/import-react test
       - name: Build React adapter
         run: pnpm --filter @devkit-forge/import-react build
+      - name: Typecheck playground
+        run: pnpm --filter @devkit-forge/playground typecheck
+      - name: Build playground
+        run: pnpm --filter @devkit-forge/playground build
