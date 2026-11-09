@@ -81,6 +81,8 @@ export function registerImportUI(
     }
 
     connectedCallback(): void {
+      if (this.listenersAttached) return;
+      this.listenersAttached = true;
       this.shadowRoot?.querySelector<HTMLInputElement>("[data-file]")?.addEventListener("change", (event) => {
         const file = (event.currentTarget as HTMLInputElement).files?.[0];
         if (file) void this.loadFile(file);
@@ -103,6 +105,7 @@ export function registerImportUI(
 
     setRows(rows: RawImportRow[], headers = rows[0] ? Object.keys(rows[0]) : []): void {
       this.rows = rows.map((row) => ({ ...row }));
+      this.filename = "";
       this.headers = [...headers];
       this.mapping = undefined;
       this.latestResult = null;
