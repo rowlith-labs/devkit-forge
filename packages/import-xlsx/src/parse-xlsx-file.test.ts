@@ -122,6 +122,8 @@ describe("parseXlsxFile", () => {
     const tooLarge = await parseXlsxFile(bytes, { maxFileSizeBytes: 10 });
     expect(tooLarge.issues[0]?.code).toBe("file-too-large");
 
+    await expect(parseXlsxFile(bytes, { maxTotalUncompressedSize: 1 })).rejects.toThrow(/uncompressed size/i);
+
     const rowLimited = await parseXlsxFile(bytes, { maxRows: 1 });
     expect(rowLimited.rowCount).toBe(1);
     expect(rowLimited.issues.some((issue) => issue.code === "row-limit")).toBe(true);
@@ -132,6 +134,7 @@ describe("parseXlsxFile", () => {
     await expect(parseXlsxFile(bytes, { maxRows: 0 })).rejects.toThrow(RangeError);
     await expect(parseXlsxFile(bytes, { maxIssues: 1.5 })).rejects.toThrow(RangeError);
     await expect(parseXlsxFile(bytes, { headerRow: Number.MAX_SAFE_INTEGER + 1 })).rejects.toThrow(RangeError);
+    await expect(parseXlsxFile(bytes, { maxTotalUncompressedSize: 0 })).rejects.toThrow(RangeError);
   });
 
   it("preserves __proto__ as an own header property", async () => {
