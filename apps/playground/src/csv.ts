@@ -6,7 +6,7 @@
 export function serializeCsv(headers: string[], rows: unknown[][]): string {
   const cell = (value: unknown): string => {
     let text = value == null ? "" : String(value);
-    if (/^[\t\r ]*[=+\-@]/.test(text) || /^[\u0000-\u001f]/.test(text)) {
+    if (/^[\s\u0000-\u001f]*[=+\-@]/.test(text) || /^[\u0000-\u001f]/.test(text)) {
       text = "'" + text;
     }
     const escaped = text.replace(/"/g, '""');
