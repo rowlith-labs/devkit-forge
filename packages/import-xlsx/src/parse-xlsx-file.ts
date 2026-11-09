@@ -1,4 +1,4 @@
-import ExcelJS from "exceljs";
+import ExcelJS from "exceljs-hardened";
 import type { RawImportRow } from "@devkit-forge/import-core";
 import type {
   XlsxIssue,
@@ -8,7 +8,7 @@ import type {
 
 const DEFAULT_MAX_FILE_SIZE = 25 * 1024 * 1024;
 const DEFAULT_MAX_ROWS = 100_000;
-const DEFAULT_MAX_ISSUES = 1_000;
+const DEFAULT_MAX_ISSUES = 1_000;\nconst DEFAULT_MAX_ENTRY_UNCOMPRESSED_SIZE = 16 * 1024 * 1024;\nconst DEFAULT_MAX_TOTAL_UNCOMPRESSED_SIZE = 64 * 1024 * 1024;\nconst DEFAULT_MAX_MERGE_CELLS = 100_000;\nconst DEFAULT_MAX_DATA_VALIDATION_CELLS = 100_000;\nconst DEFAULT_MAX_DEFINED_NAME_CELLS = 100_000;
 
 function setOwnValue(target: Record<string, unknown>, key: string, value: unknown): void {
   Object.defineProperty(target, key, {
@@ -144,7 +144,7 @@ export async function parseXlsxFile(
       : input.buffer.slice(input.byteOffset, input.byteOffset + input.byteLength) as ArrayBuffer;
 
   const workbook = new ExcelJS.Workbook();
-  await workbook.xlsx.load(bytes);
+  await workbook.xlsx.load(bytes, {\n    maxEntryUncompressedSize,\n    maxTotalUncompressedSize,\n    maxMergeCells,\n    maxDataValidationCells,\n    maxDefinedNameCells,\n  });
 
   const sheetNames = workbook.worksheets.map((worksheet) => worksheet.name);
   const selectedWorksheet = typeof options.sheet === "string"
