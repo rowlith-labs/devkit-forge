@@ -231,7 +231,7 @@ export async function parseXlsxFile(
     }
 
     const rowValues = values.slice(0, headerCount);
-    data.push(rowValues);
+    data.push(values);
 
     if (hasUsableHeaders) {
       const record: RawImportRow = {};
