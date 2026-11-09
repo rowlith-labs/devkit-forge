@@ -39,4 +39,4 @@ The playground provides labelled mapping selects, a labelled row-filter group, a
 
 ## Browser verification
 
-CI runs Chromium browser smoke tests for sample import and validation, keyboard focus of the file picker, formula-safe CSV export, and the playground's 10 MiB upload guard. Before a production deployment, manually smoke-test current Firefox and Safari as well, including drag-and-drop, mapping, and narrow viewport layout. Also profile representative large files in the target browsers: memory use depends on browser, file shape, callback work, and whether the consumer retains batches.
+CI runs the same browser smoke tests in Chromium, Firefox, and WebKit (the browser engine used by Safari) for sample import and validation, keyboard focus of the file picker, formula-safe CSV export, and the playground's 10 MiB upload guard. Before a production deployment, manually smoke-test current Safari on macOS/iOS and drag-and-drop plus narrow viewport layout. Profile representative large files in target browsers: memory use depends on browser, file shape, callback work, and whether the consumer retains batches.
