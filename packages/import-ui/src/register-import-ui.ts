@@ -68,7 +68,8 @@ export function registerImportUI(
     private mapping: ColumnMapping<Record<string, unknown>> | undefined;
     private latestResult: ProcessRowsResult<Record<string, unknown>> | null = null;
     private parserIssues: Array<{ code: string; message: string }> = [];
-    private filename = "";\n    private listenersAttached = false;
+    private filename = "";
+    private listenersAttached = false;
 
     constructor() {
       super();
