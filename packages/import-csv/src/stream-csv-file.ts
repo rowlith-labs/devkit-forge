@@ -7,6 +7,7 @@ import type {
   CsvStreamResult,
 } from "./types.js";
 
+/** Collect header diagnostics without changing the original header order. */
 function inspectHeaders(headers: string[], issues: CsvIssue[]): void {
   const seen = new Map<string, number>();
 
@@ -64,6 +65,70 @@ export function streamCsvFile(
       reject(error instanceof Error ? error : new Error(String(error)));
     };
 
+    const processChunk = (
+      results: Papa.ParseResult<string[]>,
+      parser?: Papa.Parser,
+    ) => {
+      if (settled) {
+        parser?.abort();
+        return;
+      }
+
+      try {
+        delimiter = results.meta.delimiter || delimiter;
+        const chunkSourceRowOffset = sourceRowCount;
+
+        results.errors.forEach((error) => {
+          const sourceRowIndex =
+            typeof error.row === "number"
+              ? chunkSourceRowOffset + error.row
+              : undefined;
+
+          issues.push({
+            code: "parser-error",
+            message: error.message,
+            ...(sourceRowIndex !== undefined && sourceRowIndex > 0
+              ? { rowIndex: sourceRowIndex - 1 }
+              : {}),
+          });
+        });
+
+        const rows = results.data;
+        let firstDataIndex = 0;
+
+        if (!headerParsed && rows.length > 0) {
+          const shouldTrim = options.trimHeaders ?? true;
+          headers = (rows[0] ?? []).map((value) =>
+            shouldTrim ? value.trim() : value,
+          );
+          inspectHeaders(headers, issues);
+          headerParsed = true;
+          firstDataIndex = 1;
+        }
+
+        const batch = rows.slice(firstDataIndex);
+        batch.forEach((values, batchIndex) => {
+          if (values.length !== headers.length) {
+            issues.push({
+              code: "row-width",
+              message: `Row has ${values.length} cells; expected ${headers.length}.`,
+              rowIndex: rowCount + batchIndex,
+            });
+          }
+        });
+
+        if (batch.length > 0) {
+          options.onRows(batch, rowCount);
+          rowCount += batch.length;
+        }
+
+        sourceRowCount += rows.length;
+      } catch (error) {
+        parser?.abort();
+        fail(error);
+      }
+    };
+
     Papa.parse<string[]>(file, {
       header: false,
       dynamicTyping: false,
@@ -72,66 +137,14 @@ export function streamCsvFile(
       skipEmptyLines: options.skipEmptyLines ?? "greedy",
       ...(options.delimiter ? { delimiter: options.delimiter } : {}),
       chunk(results, parser) {
-        if (settled) {
-          parser.abort();
-          return;
-        }
-
-        try {
-          delimiter = results.meta.delimiter || delimiter;
-          const chunkSourceRowOffset = sourceRowCount;
-
-          results.errors.forEach((error) => {
-            const sourceRowIndex =
-              typeof error.row === "number"
-                ? chunkSourceRowOffset + error.row
-                : undefined;
-
-            issues.push({
-              code: "parser-error",
-              message: error.message,
-              ...(sourceRowIndex !== undefined && sourceRowIndex > 0
-                ? { rowIndex: sourceRowIndex - 1 }
-                : {}),
-            });
-          });
-
-          const rows = results.data;
-          let firstDataIndex = 0;
-
-          if (!headerParsed && rows.length > 0) {
-            const shouldTrim = options.trimHeaders ?? true;
-            headers = (rows[0] ?? []).map((value) =>
-              shouldTrim ? value.trim() : value,
-            );
-            inspectHeaders(headers, issues);
-            headerParsed = true;
-            firstDataIndex = 1;
-          }
-
-          const batch = rows.slice(firstDataIndex);
-          batch.forEach((values, batchIndex) => {
-            if (values.length !== headers.length) {
-              issues.push({
-                code: "row-width",
-                message: `Row has ${values.length} cells; expected ${headers.length}.`,
-                rowIndex: rowCount + batchIndex,
-              });
-            }
-          });
-
-          if (batch.length > 0) {
-            options.onRows(batch, rowCount);
-            rowCount += batch.length;
-          }
-
-          sourceRowCount += rows.length;
-        } catch (error) {
-          parser.abort();
-          fail(error);
-        }
+        processChunk(results, parser);
       },
-      complete() {
+      complete(results) {
+        // Papa Parse can deliver the final partial file chunk in complete()
+        // rather than through chunk(), particularly when a row spans chunks.
+        if (results && (results.data.length > 0 || results.errors.length > 0)) {
+          processChunk(results);
+        }
         if (settled) return;
         settled = true;
         resolve({
