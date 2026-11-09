@@ -143,13 +143,12 @@ export function streamCsvFile(
             }
           }
           results.errors.forEach((error) => {
-              issues.push({
-                code: "parser-error",
-                message: error.message,
-                ...(typeof error.row === "number" ? { rowIndex: error.row } : {}),
-              });
+            issues.push({
+              code: "parser-error",
+              message: error.message,
+              ...(typeof error.row === "number" ? { rowIndex: error.row } : {}),
             });
-          }
+          });
           settled = true;
         } catch (error) {
           fail(error);
