@@ -6,12 +6,17 @@ import type { UseDataImporterOptions, UseDataImporterResult } from "./types.js";
 export function useDataImporter<T extends object>(
   options: UseDataImporterOptions<T>,
 ): UseDataImporterResult<T> {
-  const { config, initialRows = [], initialMapping = {} } = options;
+  const { config, initialRows = [], initialMapping } = options;
   const importer = useMemo(() => createImporter<T>(config), [config]);
 
   const [rows, setRowsState] = useState<RawImportRow[]>(() => [...initialRows]);
   const [mapping, setMappingState] = useState<ColumnMapping<T>>(
     () => ({ ...initialMapping }),
+  );
+  // An omitted mapping means "auto-detect" to the core engine. Keep that
+  // distinction even though the hook exposes an empty object to consumers.
+  const [hasExplicitMapping, setHasExplicitMapping] = useState(
+    () => initialMapping !== undefined,
   );
   const [result, setResult] = useState<ReturnType<typeof importer.processRows> | null>(null);
 
@@ -22,18 +27,23 @@ export function useDataImporter<T extends object>(
 
   const setMapping = useCallback((nextMapping: ColumnMapping<T>) => {
     setMappingState({ ...nextMapping });
+    setHasExplicitMapping(true);
     setResult(null);
   }, []);
 
   const process = useCallback(() => {
-    const nextResult = importer.processRows(rows, mapping);
+    const nextResult = importer.processRows(
+      rows,
+      hasExplicitMapping ? mapping : undefined,
+    );
     setResult(nextResult);
     return nextResult;
-  }, [importer, mapping, rows]);
+  }, [importer, mapping, hasExplicitMapping, rows]);
 
   const reset = useCallback(() => {
     setRowsState([]);
     setMappingState({ ...initialMapping });
+    setHasExplicitMapping(initialMapping !== undefined);
     setResult(null);
   }, [initialMapping]);
 
