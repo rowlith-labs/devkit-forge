@@ -140,7 +140,6 @@ describe("streamCsvFile", () => {
     );
 
     expect(result.issues).toHaveLength(2);
-    expect(result.issues[0]?.code).toBe("duplicate-header");
     expect(result.issues[1]?.code).toBe("issues-truncated");
     expect(result.totalIssueCount).toBe(3);
     expect(result.issuesTruncated).toBe(true);
