@@ -43,7 +43,7 @@ describe("parseCsvText", () => {
   });
 
   it("preserves a __proto__ header as an own data property", () => {
-    const result = parseCsvText("__proto__,name\\nsafe,Ada");
+    const result = parseCsvText("__proto__,name\nsafe,Ada");
 
     expect(result.records).toHaveLength(1);
     expect(Object.hasOwn(result.records![0]!, "__proto__")).toBe(true);
