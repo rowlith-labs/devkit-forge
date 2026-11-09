@@ -4,7 +4,8 @@ export type CsvIssueCode =
   | "duplicate-header"
   | "empty-header"
   | "parser-error"
-  | "row-width";
+  | "row-width"
+  | "issues-truncated";
 
 export interface CsvIssue {
   code: CsvIssueCode;
@@ -39,6 +40,8 @@ export interface CsvParseResult {
 export interface CsvStreamOptions extends CsvParseOptions {
   /** Positive safe integer: input bytes per parser chunk. Defaults to 1 MiB. */
   chunkSize?: number;
+  /** Maximum retained diagnostics. Defaults to 1,000; excess issues are counted but summarized. */
+  maxIssues?: number;
   /** Called synchronously for each parsed batch. rowOffset is a zero-based data-row index. Do not retain batches unless needed. */
   onRows: (rows: string[][], rowOffset: number) => void;
 }
@@ -49,4 +52,8 @@ export interface CsvStreamResult {
   delimiter: string;
   rowCount: number;
   hasErrors: boolean;
+  /** Total diagnostics encountered, including those omitted from issues. */
+  totalIssueCount: number;
+  /** True when issues contains a summary in place of excess diagnostics. */
+  issuesTruncated: boolean;
 }
