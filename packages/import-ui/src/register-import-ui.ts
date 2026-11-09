@@ -1,4 +1,4 @@
-import { createImporter } from "@devkit-forge/import-core";
+import { createImporter, normalizeHeader } from "@devkit-forge/import-core";
 import type {
   ColumnMapping,
   ImportConfig,
@@ -68,7 +68,7 @@ export function registerImportUI(
     private mapping: ColumnMapping<Record<string, unknown>> | undefined;
     private latestResult: ProcessRowsResult<Record<string, unknown>> | null = null;
     private parserIssues: Array<{ code: string; message: string }> = [];
-    private filename = "";
+    private filename = "";\n    private listenersAttached = false;
 
     constructor() {
       super();
