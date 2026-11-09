@@ -28,6 +28,7 @@ export default defineConfig({
           items: [
             { text: "CSV imports", link: "/guide/csv-imports" },
             { text: "XLSX imports", link: "/guide/xlsx-imports" },
+            { text: "Import UI", link: "/guide/import-ui" },
             { text: "Validation and mapping", link: "/guide/validation-and-mapping" },
             { text: "Large files", link: "/guide/large-files" },
             { text: "Quality and security", link: "/guide/quality-and-security" },
@@ -42,6 +43,7 @@ export default defineConfig({
             { text: "import-core", link: "/packages/import-core" },
             { text: "import-csv", link: "/packages/import-csv" },
             { text: "import-xlsx", link: "/packages/import-xlsx" },
+            { text: "import-ui", link: "/packages/import-ui" },
             { text: "import-react", link: "/packages/import-react" },
           ],
         },
