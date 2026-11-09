@@ -70,9 +70,16 @@ function cellValue(
         const formula = "formula" in value ? value.formula : value.sharedFormula;
         return typeof formula === "string" ? `=${formula}` : "";
       }
-      return "result" in value && value.result !== undefined
-        ? cellValue(value.result as ExcelJS.CellValue, "cached-value", rowIndex, columnIndex, addIssue)
-        : "";
+      if ("result" in value && value.result !== undefined) {
+        return cellValue(value.result as ExcelJS.CellValue, "cached-value", rowIndex, columnIndex, addIssue);
+      }
+      addIssue({
+        code: "formula-no-cache",
+        message: "Formula cell has no cached result; the formula was not evaluated.",
+        rowIndex,
+        columnIndex,
+      });
+      return "";
     }
 
     if ("richText" in value && Array.isArray(value.richText)) {
