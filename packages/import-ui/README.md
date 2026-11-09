@@ -12,6 +12,7 @@ pnpm add @devkit-forge/import-ui @devkit-forge/import-core @devkit-forge/import-
 
 ```ts
 import { registerImportUI } from "@devkit-forge/import-ui";
+import type { ImportUIElement } from "@devkit-forge/import-ui";
 import type { ImportConfig } from "@devkit-forge/import-core";
 
 interface Contact {
@@ -28,7 +29,7 @@ const config: ImportConfig<Contact> = {
 };
 
 registerImportUI();
-const importer = document.querySelector("df-data-importer")!;
+const importer = document.querySelector<ImportUIElement>("df-data-importer")!;
 importer.configure(config);
 ```
 
