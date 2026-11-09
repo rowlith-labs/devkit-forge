@@ -39,4 +39,4 @@ The playground provides labelled mapping selects, a labelled row-filter group, a
 
 ## Browser verification
 
-CI currently validates the application build and unit tests in Node.js/jsdom; it does not run a full real-browser automation suite. Before a production deployment, manually smoke-test the playground in current Chrome, Firefox, and Safari, including keyboard-only file selection, drag-and-drop, mapping, narrow viewport layout, and CSV downloads. Also profile representative large files in the target browsers: memory use depends on browser, file shape, callback work, and whether the consumer retains batches.
+CI runs Chromium browser smoke tests for sample import and validation, keyboard focus of the file picker, formula-safe CSV export, and the playground's 10 MiB upload guard. Before a production deployment, manually smoke-test current Firefox and Safari as well, including drag-and-drop, mapping, and narrow viewport layout. Also profile representative large files in the target browsers: memory use depends on browser, file shape, callback work, and whether the consumer retains batches.
