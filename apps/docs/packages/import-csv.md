@@ -39,4 +39,4 @@ Parses a browser `File` in chunks. Requires an `onRows(rows, rowOffset)` callbac
 - Blank lines are skipped by default.
 - Quoted delimiters and embedded newlines are supported.
 
-See [CSV imports](/guide/csv-imports) and [large files](/guide/large-files).
+See [CSV imports](/guide/csv-imports), [XLSX imports](/guide/xlsx-imports), and [large files](/guide/large-files).
