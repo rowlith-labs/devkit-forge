@@ -51,3 +51,13 @@ const result = importer.processRows([
 ## Scope
 
 This package currently processes arrays of in-memory records. File parsing, browser file selection, React UI, XLSX support, streaming, and import execution callbacks are separate layers and are not included yet.
+
+## Performance benchmark
+
+Run the reproducible local benchmark against 10k, 50k, and 100k rows:
+
+```sh
+pnpm --filter @devkit-forge/import-core benchmark
+```
+
+The benchmark reports elapsed time and throughput for the current machine. Treat results as local baselines, not cross-machine performance guarantees. Run it under comparable Node.js versions and hardware when evaluating changes.
