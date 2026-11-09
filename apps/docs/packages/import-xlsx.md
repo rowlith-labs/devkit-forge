@@ -31,7 +31,7 @@ All numeric limits must be positive safe integers.
 
 - `XlsxParseOptions`
 - `XlsxParseResult`
-- `XlsxIssue` and `XlsxIssueCode`
+- `XlsxIssue` and `XlsxIssueCode` (including `formula-no-cache` when a formula has no saved result)
 - `XlsxFormulaPolicy`
 - `XlsxEmptyRowPolicy`
 - `XlsxSheetSelector`
