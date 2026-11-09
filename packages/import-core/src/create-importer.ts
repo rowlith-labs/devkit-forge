@@ -31,6 +31,15 @@ function normalizeDuplicateValue(value: unknown): string {
   return String(value).trim().toLocaleLowerCase();
 }
 
+function setOwnValue(target: Record<string, unknown>, key: string, value: unknown): void {
+  Object.defineProperty(target, key, {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value,
+  });
+}
+
 export function createImporter<T extends object>(
   config: ImportConfig<T>,
 ): Importer<T> {
@@ -107,7 +116,7 @@ export function createImporter<T extends object>(
             continue;
           }
 
-          mappedRow[column.key] = value;
+          setOwnValue(mappedRow, column.key, value);
 
           if (column.required && isMissing(value)) {
             issues.push({
