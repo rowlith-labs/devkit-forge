@@ -39,3 +39,5 @@ jobs:
         run: pnpm --filter @devkit-forge/playground typecheck
       - name: Build playground
         run: pnpm --filter @devkit-forge/playground build
+      - name: Build documentation
+        run: pnpm --filter @devkit-forge/docs build
