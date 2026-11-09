@@ -24,7 +24,7 @@ The input may be a browser `File`/`Blob`, `ArrayBuffer`, or `Uint8Array`. By def
 
 Strings, numbers, booleans, and dates preserve their JavaScript types. Rich text and hyperlinks are represented by their display text. Blank cells become empty strings. Empty rows are skipped by default; set `emptyRows: "preserve"` to retain them in the returned arrays.
 
-The adapter does not calculate formulas. Its default `formulaPolicy: "cached-value"` reads the cached result saved in the workbook, which may be missing or stale. Use `formula-text` to import the formula as text or `reject` to blank formula cells and report them. Never assume cached values have been recalculated.
+The adapter does not calculate formulas. Its default `formulaPolicy: "cached-value"` reads the cached result saved in the workbook, which may be missing or stale. Use `formula-text` to import the formula as text or `reject` to blank formula cells and report them. Missing cached values produce a `formula-no-cache` issue. Never assume cached values have been recalculated.
 
 ## Header and row diagnostics
 
