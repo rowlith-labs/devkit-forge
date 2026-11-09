@@ -41,6 +41,9 @@ Options:
 - `maxFileSizeBytes`: positive safe integer, default 25 MiB.
 - `maxRows`: positive safe integer, default 100,000.
 - `maxIssues`: positive safe integer, default 1,000.
+- `maxEntryUncompressedSize`: positive safe integer, default 16 MiB.
+- `maxTotalUncompressedSize`: positive safe integer, default 64 MiB.
+- `maxMergeCells`, `maxDataValidationCells`, and `maxDefinedNameCells`: positive safe integers, default 100,000 each.
 
 ## Cell values and formulas
 
@@ -48,7 +51,7 @@ Strings, numbers, booleans, and dates retain their JavaScript types. Rich text a
 
 ## Limits and security
 
-This API loads the workbook into memory; it is not a streaming XLSX parser. The default 25 MiB file limit and 100,000-row materialization limit are safeguards, not a promise that every workbook within those limits will fit every device. Lower the limits for constrained environments. Corrupt or unsupported workbooks reject the promise. Do not process untrusted workbooks without keeping the limits in place, and do not render imported values as HTML.
+This API loads the workbook into memory; it is not a streaming XLSX parser. The default 25 MiB compressed-file limit, 16 MiB per-entry expansion limit, 64 MiB total expansion limit, and 100,000-row materialization limit are safeguards, not a promise that every workbook within those limits will fit every device. Lower the limits for constrained environments. Corrupt or unsupported workbooks reject the promise. Do not process untrusted workbooks without keeping the limits in place, and do not render imported values as HTML.
 
 Headers must be non-empty and unique before `records` is available. Duplicate/empty headers are retained in `headers` and `data` and reported in `issues`. A `__proto__` header is safely stored as an own data property.
 
