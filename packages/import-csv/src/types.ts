@@ -9,6 +9,7 @@ export type CsvIssueCode =
 export interface CsvIssue {
   code: CsvIssueCode;
   message: string;
+  /** Zero-based data-row index; the header row is excluded. */
   rowIndex?: number;
   columnIndex?: number;
 }
@@ -36,9 +37,9 @@ export interface CsvParseResult {
 }
 
 export interface CsvStreamOptions extends CsvParseOptions {
-  /** Rows per parser chunk. Defaults to 1 MiB of input. */
+  /** Positive safe integer: input bytes per parser chunk. Defaults to 1 MiB. */
   chunkSize?: number;
-  /** Called synchronously for each parsed batch. Do not retain batches unless needed. */
+  /** Called synchronously for each parsed batch. rowOffset is a zero-based data-row index. Do not retain batches unless needed. */
   onRows: (rows: string[][], rowOffset: number) => void;
 }
 
