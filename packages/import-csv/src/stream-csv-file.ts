@@ -115,6 +115,7 @@ export function streamCsvFile(
         try {
           // Papa Parse may deliver a final sub-chunk through complete() rather than chunk().
           if (results?.data?.length && rowCount === 0) {
+            delimiter = results.meta.delimiter || delimiter;
             const rows = results.data;
             let firstDataIndex = 0;
             if (!headerParsed && rows.length > 0) {
@@ -140,6 +141,7 @@ export function streamCsvFile(
               options.onRows(batch, 0);
               rowCount = batch.length;
             }
+          }
           results.errors.forEach((error) => {
               issues.push({
                 code: "parser-error",
