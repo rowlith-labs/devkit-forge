@@ -8,7 +8,7 @@ export type XlsxIssueCode =
   | "empty-header"
   | "duplicate-header"
   | "row-width"
-  | "formula-rejected"
+  | "formula-rejected"\n  | "formula-no-cache"
   | "cell-error"
   | "row-limit"
   | "issues-truncated"
