@@ -52,3 +52,25 @@ test("rejects playground uploads larger than 10 MiB", async ({ page }) => {
 
   await expect(page.locator(".notice.warning")).toContainText("up to 10 MiB");
 });
+
+test("streams 25,000 rows in bounded batches with capped diagnostics", async ({ page }) => {
+  await page.goto("/e2e/streaming.html");
+  const status = page.locator("#status");
+  await expect(status).toHaveAttribute("data-complete", "true", { timeout: 30_000 });
+
+  const result = JSON.parse((await status.textContent()) ?? "{}") as {
+    processedRows: number;
+    rowCount: number;
+    totalIssueCount: number;
+    retainedIssueCount: number;
+    issuesTruncated: boolean;
+    offsetMismatch: boolean;
+  };
+
+  expect(result.processedRows).toBe(25_000);
+  expect(result.rowCount).toBe(25_000);
+  expect(result.totalIssueCount).toBe(25_000);
+  expect(result.retainedIssueCount).toBe(25);
+  expect(result.issuesTruncated).toBe(true);
+  expect(result.offsetMismatch).toBe(false);
+});
