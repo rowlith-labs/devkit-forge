@@ -12,6 +12,7 @@ A TypeScript-first, framework-agnostic data-import engine with an optional React
 
 ```
 apps/
+  docs/             # VitePress documentation site
   playground/
 packages/
   import-core/
@@ -42,7 +43,7 @@ pnpm typecheck
 
 ## Current scope
 
-The initial packages are `@devkit-forge/import-core`, `@devkit-forge/import-csv`, and `@devkit-forge/import-react`. The React adapter remains headless; the browser playground is a separate example application. XLSX parsing and commercial packaging remain future work.
+The initial packages are `@devkit-forge/import-core`, `@devkit-forge/import-csv`, and `@devkit-forge/import-react`. The React adapter remains headless; the browser playground and VitePress documentation site are separate applications. XLSX parsing and commercial packaging remain future work.
 
 ## Licence
 
