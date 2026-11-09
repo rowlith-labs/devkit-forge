@@ -80,11 +80,13 @@ describe("parseXlsxFile", () => {
     sheet.addRow(["Workbook title"]);
     sheet.addRow(["Name", "Email"]);
     sheet.addRow(["Ada", "ada@example.com", "unexpected"]);
+    sheet.addRow(["Grace"]);
     const result = await parseXlsxFile(new Uint8Array(await workbook.xlsx.writeBuffer()), { headerRow: 2 });
 
     expect(result.headers).toEqual(["Name", "Email"]);
     expect(result.data[0]).toEqual(["Ada", "ada@example.com", "unexpected"]);
-    expect(result.issues[0]).toMatchObject({ code: "row-width", rowIndex: 0 });
+    expect(result.data[1]).toEqual(["Grace", "", ""]);
+    expect(result.issues.filter((issue) => issue.code === "row-width").map((issue) => issue.rowIndex)).toEqual([0, 1]);
   });
 
   it("caps retained diagnostics and reports the total", async () => {
@@ -150,7 +152,8 @@ describe("parseXlsxFile", () => {
 
   it("accepts browser Blob input", async () => {
     const bytes = await makeWorkbook();
-    const blob = new Blob([bytes], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+    const arrayBuffer = bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength) as ArrayBuffer;
+    const blob = new Blob([arrayBuffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
     const result = await parseXlsxFile(blob);
     expect(result.records?.[0]?.Name).toBe("Ada");
   });
