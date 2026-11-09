@@ -39,6 +39,7 @@ Requirements: Node.js 20+ and pnpm 9+.
 pnpm install
 pnpm test
 pnpm typecheck
+pnpm test:e2e
 ```
 
 ## Current scope
