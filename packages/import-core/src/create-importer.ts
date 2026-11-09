@@ -167,7 +167,7 @@ export function createImporter<T extends object>(
         }
 
         if (issues.length > 0) {
-          invalidRows.push({ rowIndex, row: mappedRow, issues });
+          invalidRows.push({ rowIndex, row: mappedRow as unknown as Partial<T>, issues });
         } else {
           validRows.push(mappedRow as T);
         }
