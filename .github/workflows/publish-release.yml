@@ -92,9 +92,21 @@ jobs:
             package_dir="$2"
             package_slug="$3"
             version="$(node -p "require('./$package_dir/package.json').version")"
-            if npm view "$package_name@$version" version >/dev/null 2>&1; then
+            npm_view_error="$(mktemp)"
+            if npm view "$package_name@$version" version >/dev/null 2>"$npm_view_error"; then
+              rm -f "$npm_view_error"
               echo "$package_name@$version is already published; skipping."
               return
+            else
+              npm_view_status=$?
+              if ! grep -q 'E404' "$npm_view_error"; then
+                cat "$npm_view_error" >&2
+                rm -f "$npm_view_error"
+                echo "::error::Could not verify registry status for $package_name@$version; refusing to publish."
+                return "$npm_view_status"
+              fi
+              rm -f "$npm_view_error"
+              echo "$package_name@$version is not present on npm; publishing."
             fi
             tarball="$(find "$release_dir" -maxdepth 1 -type f -name "*$package_slug-$version.tgz" -print -quit)"
             test -n "$tarball" || { echo "::error::Missing tarball for $package_name@$version"; exit 1; }
