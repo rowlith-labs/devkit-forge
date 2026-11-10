@@ -18,11 +18,16 @@ for (const name of packages) {
   manifests.set(manifest.name, manifest);
 }
 
+const rootLicense = await readFile("LICENSE", "utf8");
 const output = await mkdtemp(join(tmpdir(), "devkit-forge-pack-"));
 
 try {
   for (const name of packages) {
     const packageDir = `packages/${name}`;
+    const packageLicense = await readFile(`${packageDir}/LICENSE`, "utf8");
+    if (packageLicense !== rootLicense) {
+      throw new Error(`License file differs from the repository license in ${packageDir}`);
+    }
     const expectedName = `@devkit-forge/${name}`;
     const before = new Set(await readdir(output));
     const packed = spawnSync("pnpm", [
