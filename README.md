@@ -61,6 +61,10 @@ pnpm --filter @devkit-forge/example-vanilla-ui dev
 
 See [the React example README](./examples/vite-react/README.md) and [the Web Component example README](./examples/vanilla-ui/README.md) for details.
 
+## Module format
+
+The publishable packages currently ship ECMAScript modules (ESM) and TypeScript declarations. They do not provide a CommonJS `require()` build. Use an ESM-capable Node.js or browser bundler toolchain.
+
 ## Current scope
 
 The current packages are `@devkit-forge/import-core`, `@devkit-forge/import-csv`, `@devkit-forge/import-xlsx`, `@devkit-forge/import-react`, and the optional `@devkit-forge/import-ui` Web Component. The React adapter remains headless; the browser playground and VitePress documentation site are separate applications. The XLSX adapter is an in-memory parser with explicit file-size, archive-expansion, workbook-structure, and row limits; it is separate from the core package. Both examples are runnable workspace apps. The React and Web Component examples use in-memory parsing for ordinary-sized files; use the CSV streaming API directly for large files.

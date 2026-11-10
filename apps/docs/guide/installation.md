@@ -32,6 +32,10 @@ The React adapter declares React 18 and React 19 as peer dependency versions.
 
 Examples use npm, but pnpm and yarn can also be used. The repository itself uses pnpm workspaces.
 
+## Module format
+
+The packages currently expose ESM entry points and TypeScript declarations. CommonJS `require()` entry points are not provided. Use an ESM-capable Node.js or bundler configuration.
+
 ## Requirements
 
 - TypeScript projects should use a modern TypeScript version with ES module and bundler resolution.
