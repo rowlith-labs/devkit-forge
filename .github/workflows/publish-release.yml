@@ -60,9 +60,9 @@ jobs:
         run: |
           set -euo pipefail
           for package in import-core import-csv import-xlsx import-react import-ui; do
-            pnpm --filter "@devkit-forge/$package" typecheck
-            pnpm --filter "@devkit-forge/$package" test
-            pnpm --filter "@devkit-forge/$package" build
+            pnpm --filter "@rowlith/$package" typecheck
+            pnpm --filter "@rowlith/$package" test
+            pnpm --filter "@rowlith/$package" build
           done
 
       - name: Verify package archives
@@ -71,15 +71,15 @@ jobs:
       - name: Pack release tarballs
         run: |
           set -euo pipefail
-          mkdir -p "$RUNNER_TEMP/devkit-forge-release"
+          mkdir -p "$RUNNER_TEMP/rowlith-release"
           for package in import-core import-csv import-xlsx import-react import-ui; do
-            pnpm --dir "packages/$package" pack --pack-destination "$RUNNER_TEMP/devkit-forge-release"
+            pnpm --dir "packages/$package" pack --pack-destination "$RUNNER_TEMP/rowlith-release"
           done
 
       - name: Verify release tarballs
         run: |
           set -euo pipefail
-          release_dir="$RUNNER_TEMP/devkit-forge-release"
+          release_dir="$RUNNER_TEMP/rowlith-release"
           for package in import-core import-csv import-xlsx import-react import-ui; do
             version="$(node -p "require('./packages/$package/package.json').version")"
             tarball="$(find "$release_dir" -maxdepth 1 -type f -name "*$package-$version.tgz" -print -quit)"
@@ -90,7 +90,7 @@ jobs:
       - name: Publish packages in dependency order using npm Trusted Publishing
         run: |
           set -euo pipefail
-          release_dir="$RUNNER_TEMP/devkit-forge-release"
+          release_dir="$RUNNER_TEMP/rowlith-release"
           publish_if_missing() {
             package_name="$1"
             package_dir="$2"
@@ -116,8 +116,8 @@ jobs:
             test -n "$tarball" || { echo "::error::Missing tarball for $package_name@$version"; exit 1; }
             npm publish "$tarball" --access public
           }
-          publish_if_missing "@devkit-forge/import-core" "packages/import-core" "import-core"
-          publish_if_missing "@devkit-forge/import-csv" "packages/import-csv" "import-csv"
-          publish_if_missing "@devkit-forge/import-xlsx" "packages/import-xlsx" "import-xlsx"
-          publish_if_missing "@devkit-forge/import-react" "packages/import-react" "import-react"
-          publish_if_missing "@devkit-forge/import-ui" "packages/import-ui" "import-ui"
+          publish_if_missing "@rowlith/import-core" "packages/import-core" "import-core"
+          publish_if_missing "@rowlith/import-csv" "packages/import-csv" "import-csv"
+          publish_if_missing "@rowlith/import-xlsx" "packages/import-xlsx" "import-xlsx"
+          publish_if_missing "@rowlith/import-react" "packages/import-react" "import-react"
+          publish_if_missing "@rowlith/import-ui" "packages/import-ui" "import-ui"

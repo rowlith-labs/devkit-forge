@@ -1,10 +1,10 @@
-# What is DevKit Forge?
+# What is Rowlith?
 
-DevKit Forge is an open-source TypeScript toolkit for the part of an application that turns uploaded tabular data into records your software can safely work with.
+Rowlith is an open-source TypeScript toolkit for the part of an application that turns uploaded tabular data into records your software can safely work with.
 
 Imagine adding a CSV or Excel upload feature to a CRM. The file may have unfamiliar column names, missing required values, duplicate customers, or malformed rows. Your application needs to read the file, map its columns to your data model, validate the records, and tell the user what needs fixing.
 
-Those steps are common across products, but developers often rebuild them for every import screen. DevKit Forge provides reusable building blocks for that import-processing work.
+Those steps are common across products, but developers often rebuild them for every import screen. Rowlith provides reusable building blocks for that import-processing work.
 
 ## The problem it is designed to solve
 
@@ -16,7 +16,7 @@ A file upload control is only the beginning. A useful import workflow also needs
 - Can I show the user exactly which row failed and why?
 - Can I process large CSV files without holding the entire file in memory?
 
-DevKit Forge provides APIs for parsing supported file formats, mapping source data, validating records, detecting duplicates, and reporting structured issues.
+Rowlith provides APIs for parsing supported file formats, mapping source data, validating records, detecting duplicates, and reporting structured issues.
 
 ## How it fits into your application
 
@@ -26,17 +26,17 @@ DevKit Forge provides APIs for parsing supported file formats, mapping source da
 4. Your UI displays valid rows and actionable errors.
 5. Your application decides whether and how to save accepted records.
 
-DevKit Forge does not upload files to a DevKit Forge server, authenticate users, call your backend, or persist records. Those responsibilities stay with your application.
+Rowlith does not upload files to a Rowlith server, authenticate users, call your backend, or persist records. Those responsibilities stay with your application.
 
 ## Package responsibilities
 
 | Package | What it does |
 | --- | --- |
-| \`@devkit-forge/import-core\` | Framework-independent mapping, transforms, validation, duplicate detection, and structured row results |
-| \`@devkit-forge/import-csv\` | CSV text and browser File parsing, diagnostics, and batch streaming |
-| \`@devkit-forge/import-xlsx\` | XLSX workbook and worksheet parsing with explicit safety limits |
-| \`@devkit-forge/import-react\` | Headless React hook for import rows, mappings, and results |
-| \`@devkit-forge/import-ui\` | Optional framework-independent browser Web Component |
+| \`@rowlith/import-core\` | Framework-independent mapping, transforms, validation, duplicate detection, and structured row results |
+| \`@rowlith/import-csv\` | CSV text and browser File parsing, diagnostics, and batch streaming |
+| \`@rowlith/import-xlsx\` | XLSX workbook and worksheet parsing with explicit safety limits |
+| \`@rowlith/import-react\` | Headless React hook for import rows, mappings, and results |
+| \`@rowlith/import-ui\` | Optional framework-independent browser Web Component |
 
 You do not have to install every package. Combine only the pieces your application needs.
 
@@ -52,7 +52,7 @@ Read [practical use cases](/guide/use-cases) for scenarios, package combinations
 
 ## When it is not the right tool
 
-DevKit Forge is not a full ETL platform, scheduled integration service, hosted upload product, database migration framework, or complete spreadsheet editor. It provides import-processing primitives; it does not replace your application's business workflow.
+Rowlith is not a full ETL platform, scheduled integration service, hosted upload product, database migration framework, or complete spreadsheet editor. It provides import-processing primitives; it does not replace your application's business workflow.
 
 ## Try it
 

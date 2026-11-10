@@ -1,7 +1,7 @@
 ---
 layout: home
 hero:
-  name: DevKit Forge
+  name: Rowlith
   text: Stop rebuilding data-import logic.
   tagline: Give your TypeScript application a reliable way to read spreadsheets, map columns, validate records, and report problems—without handing your data to a hosted import service.
   actions:
@@ -13,22 +13,22 @@ hero:
       link: /guide/use-cases
     - theme: alt
       text: Try the playground
-      link: https://github.com/yourdevujjawal/devkit-forge/tree/main/apps/playground
+      link: https://github.com/rowlith-labs/rowlith/tree/main/apps/playground
   image:
     src: /devkit-mark.svg
-    alt: DevKit Forge mark
+    alt: Rowlith mark
 features:
   - title: Stop writing the same import plumbing
     details: Reuse parsing, header handling, mapping, validation, duplicate checks, and structured diagnostics instead of rebuilding them for every upload screen.
   - title: Keep control of your data
-    details: Files are processed in the consuming application. DevKit Forge does not upload records to a third-party import service or decide where they are saved.
+    details: Files are processed in the consuming application. Rowlith does not upload records to a third-party import service or decide where they are saved.
   - title: Fit the stack you already have
     details: Use the framework-independent core on its own, or add CSV, XLSX, React, and Web Component packages as needed.
   - title: Give users useful feedback
     details: Separate valid and invalid rows and inspect row-level issues so your application can explain what needs fixing.
 ---
 
-## The problem DevKit Forge solves
+## The problem Rowlith solves
 
 A common product requirement sounds simple: *let a user upload a spreadsheet and import the records.*
 
@@ -41,7 +41,7 @@ But the actual work quickly grows:
 - One file contains rows that are valid and rows that need correction.
 - Your team needs to explain exactly which row failed and why.
 
-Without a reusable import layer, every application ends up rebuilding variations of file parsing, column mapping, validation, duplicate detection, and error reporting. DevKit Forge packages those recurring engineering tasks into composable TypeScript libraries.
+Without a reusable import layer, every application ends up rebuilding variations of file parsing, column mapping, validation, duplicate detection, and error reporting. Rowlith packages those recurring engineering tasks into composable TypeScript libraries.
 
 ## From uploaded file to application-ready records
 
@@ -51,7 +51,7 @@ Without a reusable import layer, every application ends up rebuilding variations
 4. **Review the result.** Work with valid records and structured issues for invalid rows.
 5. **Save using your rules.** Send accepted records to your own API or persistence layer when your application is ready.
 
-DevKit Forge handles the import-processing layer. Your application remains responsible for authentication, permissions, user confirmation, API calls, transactions, and persistence.
+Rowlith handles the import-processing layer. Your application remains responsible for authentication, permissions, user confirmation, API calls, transactions, and persistence.
 
 ## Where it fits
 
@@ -93,7 +93,7 @@ You do not need every package. For example, a React application importing CSV fi
 Define the shape your application expects, then process source rows against it:
 
 ```ts
-import { createImporter } from "@devkit-forge/import-core";
+import { createImporter } from "@rowlith/import-core";
 
 const importer = createImporter({
   columns: [
@@ -114,7 +114,7 @@ console.log(result.invalidRows); // rows with structured issues
 
 This is the core validation step; add a file parser when your input is a CSV or XLSX file. See the [quick start](/guide/quick-start) for a complete CSV example.
 
-## Is DevKit Forge the right tool?
+## Is Rowlith the right tool?
 
 **A good fit when:**
 - Your TypeScript application accepts user-supplied CSV or XLSX data.

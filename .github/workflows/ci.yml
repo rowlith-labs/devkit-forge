@@ -30,55 +30,55 @@ jobs:
       - name: Audit production and development dependencies
         run: pnpm audit --audit-level high
       - name: Typecheck core
-        run: pnpm --filter @devkit-forge/import-core typecheck
+        run: pnpm --filter @rowlith/import-core typecheck
       - name: Test core
-        run: pnpm --filter @devkit-forge/import-core test
+        run: pnpm --filter @rowlith/import-core test
       - name: Build core
-        run: pnpm --filter @devkit-forge/import-core build
+        run: pnpm --filter @rowlith/import-core build
       - name: Benchmark core processing
-        run: pnpm --filter @devkit-forge/import-core benchmark
+        run: pnpm --filter @rowlith/import-core benchmark
       - name: Typecheck CSV
-        run: pnpm --filter @devkit-forge/import-csv typecheck
+        run: pnpm --filter @rowlith/import-csv typecheck
       - name: Test CSV
-        run: pnpm --filter @devkit-forge/import-csv test
+        run: pnpm --filter @rowlith/import-csv test
       - name: Build CSV
-        run: pnpm --filter @devkit-forge/import-csv build
+        run: pnpm --filter @rowlith/import-csv build
       - name: Typecheck XLSX adapter
-        run: pnpm --filter @devkit-forge/import-xlsx typecheck
+        run: pnpm --filter @rowlith/import-xlsx typecheck
       - name: Test XLSX adapter
-        run: pnpm --filter @devkit-forge/import-xlsx test
+        run: pnpm --filter @rowlith/import-xlsx test
       - name: Build XLSX adapter
-        run: pnpm --filter @devkit-forge/import-xlsx build
+        run: pnpm --filter @rowlith/import-xlsx build
       - name: Typecheck import UI
-        run: pnpm --filter @devkit-forge/import-ui typecheck
+        run: pnpm --filter @rowlith/import-ui typecheck
       - name: Test import UI
-        run: pnpm --filter @devkit-forge/import-ui test
+        run: pnpm --filter @rowlith/import-ui test
       - name: Build import UI
-        run: pnpm --filter @devkit-forge/import-ui build
+        run: pnpm --filter @rowlith/import-ui build
       - name: Typecheck React adapter
-        run: pnpm --filter @devkit-forge/import-react typecheck
+        run: pnpm --filter @rowlith/import-react typecheck
       - name: Test React adapter
-        run: pnpm --filter @devkit-forge/import-react test
+        run: pnpm --filter @rowlith/import-react test
       - name: Build React adapter
-        run: pnpm --filter @devkit-forge/import-react build
+        run: pnpm --filter @rowlith/import-react build
       - name: Verify publishable package archives
         run: pnpm check:pack
       - name: Typecheck playground
-        run: pnpm --filter @devkit-forge/playground typecheck
+        run: pnpm --filter @rowlith/playground typecheck
       - name: Test playground exports
-        run: pnpm --filter @devkit-forge/playground test
+        run: pnpm --filter @rowlith/playground test
       - name: Build playground
-        run: pnpm --filter @devkit-forge/playground build
+        run: pnpm --filter @rowlith/playground build
       - name: Typecheck React example
-        run: pnpm --filter @devkit-forge/example-vite-react typecheck
+        run: pnpm --filter @rowlith/example-vite-react typecheck
       - name: Build React example
-        run: pnpm --filter @devkit-forge/example-vite-react build
+        run: pnpm --filter @rowlith/example-vite-react build
       - name: Typecheck Web Component example
-        run: pnpm --filter @devkit-forge/example-vanilla-ui typecheck
+        run: pnpm --filter @rowlith/example-vanilla-ui typecheck
       - name: Build Web Component example
-        run: pnpm --filter @devkit-forge/example-vanilla-ui build
+        run: pnpm --filter @rowlith/example-vanilla-ui build
       - name: Build documentation
-        run: pnpm --filter @devkit-forge/docs build
+        run: pnpm --filter @rowlith/docs build
       - name: Install Chromium for browser tests
         run: pnpm exec playwright install --with-deps chromium firefox webkit
       - name: Run playground browser tests
