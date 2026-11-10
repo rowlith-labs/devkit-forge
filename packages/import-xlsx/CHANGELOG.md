@@ -1,4 +1,4 @@
-# @devkit-forge/import-xlsx
+# @rowlith/import-xlsx
 
 ## 0.1.1
 
