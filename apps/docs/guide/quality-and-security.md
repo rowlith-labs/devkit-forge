@@ -6,10 +6,11 @@ Stage 6 hardens the import pipeline and documents the boundaries consumers must 
 
 The main-branch CI workflow runs:
 
-- TypeScript type-checking, unit tests, and package builds for core, CSV, and React
+- TypeScript type-checking, unit tests, and package builds for core, CSV, XLSX, React, and the Web Component UI
 - CSV streaming regression tests for quoted records crossing chunk boundaries, final partial chunks, parser and row-width diagnostics, row offsets, callback failures, and invalid options
 - A core processing benchmark at 10k, 50k, and 100k rows
-- Playground type-checking, tests, and production build
+- Playground and runnable Vite + React example type-checking/builds
+- Publishable package archive checks to catch unresolved workspace dependencies and missing entry points
 - Documentation production build
 
 The benchmark reports the median of three samples after warm-up. Its heap-growth figure is an approximate before/after heap delta, not peak or retained memory. Treat throughput as environment-specific; compare only on the same runtime and hardware.
@@ -22,7 +23,9 @@ Use `streamCsvFile` for large browser files. It emits synchronous row batches an
 
 Streaming is not a transactional import. If a callback fails, earlier batches may already have been processed; consumers must define their own rollback or staging strategy.
 
-The interactive playground deliberately caps uploads at 10 MiB because it uses the in-memory parser and React state. This is a demo safeguard, not a limit of `streamCsvFile`.
+The interactive playground deliberately caps uploads at 10 MiB because it uses the in-memory parser and React state. This is a demo safeguard, not a limit of `streamCsvFile`. The optional Web Component UI and Vite + React example also use in-memory parsing; they are not large-file streaming interfaces.
+
+The XLSX adapter is also in-memory. It applies compressed-file, archive-entry expansion, total expansion, workbook-structure, row, and diagnostic limits. These are risk-reduction safeguards, not a proof that an arbitrary workbook is safe or will fit in memory.
 
 ## Security considerations
 
@@ -31,11 +34,11 @@ The interactive playground deliberately caps uploads at 10 MiB because it uses t
 - The playground serializes exported CSV with quoting and neutralizes common spreadsheet formula prefixes (`=`, `+`, `-`, and `@`) by prefixing an apostrophe.
 - Formula neutralization is an export policy, not a guarantee for every spreadsheet application or every downstream workflow. Applications exporting user-controlled data should apply and test their own policy.
 - Do not render imported values as raw HTML. Use framework text rendering or context-appropriate output encoding.
-- Avoid logging sensitive imported records. The playground processes files locally and does not send CSV contents to a server.
+- Avoid logging sensitive imported records. The playground and example process files locally and do not send file contents to a DevKit Forge server. The Web Component also renders imported values as text rather than raw HTML.
 
 ## Accessibility
 
-The playground provides labelled mapping selects, a labelled row-filter group, a keyboard-focusable file picker, visible focus styling for that picker, and semantic table markup. Drag-and-drop is an enhancement; the browse control remains available without a pointer.
+The playground and Web Component provide labelled native controls, keyboard focus indicators, and semantic table markup. Drag-and-drop in the playground is an enhancement; the browse control remains available without a pointer.
 
 ## Browser verification
 
