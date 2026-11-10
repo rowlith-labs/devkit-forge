@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
 import type { ChangeEvent, DragEvent } from "react";
-import type { ColumnMapping, ImportColumn, ImportConfig } from "@devkit-forge/import-core";
-import { parseCsvText } from "@devkit-forge/import-csv";
-import { useDataImporter } from "@devkit-forge/import-react";
+import type { ColumnMapping, ImportColumn, ImportConfig } from "@rowlith/import-core";
+import { parseCsvText } from "@rowlith/import-csv";
+import { useDataImporter } from "@rowlith/import-react";
 import { serializeCsv } from "./csv.js";
 
 type Contact = {
@@ -154,16 +154,16 @@ export default function App() {
   return (
     <main className="shell">
       <header className="topbar">
-        <a className="brand" href="#" aria-label="DevKit Forge home"><span className="brand-mark">DF</span> DevKit Forge</a>
+        <a className="brand" href="#" aria-label="Rowlith home"><span className="brand-mark">DF</span> Rowlith</a>
         <span className="top-note">OPEN-SOURCE DEVELOPER TOOLS</span>
-        <a className="github-link" href="https://github.com/truerdp/devkit-forge" target="_blank" rel="noreferrer">GitHub ↗</a>
+        <a className="github-link" href="https://github.com/rowlith-labs/rowlith" target="_blank" rel="noreferrer">GitHub ↗</a>
       </header>
 
       <section className="hero">
         <div className="eyebrow"><span /> INTERACTIVE PLAYGROUND</div>
         <h1>Import data.<br /><span>Without the busywork.</span></h1>
         <p>Upload a CSV, map columns, validate every row, and export clean data. Everything runs locally in your browser.</p>
-        <div className="hero-meta"><span><i className="dot green" /> Local processing</span><span>·</span><span>Powered by DevKit Forge packages</span></div>
+        <div className="hero-meta"><span><i className="dot green" /> Local processing</span><span>·</span><span>Powered by Rowlith packages</span></div>
       </section>
 
       <section className="workspace">
@@ -235,7 +235,7 @@ export default function App() {
         {!result && <div className="empty-placeholder"><span>✓</span><p>Your row-level validation report will appear here.</p></div>}
       </section>
 
-      <footer><span>DEVKIT FORGE <b>·</b> OPEN SOURCE</span><span>Built for developers who care about good data.</span></footer>
+      <footer><span>ROWLITH <b>·</b> OPEN SOURCE</span><span>Built for developers who care about good data.</span></footer>
     </main>
   );
 }

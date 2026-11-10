@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { parseCsvFile } from "@devkit-forge/import-csv";
-import type { ImportConfig } from "@devkit-forge/import-core";
-import { useDataImporter } from "@devkit-forge/import-react";
+import { parseCsvFile } from "@rowlith/import-csv";
+import type { ImportConfig } from "@rowlith/import-core";
+import { useDataImporter } from "@rowlith/import-react";
 
 interface Contact {
   name: string;
@@ -78,7 +78,7 @@ export default function App() {
   return (
     <main className="shell">
       <header className="hero">
-        <a className="wordmark" href="https://github.com/truerdp/devkit-forge">DEVKIT FORGE</a>
+        <a className="wordmark" href="https://github.com/rowlith-labs/rowlith">ROWLITH</a>
         <span className="eyebrow">OPEN-SOURCE DATA IMPORT TOOLKIT</span>
         <h1>From CSV to <span>trusted records.</span></h1>
         <p className="intro">
@@ -163,7 +163,7 @@ export default function App() {
         </section>
       )}
 
-      <footer>Files are parsed locally in your browser. Explore the packages and source on <a href="https://github.com/truerdp/devkit-forge">GitHub</a>.</footer>
+      <footer>Files are parsed locally in your browser. Explore the packages and source on <a href="https://github.com/rowlith-labs/rowlith">GitHub</a>.</footer>
     </main>
   );
 }

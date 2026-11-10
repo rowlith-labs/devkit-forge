@@ -1,6 +1,6 @@
-import { registerImportUI } from "@devkit-forge/import-ui";
-import type { ImportUIElement, ImportUIErrorDetail, ImportUILoadedDetail, ImportUIValidatedDetail } from "@devkit-forge/import-ui";
-import type { ImportConfig } from "@devkit-forge/import-core";
+import { registerImportUI } from "@rowlith/import-ui";
+import type { ImportUIElement, ImportUIErrorDetail, ImportUILoadedDetail, ImportUIValidatedDetail } from "@rowlith/import-ui";
+import type { ImportConfig } from "@rowlith/import-core";
 import "./styles.css";
 
 interface Contact {
