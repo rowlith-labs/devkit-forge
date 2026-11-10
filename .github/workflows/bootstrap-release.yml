@@ -54,48 +54,48 @@ jobs:
 
       - name: Test and build core
         run: |
-          pnpm --filter @devkit-forge/import-core typecheck
-          pnpm --filter @devkit-forge/import-core test
-          pnpm --filter @devkit-forge/import-core build
-          pnpm --filter @devkit-forge/import-core benchmark
+          pnpm --filter @rowlith/import-core typecheck
+          pnpm --filter @rowlith/import-core test
+          pnpm --filter @rowlith/import-core build
+          pnpm --filter @rowlith/import-core benchmark
 
       - name: Test and build CSV adapter
         run: |
-          pnpm --filter @devkit-forge/import-csv typecheck
-          pnpm --filter @devkit-forge/import-csv test
-          pnpm --filter @devkit-forge/import-csv build
+          pnpm --filter @rowlith/import-csv typecheck
+          pnpm --filter @rowlith/import-csv test
+          pnpm --filter @rowlith/import-csv build
 
       - name: Test and build XLSX adapter
         run: |
-          pnpm --filter @devkit-forge/import-xlsx typecheck
-          pnpm --filter @devkit-forge/import-xlsx test
-          pnpm --filter @devkit-forge/import-xlsx build
+          pnpm --filter @rowlith/import-xlsx typecheck
+          pnpm --filter @rowlith/import-xlsx test
+          pnpm --filter @rowlith/import-xlsx build
 
       - name: Test and build React adapter
         run: |
-          pnpm --filter @devkit-forge/import-react typecheck
-          pnpm --filter @devkit-forge/import-react test
-          pnpm --filter @devkit-forge/import-react build
+          pnpm --filter @rowlith/import-react typecheck
+          pnpm --filter @rowlith/import-react test
+          pnpm --filter @rowlith/import-react build
 
       - name: Test and build UI package
         run: |
-          pnpm --filter @devkit-forge/import-ui typecheck
-          pnpm --filter @devkit-forge/import-ui test
-          pnpm --filter @devkit-forge/import-ui build
+          pnpm --filter @rowlith/import-ui typecheck
+          pnpm --filter @rowlith/import-ui test
+          pnpm --filter @rowlith/import-ui build
 
       - name: Verify package archives
         run: pnpm check:pack
 
       - name: Validate playground, examples, and docs
         run: |
-          pnpm --filter @devkit-forge/playground typecheck
-          pnpm --filter @devkit-forge/playground test
-          pnpm --filter @devkit-forge/playground build
-          pnpm --filter @devkit-forge/example-vite-react typecheck
-          pnpm --filter @devkit-forge/example-vite-react build
-          pnpm --filter @devkit-forge/example-vanilla-ui typecheck
-          pnpm --filter @devkit-forge/example-vanilla-ui build
-          pnpm --filter @devkit-forge/docs build
+          pnpm --filter @rowlith/playground typecheck
+          pnpm --filter @rowlith/playground test
+          pnpm --filter @rowlith/playground build
+          pnpm --filter @rowlith/example-vite-react typecheck
+          pnpm --filter @rowlith/example-vite-react build
+          pnpm --filter @rowlith/example-vanilla-ui typecheck
+          pnpm --filter @rowlith/example-vanilla-ui build
+          pnpm --filter @rowlith/docs build
 
       - name: Install browser test engines
         run: pnpm exec playwright install --with-deps chromium firefox webkit
@@ -105,17 +105,17 @@ jobs:
 
       - name: Pack release tarballs
         run: |
-          mkdir -p "$RUNNER_TEMP/devkit-forge-release"
-          pnpm --dir packages/import-core pack --pack-destination "$RUNNER_TEMP/devkit-forge-release"
-          pnpm --dir packages/import-csv pack --pack-destination "$RUNNER_TEMP/devkit-forge-release"
-          pnpm --dir packages/import-xlsx pack --pack-destination "$RUNNER_TEMP/devkit-forge-release"
-          pnpm --dir packages/import-react pack --pack-destination "$RUNNER_TEMP/devkit-forge-release"
-          pnpm --dir packages/import-ui pack --pack-destination "$RUNNER_TEMP/devkit-forge-release"
+          mkdir -p "$RUNNER_TEMP/rowlith-release"
+          pnpm --dir packages/import-core pack --pack-destination "$RUNNER_TEMP/rowlith-release"
+          pnpm --dir packages/import-csv pack --pack-destination "$RUNNER_TEMP/rowlith-release"
+          pnpm --dir packages/import-xlsx pack --pack-destination "$RUNNER_TEMP/rowlith-release"
+          pnpm --dir packages/import-react pack --pack-destination "$RUNNER_TEMP/rowlith-release"
+          pnpm --dir packages/import-ui pack --pack-destination "$RUNNER_TEMP/rowlith-release"
 
       - name: Verify release tarballs
         run: |
           set -euo pipefail
-          release_dir="$RUNNER_TEMP/devkit-forge-release"
+          release_dir="$RUNNER_TEMP/rowlith-release"
           for package in import-core import-csv import-xlsx import-react import-ui; do
             version="$(node -p "require('./packages/$package/package.json').version")"
             tarball="$(find "$release_dir" -maxdepth 1 -type f -name "*$package-$version.tgz" -print -quit)"
@@ -132,5 +132,5 @@ jobs:
             echo "No release metadata changes to commit."
             exit 0
           fi
-          git commit -m "chore(release): publish DevKit Forge packages"
+          git commit -m "chore(release): publish Rowlith packages"
           git push origin HEAD:main

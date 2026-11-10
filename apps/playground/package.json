@@ -1,5 +1,5 @@
 {
-  "name": "@devkit-forge/playground",
+  "name": "@rowlith/playground",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -10,9 +10,9 @@
     "test": "vitest run src"
   },
   "dependencies": {
-    "@devkit-forge/import-core": "workspace:*",
-    "@devkit-forge/import-csv": "workspace:*",
-    "@devkit-forge/import-react": "workspace:*",
+    "@rowlith/import-core": "workspace:*",
+    "@rowlith/import-csv": "workspace:*",
+    "@rowlith/import-react": "workspace:*",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

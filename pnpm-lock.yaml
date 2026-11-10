@@ -32,13 +32,13 @@ importers:
 
   apps/playground:
     dependencies:
-      '@devkit-forge/import-core':
+      '@rowlith/import-core':
         specifier: workspace:*
         version: link:../../packages/import-core
-      '@devkit-forge/import-csv':
+      '@rowlith/import-csv':
         specifier: workspace:*
         version: link:../../packages/import-csv
-      '@devkit-forge/import-react':
+      '@rowlith/import-react':
         specifier: workspace:*
         version: link:../../packages/import-react
       react:
@@ -66,10 +66,10 @@ importers:
 
   examples/vanilla-ui:
     dependencies:
-      '@devkit-forge/import-core':
+      '@rowlith/import-core':
         specifier: workspace:*
         version: link:../../packages/import-core
-      '@devkit-forge/import-ui':
+      '@rowlith/import-ui':
         specifier: workspace:*
         version: link:../../packages/import-ui
     devDependencies:
@@ -82,13 +82,13 @@ importers:
 
   examples/vite-react:
     dependencies:
-      '@devkit-forge/import-core':
+      '@rowlith/import-core':
         specifier: workspace:*
         version: link:../../packages/import-core
-      '@devkit-forge/import-csv':
+      '@rowlith/import-csv':
         specifier: workspace:*
         version: link:../../packages/import-csv
-      '@devkit-forge/import-react':
+      '@rowlith/import-react':
         specifier: workspace:*
         version: link:../../packages/import-react
       react:
@@ -125,7 +125,7 @@ importers:
 
   packages/import-csv:
     dependencies:
-      '@devkit-forge/import-core':
+      '@rowlith/import-core':
         specifier: workspace:*
         version: link:../import-core
       papaparse:
@@ -147,7 +147,7 @@ importers:
 
   packages/import-react:
     dependencies:
-      '@devkit-forge/import-core':
+      '@rowlith/import-core':
         specifier: workspace:*
         version: link:../import-core
     devDependencies:
@@ -178,13 +178,13 @@ importers:
 
   packages/import-ui:
     dependencies:
-      '@devkit-forge/import-core':
+      '@rowlith/import-core':
         specifier: workspace:*
         version: link:../import-core
-      '@devkit-forge/import-csv':
+      '@rowlith/import-csv':
         specifier: workspace:*
         version: link:../import-csv
-      '@devkit-forge/import-xlsx':
+      '@rowlith/import-xlsx':
         specifier: workspace:*
         version: link:../import-xlsx
     devDependencies:
@@ -200,7 +200,7 @@ importers:
 
   packages/import-xlsx:
     dependencies:
-      '@devkit-forge/import-core':
+      '@rowlith/import-core':
         specifier: workspace:*
         version: link:../import-core
       exceljs-hardened:

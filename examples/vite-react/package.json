@@ -1,5 +1,5 @@
 {
-  "name": "@devkit-forge/example-vite-react",
+  "name": "@rowlith/example-vite-react",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -9,9 +9,9 @@
     "build": "tsc --noEmit && vite build"
   },
   "dependencies": {
-    "@devkit-forge/import-core": "workspace:*",
-    "@devkit-forge/import-csv": "workspace:*",
-    "@devkit-forge/import-react": "workspace:*",
+    "@rowlith/import-core": "workspace:*",
+    "@rowlith/import-csv": "workspace:*",
+    "@rowlith/import-react": "workspace:*",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

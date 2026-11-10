@@ -19,7 +19,7 @@ for (const name of packages) {
 }
 
 const rootLicense = await readFile("LICENSE", "utf8");
-const output = await mkdtemp(join(tmpdir(), "devkit-forge-pack-"));
+const output = await mkdtemp(join(tmpdir(), "rowlith-pack-"));
 
 try {
   for (const name of packages) {
@@ -28,7 +28,7 @@ try {
     if (packageLicense !== rootLicense) {
       throw new Error(`License file differs from the repository license in ${packageDir}`);
     }
-    const expectedName = `@devkit-forge/${name}`;
+    const expectedName = `@rowlith/${name}`;
     const before = new Set(await readdir(output));
     const packed = spawnSync("pnpm", [
       "--dir", packageDir,
@@ -66,7 +66,7 @@ try {
     if (manifest.engines?.node !== ">=20" || manifest.publishConfig?.access !== "public") {
       throw new Error(`${expectedName} is missing its Node engine or public-scope publishing metadata`);
     }
-    if (manifest.repository?.url !== "https://github.com/yourdevujjawal/devkit-forge.git"
+    if (manifest.repository?.url !== "https://github.com/rowlith-labs/rowlith.git"
       || manifest.repository?.directory !== packageDir
       || !manifest.homepage
       || !manifest.bugs?.url) {
