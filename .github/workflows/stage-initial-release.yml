@@ -60,10 +60,10 @@ jobs:
           done
       - name: Stage initial versions for maintainer approval
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_STAGE_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           set -euo pipefail
-          test -n "${NODE_AUTH_TOKEN:-}" || { echo "::error::Add the NPM_STAGE_TOKEN repository secret before running this workflow."; exit 1; }
+          test -n "${NODE_AUTH_TOKEN:-}" || { echo "::error::Add the NPM_TOKEN repository secret before running this workflow."; exit 1; }
           release_dir="$RUNNER_TEMP/rowlith-release"
           for package in import-core import-csv import-xlsx import-react import-ui; do
             version="$(node -p "require('./packages/$package/package.json').version")"
