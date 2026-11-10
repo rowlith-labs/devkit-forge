@@ -1,6 +1,6 @@
 # Runnable Vite + React example
 
-The repository includes a complete browser-only example at [`examples/vite-react`](https://github.com/truerdp/devkit-forge/tree/main/examples/vite-react). It composes the three packages most React applications need for a basic CSV import flow:
+The repository includes two complete browser-only examples: [`examples/vite-react`](https://github.com/truerdp/devkit-forge/tree/main/examples/vite-react) and [`examples/vanilla-ui`](https://github.com/truerdp/devkit-forge/tree/main/examples/vanilla-ui). The React app composes the three packages most React applications need for a basic CSV import flow:
 
 - `@devkit-forge/import-csv` parses the browser File.
 - `@devkit-forge/import-core` maps headers, validates fields, and detects duplicate email addresses.
@@ -24,6 +24,16 @@ pnpm --filter @devkit-forge/example-vite-react typecheck
 pnpm --filter @devkit-forge/example-vite-react build
 ```
 
-The example is a workspace app, not a separately published package. It uses the in-memory parser and React hook, so it is intended for ordinary-sized files. For large CSV files, use [the streaming API](/guide/large-files) and process batches without retaining the entire file in React state.
+The React example is a workspace app, not a separately published package. It uses the in-memory parser and React hook, so it is intended for ordinary-sized files. For large CSV files, use [the streaming API](/guide/large-files) and process batches without retaining the entire file in React state.
+
+## Vanilla Web Component example
+
+The [vanilla UI example](https://github.com/truerdp/devkit-forge/tree/main/examples/vanilla-ui) demonstrates explicit registration of `df-data-importer`, CSV/XLSX file loading, and the `df:loaded`, `df:validated`, and `df:error` events. It does not require React. Run it with:
+
+```sh
+pnpm --filter @devkit-forge/example-vanilla-ui dev
+```
+
+It also uses in-memory parsing and is not intended for very large files.
 
 The example does not upload, persist, or submit records. Your application owns those responsibilities and any consent or confirmation flow.
