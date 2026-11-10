@@ -41,6 +41,11 @@ jobs:
           registry-url: https://registry.npmjs.org
           package-manager-cache: false
 
+      - name: Pin npm CLI for Trusted Publishing
+        run: |
+          npm install --global npm@11.5.1
+          test "$(npm --version)" = "11.5.1"
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
@@ -83,9 +88,7 @@ jobs:
             echo "Verified $(basename "$tarball")"
           done
 
-      - name: Publish packages in dependency order
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish packages in dependency order using npm Trusted Publishing
         run: |
           set -euo pipefail
           release_dir="$RUNNER_TEMP/devkit-forge-release"
