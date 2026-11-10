@@ -21,6 +21,7 @@ export default defineConfig({
             { text: "Installation", link: "/guide/installation" },
             { text: "Quick start", link: "/guide/quick-start" },
             { text: "Architecture", link: "/guide/architecture" },
+            { text: "Runnable example", link: "/guide/examples" },
           ],
         },
         {
