@@ -6,9 +6,9 @@ Open-source developer tools built to remove repetitive engineering work.
 
 > **Status:** Early development. APIs and package names may change before the first stable release.
 
-## First project: React Data Import Kit
+## Data Import Toolkit
 
-A TypeScript-first, framework-agnostic data-import engine with an optional React adapter and UI. The initial focus is reliable column mapping, validation, duplicate detection, and structured error reporting.
+A TypeScript-first, framework-agnostic data-import toolkit with optional CSV, XLSX, React, and Web Component adapters. It provides column mapping, transforms, validation, duplicate detection, streaming CSV batches, and structured diagnostics.
 
 ## Repository structure
 
@@ -17,12 +17,14 @@ apps/
   docs/             # VitePress documentation site
   playground/
 packages/
-  import-core/
+  import-core/      # framework-independent schema mapping and validation
+  import-csv/       # CSV parsing and streaming adapter
+  import-xlsx/      # XLSX workbook adapter
   import-react/     # headless React adapter
   import-ui/        # optional framework-independent Web Component
-  import-xlsx/      # XLSX parser adapter
 examples/
-  vite-react/       # planned
+  vite-react/       # runnable React integration example
+  vanilla-ui/       # runnable Web Component integration example
 ```
 
 ## Principles
@@ -61,7 +63,7 @@ See [the React example README](./examples/vite-react/README.md) and [the Web Com
 
 ## Current scope
 
-The current packages are `@devkit-forge/import-core`, `@devkit-forge/import-csv`, `@devkit-forge/import-xlsx`, `@devkit-forge/import-react`, and the optional `@devkit-forge/import-ui` Web Component. The React adapter remains headless; the browser playground and VitePress documentation site are separate applications. The XLSX adapter is an in-memory parser with explicit file-size and row limits; it is separate from the core package. Commercial packaging remains future work. The example app demonstrates ordinary in-memory CSV imports; use the streaming API directly for large files.
+The current packages are `@devkit-forge/import-core`, `@devkit-forge/import-csv`, `@devkit-forge/import-xlsx`, `@devkit-forge/import-react`, and the optional `@devkit-forge/import-ui` Web Component. The React adapter remains headless; the browser playground and VitePress documentation site are separate applications. The XLSX adapter is an in-memory parser with explicit file-size, archive-expansion, workbook-structure, and row limits; it is separate from the core package. Both examples are runnable workspace apps. The React and Web Component examples use in-memory parsing for ordinary-sized files; use the CSV streaming API directly for large files.
 
 ## Package releases
 
