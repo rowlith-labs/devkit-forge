@@ -24,6 +24,8 @@ jobs:
           node-version: 20
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
+      - name: Audit production and development dependencies
+        run: pnpm audit --audit-level high
       - name: Typecheck core
         run: pnpm --filter @devkit-forge/import-core typecheck
       - name: Test core
