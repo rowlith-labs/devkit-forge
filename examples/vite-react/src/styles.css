@@ -16,7 +16,9 @@ h1 span { color: #8db8ff; }
 .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
 button, .upload { border: 1px solid #354764; border-radius: 8px; padding: 11px 16px; color: #e9edf5; background: #18243a; cursor: pointer; font-weight: 600; font-size: 13px; }
 .upload { background: #9bbcff; color: #10192a; border-color: #9bbcff; display: inline-flex; align-items: center; }
+.upload { position: relative; }
 .upload input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.upload:focus-within { outline: 3px solid #d2e1ff; outline-offset: 3px; }
 button:disabled { opacity: .5; cursor: not-allowed; }
 .secondary { background: transparent; }
 .ghost { border-color: transparent; background: transparent; color: #9aabc4; }
