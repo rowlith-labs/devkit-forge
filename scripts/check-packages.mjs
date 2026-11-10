@@ -66,7 +66,7 @@ try {
     if (manifest.engines?.node !== ">=20" || manifest.publishConfig?.access !== "public") {
       throw new Error(`${expectedName} is missing its Node engine or public-scope publishing metadata`);
     }
-    if (manifest.repository?.url !== "https://github.com/truerdp/devkit-forge.git"
+    if (manifest.repository?.url !== "https://github.com/yourdevujjawal/devkit-forge.git"
       || manifest.repository?.directory !== packageDir
       || !manifest.homepage
       || !manifest.bugs?.url) {
