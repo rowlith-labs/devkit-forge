@@ -1,4 +1,4 @@
-# @devkit-forge/import-ui
+# @rowlith/import-ui
 
 ## 0.1.1
 
