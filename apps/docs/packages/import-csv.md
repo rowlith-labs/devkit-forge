@@ -16,7 +16,7 @@ Parses CSV text and returns headers, source arrays, object records (when headers
 
 ### `parseCsvFile(file, options?)`
 
-Reads a browser `File` into memory and parses its text. Prefer this for small and medium files.
+Reads a browser `File` into memory and parses its text. Rejects files larger than 25 MiB by default; configure `maxFileSizeBytes` through `CsvFileParseOptions` to change the limit. Prefer this for small and medium files.
 
 ### `streamCsvFile(file, options)`
 
@@ -25,6 +25,7 @@ Parses a browser `File` in chunks. Requires an `onRows(rows, rowOffset)` callbac
 ## Types
 
 - `CsvParseOptions`: optional delimiter, empty-line behavior, and header trimming.
+- `CsvFileParseOptions`: CSV parse options plus the in-memory file-size limit (25 MiB by default).
 - `CsvParseResult`: headers, cell arrays, records, issues, delimiter, row count, and error flag.
 - `CsvStreamOptions`: parse options, chunk size, and row callback.
 - `CsvStreamResult`: headers, issues, delimiter, row count, and error flag.
