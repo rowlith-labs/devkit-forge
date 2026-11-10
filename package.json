@@ -10,7 +10,6 @@
     "build": "pnpm -r build",
     "test": "pnpm -r test",
     "typecheck": "pnpm -r typecheck",
-    "lint": "pnpm -r lint",
     "docs:dev": "pnpm --filter @devkit-forge/docs dev",
     "docs:build": "pnpm --filter @devkit-forge/docs build",
     "docs:preview": "pnpm --filter @devkit-forge/docs preview",
