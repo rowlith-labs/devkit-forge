@@ -1,5 +1,7 @@
 # DevKit Forge
 
+[![CI](https://github.com/truerdp/devkit-forge/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/truerdp/devkit-forge/actions/workflows/ci.yml) [![CodeQL](https://github.com/truerdp/devkit-forge/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/truerdp/devkit-forge/actions/workflows/codeql.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+
 Open-source developer tools built to remove repetitive engineering work.
 
 > **Status:** Early development. APIs and package names may change before the first stable release.
@@ -65,7 +67,7 @@ The npm libraries are maintained under `packages/`. Run `pnpm check:pack` to ver
 
 ## Contributing and security
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for development and contribution guidance, and [SECURITY.md](./SECURITY.md) for responsible vulnerability reporting.
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for development and contribution guidance, [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md) for community standards, and [SECURITY.md](./SECURITY.md) for responsible vulnerability reporting. Dependabot checks dependencies weekly, and CodeQL performs scheduled JavaScript/TypeScript analysis.
 
 ## Licence
 
