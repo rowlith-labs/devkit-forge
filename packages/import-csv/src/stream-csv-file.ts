@@ -202,6 +202,7 @@ export async function parseCsvFile(
       `CSV file is ${file.size} bytes; the configured limit is ${maxFileSizeBytes} bytes.`,
     );
   }
-  const { maxFileSizeBytes: _maxFileSizeBytes, ...parseOptions } = options;
+  const parseOptions = { ...options };
+  delete parseOptions.maxFileSizeBytes;
   return parseCsvText(await file.text(), parseOptions);
 }
