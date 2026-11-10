@@ -91,8 +91,9 @@ describe("registerImportUI", () => {
   });
 
   it("ignores stale file-read results after reset", async () => {
-    let resolveRead!: (value: { records: Array<{ name: string; email: string }>; headers: string[]; issues: never[] }) => void;
-    const pending = new Promise<import("@devkit-forge/import-csv").CsvParseResult>((resolve) => {
+    type ParsedCsv = import("@devkit-forge/import-csv").CsvParseResult;
+    let resolveRead!: (value: ParsedCsv) => void;
+    const pending: Promise<ParsedCsv> = new Promise<ParsedCsv>((resolve) => {
       resolveRead = resolve;
     });
     const csvModule = await import("@devkit-forge/import-csv");
