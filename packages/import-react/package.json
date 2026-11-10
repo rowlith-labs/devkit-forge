@@ -39,12 +39,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/truerdp/devkit-forge.git",
+    "url": "https://github.com/yourdevujjawal/devkit-forge.git",
     "directory": "packages/import-react"
   },
-  "homepage": "https://github.com/truerdp/devkit-forge/tree/main/packages/import-react#readme",
+  "homepage": "https://github.com/yourdevujjawal/devkit-forge/tree/main/packages/import-react#readme",
   "bugs": {
-    "url": "https://github.com/truerdp/devkit-forge/issues"
+    "url": "https://github.com/yourdevujjawal/devkit-forge/issues"
   },
   "engines": {
     "node": ">=20"

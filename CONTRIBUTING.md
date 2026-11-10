@@ -14,7 +14,7 @@ Thanks for considering a contribution. The project is an early-stage TypeScript 
 Requirements: Node.js 20 or newer and pnpm 9 or newer.
 
 ```sh
-git clone https://github.com/truerdp/devkit-forge.git
+git clone https://github.com/yourdevujjawal/devkit-forge.git
 cd devkit-forge
 pnpm install
 ```

@@ -28,12 +28,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/truerdp/devkit-forge.git",
+    "url": "https://github.com/yourdevujjawal/devkit-forge.git",
     "directory": "packages/import-core"
   },
-  "homepage": "https://github.com/truerdp/devkit-forge/tree/main/packages/import-core#readme",
+  "homepage": "https://github.com/yourdevujjawal/devkit-forge/tree/main/packages/import-core#readme",
   "bugs": {
-    "url": "https://github.com/truerdp/devkit-forge/issues"
+    "url": "https://github.com/yourdevujjawal/devkit-forge/issues"
   },
   "engines": {
     "node": ">=20"

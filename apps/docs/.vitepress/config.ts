@@ -9,8 +9,8 @@ export default defineConfig({
     nav: [
       { text: "Guide", link: "/guide/what-is-devkit-forge" },
       { text: "Packages", link: "/packages/import-core" },
-      { text: "Playground", link: "https://github.com/truerdp/devkit-forge/tree/main/apps/playground" },
-      { text: "GitHub", link: "https://github.com/truerdp/devkit-forge" },
+      { text: "Playground", link: "https://github.com/yourdevujjawal/devkit-forge/tree/main/apps/playground" },
+      { text: "GitHub", link: "https://github.com/yourdevujjawal/devkit-forge" },
     ],
     sidebar: {
       "/guide/": [
@@ -52,7 +52,7 @@ export default defineConfig({
       ],
     },
     socialLinks: [
-      { icon: "github", link: "https://github.com/truerdp/devkit-forge" },
+      { icon: "github", link: "https://github.com/yourdevujjawal/devkit-forge" },
     ],
     footer: {
       message: "Open source under the MIT License.",
@@ -60,7 +60,7 @@ export default defineConfig({
     },
     search: { provider: "local" },
     editLink: {
-      pattern: "https://github.com/truerdp/devkit-forge/edit/main/apps/docs/:path",
+      pattern: "https://github.com/yourdevujjawal/devkit-forge/edit/main/apps/docs/:path",
       text: "Edit this page on GitHub",
     },
   },
