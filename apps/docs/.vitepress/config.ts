@@ -29,6 +29,7 @@ export default defineConfig({
             { text: "CSV imports", link: "/guide/csv-imports" },
             { text: "XLSX imports", link: "/guide/xlsx-imports" },
             { text: "Import UI", link: "/guide/import-ui" },
+            { text: "Release readiness", link: "/guide/release-readiness" },
             { text: "Validation and mapping", link: "/guide/validation-and-mapping" },
             { text: "Large files", link: "/guide/large-files" },
             { text: "Quality and security", link: "/guide/quality-and-security" },
