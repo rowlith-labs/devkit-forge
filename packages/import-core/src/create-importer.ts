@@ -85,6 +85,15 @@ export function createImporter<T extends object>(
       if (suppliedMapping !== undefined && (suppliedMapping === null || typeof suppliedMapping !== "object" || Array.isArray(suppliedMapping))) {
         throw new TypeError("mapping must be an object mapping source headers to schema keys.");
       }
+      if (suppliedMapping !== undefined) {
+        for (const [sourceHeader, destinationKey] of Object.entries(suppliedMapping)) {
+          if (destinationKey !== undefined && !configuredKeys.has(destinationKey)) {
+            throw new TypeError(
+              `Mapping for source header "${sourceHeader}" references an unknown schema key.`,
+            );
+          }
+        }
+      }
 
       const validRows: T[] = [];
       const invalidRows: ProcessRowsResult<T>["invalidRows"] = [];
@@ -107,7 +116,7 @@ export function createImporter<T extends object>(
                 return normalizedHeader === normalizeHeader(column.label)
                   || normalizedHeader === normalizeHeader(column.key);
               })
-            : sourceHeaders.filter((header) => suppliedMapping[header] === column.key);
+            : sourceHeaders.filter((header) => Object.hasOwn(suppliedMapping, header) && suppliedMapping[header] === column.key);
 
           const availableCandidates = candidates.filter((header) => !usedHeaders.has(header));
 
