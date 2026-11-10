@@ -143,11 +143,6 @@ export async function parseXlsxFile(
     && (!Number.isSafeInteger(options.sheet) || options.sheet < 0)) {
     throw new RangeError("sheet index must be a non-negative safe integer.");
   }
-  if (options.sheet !== undefined && typeof options.sheet !== "string"
-    && options.sheet >= 0 && options.sheet > Number.MAX_SAFE_INTEGER) {
-    throw new RangeError("sheet index must be a non-negative safe integer.");
-  }
-
   const fileSize = input instanceof Blob
     ? input.size
     : input instanceof ArrayBuffer
