@@ -24,9 +24,9 @@
     }
   },
   "devDependencies": {
-    "typescript": "^5.7.3",
-    "vitest": "^4.1.11",
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.0",
     "@playwright/test": "^1.56.1",
-    "@changesets/cli": "^2.31.1"
+    "@changesets/cli": "^3.0.3"
   }
 }
