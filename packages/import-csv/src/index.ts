@@ -3,6 +3,7 @@ export { parseCsvFile, streamCsvFile } from "./stream-csv-file.js";
 export type {
   CsvIssue,
   CsvIssueCode,
+  CsvFileParseOptions,
   CsvParseOptions,
   CsvParseResult,
   CsvStreamOptions,
