@@ -39,6 +39,7 @@ Requirements: Node.js 20+ and pnpm 9+.
 pnpm install
 pnpm test
 pnpm typecheck
+pnpm check:pack
 pnpm exec playwright install chromium firefox webkit
 pnpm test:e2e
 ```
@@ -46,6 +47,10 @@ pnpm test:e2e
 ## Current scope
 
 The current packages are `@devkit-forge/import-core`, `@devkit-forge/import-csv`, `@devkit-forge/import-xlsx`, `@devkit-forge/import-react`, and the optional `@devkit-forge/import-ui` Web Component. The React adapter remains headless; the browser playground and VitePress documentation site are separate applications. The XLSX adapter is an in-memory parser with explicit file-size and row limits; it is separate from the core package. Commercial packaging remains future work.
+
+## Package releases
+
+The npm libraries are maintained under `packages/`. Run `pnpm check:pack` to verify that each built package produces an installable archive with publishable internal dependency versions. See the [release readiness guide](./apps/docs/guide/release-readiness.md) before publishing. No automatic npm publishing is enabled.
 
 ## Licence
 
