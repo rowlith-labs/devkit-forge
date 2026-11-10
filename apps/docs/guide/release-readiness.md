@@ -2,17 +2,16 @@
 
 All publishable libraries live under `packages/`. Applications under `apps/` are not npm packages.
 
-## Before the first public release
+## Release process
 
-1. Confirm the `@devkit-forge` npm organization/scope is controlled by the project owner and the package names are available.
-2. Review the package APIs, dependency licenses, security posture, and ownership/IP rights.
-3. Add a reviewed Changeset for every user-facing library change with `pnpm changeset`; choose patch, minor, or major according to the public API impact.
-4. Review the pending release plan with `pnpm changeset status --verbose`. When deliberately preparing a release, run `pnpm version-packages` to update package versions, internal dependency ranges, and changelogs. Review every generated diff; do not version or publish just because changesets exist.
-5. Confirm the dependency lockfile is committed and reproducible installs pass with `pnpm install --frozen-lockfile`.
-6. Run the complete CI workflow, including both integration examples, browser tests, CodeQL, dependency audit, and `pnpm check:pack`.
-7. Review each generated archive with `pnpm --dir packages/<package> pack --pack-destination <directory>` before publishing.
-8. Verify each package archive contains its own MIT license and that internal dependency versions match the packages being released.
-9. Only as the final release action, publish packages in dependency order: `import-core`, then `import-csv` / `import-xlsx`, then `import-react` / `import-ui`.
+1. Add a reviewed Changeset for every user-facing library change with `pnpm changeset`; choose patch, minor, or major according to the public API impact.
+2. Review the pending release plan with `pnpm changeset status --verbose`.
+3. When deliberately preparing a release, run `pnpm version-packages` to update package versions, internal dependency ranges, and changelogs. Review every generated diff and commit it to `main`.
+4. Confirm the dependency lockfile is committed and reproducible installs pass with `pnpm install --frozen-lockfile`.
+5. Confirm CI and CodeQL pass on the exact `main` commit being released. CI includes package typechecks, tests, builds, archive checks, examples, documentation build, dependency audit, and browser tests.
+6. Review package archives with `pnpm check:pack`. Confirm each archive includes its entry points, README, and MIT license, and that internal dependency versions have been rewritten correctly.
+7. Confirm the npm package scope and trusted publisher configuration are correct.
+8. Publish only through the repository's manually dispatched **Publish npm release** GitHub Actions workflow.
 
 ## Package archive check
 
@@ -27,6 +26,34 @@ This catches a common monorepo release failure: a package that builds inside the
 
 ## Publishing policy
 
-Dependabot proposes dependency updates and CodeQL scans JavaScript/TypeScript code, but neither replaces a manual release review. Changesets is configured for manual version planning and changelog generation. There is intentionally no automatic npm publish on push or tag, and no publish command is wired into CI. Versioning and publishing remain separate actions; npm publishing is the final explicit step only after all release gates pass. CI archive checks are not evidence that a package has been published or that its name is available.
+Publishing is deliberately manual. A push, merge, or Changeset does not publish packages. The **Publish npm release** workflow is dispatched explicitly from `main` and requires the confirmation input `PUBLISH`.
 
-For the first release, publish from a trusted environment with an npm account that has publish access to the scope. Prefer npm trusted publishing with provenance when the repository and npm scope have been configured for it. Never commit registry tokens.
+The workflow uses npm Trusted Publishing (GitHub Actions OIDC), not a long-lived npm access token. It pins npm CLI 11.5.1, uses Node.js 24, requests the GitHub OIDC identity token, and publishes packages in dependency order:
+
+1. `@devkit-forge/import-core`
+2. `@devkit-forge/import-csv`
+3. `@devkit-forge/import-xlsx`
+4. `@devkit-forge/import-react`
+5. `@devkit-forge/import-ui`
+
+Already-published package versions are skipped. Registry lookup errors other than a confirmed missing package stop the workflow rather than being treated as permission to publish.
+
+Each npm package must have a trusted publisher configured for GitHub Actions with owner `yourdevujjawal`, repository `devkit-forge`, and workflow filename `publish-release.yml`. Do not add registry tokens to repository secrets or workflow configuration.
+
+## First published versions
+
+The initial public release was published successfully:
+
+| Package | Version |
+|---|---:|
+| `@devkit-forge/import-core` | `0.1.1` |
+| `@devkit-forge/import-csv` | `0.2.0` |
+| `@devkit-forge/import-xlsx` | `0.1.1` |
+| `@devkit-forge/import-react` | `0.1.1` |
+| `@devkit-forge/import-ui` | `0.1.1` |
+
+A successful workflow run confirms what the workflow published; verify package pages and install behavior independently when validating a consumer-facing release.
+
+## Security
+
+Never commit registry credentials. Keep npm Trusted Publishing enabled and review GitHub Actions permissions whenever changing the publishing workflow. Dependency audits and CodeQL complement, but do not replace, code review and release verification.
