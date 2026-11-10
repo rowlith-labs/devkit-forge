@@ -1,7 +1,7 @@
 {
-  "name": "@devkit-forge/import-ui",
+  "name": "@rowlith/import-ui",
   "version": "0.1.1",
-  "description": "Accessible framework-independent Web Component for DevKit Forge data imports",
+  "description": "Accessible framework-independent Web Component for Rowlith data imports",
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
@@ -22,9 +22,9 @@
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
-    "@devkit-forge/import-core": "workspace:*",
-    "@devkit-forge/import-csv": "workspace:*",
-    "@devkit-forge/import-xlsx": "workspace:*"
+    "@rowlith/import-core": "workspace:*",
+    "@rowlith/import-csv": "workspace:*",
+    "@rowlith/import-xlsx": "workspace:*"
   },
   "devDependencies": {
     "jsdom": "^26.1.0",
@@ -33,12 +33,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourdevujjawal/devkit-forge.git",
+    "url": "https://github.com/rowlith-labs/rowlith.git",
     "directory": "packages/import-ui"
   },
-  "homepage": "https://github.com/yourdevujjawal/devkit-forge/tree/main/packages/import-ui#readme",
+  "homepage": "https://github.com/rowlith-labs/rowlith/tree/main/packages/import-ui#readme",
   "bugs": {
-    "url": "https://github.com/yourdevujjawal/devkit-forge/issues"
+    "url": "https://github.com/rowlith-labs/rowlith/issues"
   },
   "engines": {
     "node": ">=20"
@@ -47,7 +47,7 @@
     "access": "public"
   },
   "keywords": [
-    "devkit-forge",
+    "rowlith",
     "data-import",
     "typescript",
     "web-component",

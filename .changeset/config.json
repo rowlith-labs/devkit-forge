@@ -8,9 +8,9 @@
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
   "ignore": [
-    "@devkit-forge/docs",
-    "@devkit-forge/playground",
-    "@devkit-forge/example-vite-react",
-    "@devkit-forge/example-vanilla-ui"
+    "@rowlith/docs",
+    "@rowlith/playground",
+    "@rowlith/example-vite-react",
+    "@rowlith/example-vanilla-ui"
   ]
 }

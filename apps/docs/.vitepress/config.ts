@@ -1,24 +1,24 @@
 import { defineConfig } from "vitepress";
 
 export default defineConfig({
-  title: "DevKit Forge",
+  title: "Rowlith",
   description: "TypeScript-first tools for reliable data import workflows.",
-  base: "/devkit-forge/",
+  base: "/rowlith/",
   cleanUrls: true,
   themeConfig: {
-    siteTitle: "DevKit Forge",
+    siteTitle: "Rowlith",
     nav: [
-      { text: "Guide", link: "/guide/what-is-devkit-forge" },
+      { text: "Guide", link: "/guide/what-is-rowlith" },
       { text: "Packages", link: "/packages/import-core" },
-      { text: "Playground", link: "https://github.com/yourdevujjawal/devkit-forge/tree/main/apps/playground" },
-      { text: "GitHub", link: "https://github.com/yourdevujjawal/devkit-forge" },
+      { text: "Playground", link: "https://github.com/rowlith-labs/rowlith/tree/main/apps/playground" },
+      { text: "GitHub", link: "https://github.com/rowlith-labs/rowlith" },
     ],
     sidebar: {
       "/guide/": [
         {
           text: "Getting started",
           items: [
-            { text: "What is DevKit Forge?", link: "/guide/what-is-devkit-forge" },
+            { text: "What is Rowlith?", link: "/guide/what-is-rowlith" },
             { text: "Use cases", link: "/guide/use-cases" },
             { text: "Installation", link: "/guide/installation" },
             { text: "Quick start", link: "/guide/quick-start" },
@@ -54,15 +54,15 @@ export default defineConfig({
       ],
     },
     socialLinks: [
-      { icon: "github", link: "https://github.com/yourdevujjawal/devkit-forge" },
+      { icon: "github", link: "https://github.com/rowlith-labs/rowlith" },
     ],
     footer: {
       message: "Open source under the MIT License.",
-      copyright: "Copyright © DevKit Forge contributors",
+      copyright: "Copyright © Rowlith contributors",
     },
     search: { provider: "local" },
     editLink: {
-      pattern: "https://github.com/yourdevujjawal/devkit-forge/edit/main/apps/docs/:path",
+      pattern: "https://github.com/rowlith-labs/rowlith/edit/main/apps/docs/:path",
       text: "Edit this page on GitHub",
     },
   },

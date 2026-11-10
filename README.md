@@ -1,6 +1,6 @@
-# DevKit Forge
+# Rowlith
 
-[![CI](https://github.com/yourdevujjawal/devkit-forge/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/yourdevujjawal/devkit-forge/actions/workflows/ci.yml) [![CodeQL](https://github.com/yourdevujjawal/devkit-forge/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/yourdevujjawal/devkit-forge/actions/workflows/codeql.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+[![CI](https://github.com/rowlith-labs/rowlith/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/rowlith-labs/rowlith/actions/workflows/ci.yml) [![CodeQL](https://github.com/rowlith-labs/rowlith/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/rowlith-labs/rowlith/actions/workflows/codeql.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 
 Open-source developer tools built to remove repetitive engineering work.
 
@@ -54,9 +54,9 @@ A working Vite + React example composes the CSV parser, core schema validation, 
 
 ```bash
 pnpm install
-pnpm --filter @devkit-forge/example-vite-react dev
+pnpm --filter @rowlith/example-vite-react dev
 # In another terminal, or instead:
-pnpm --filter @devkit-forge/example-vanilla-ui dev
+pnpm --filter @rowlith/example-vanilla-ui dev
 ```
 
 See [the React example README](./examples/vite-react/README.md) and [the Web Component example README](./examples/vanilla-ui/README.md) for details.
@@ -67,7 +67,7 @@ The publishable packages currently ship ECMAScript modules (ESM) and TypeScript 
 
 ## Current scope
 
-The current packages are `@devkit-forge/import-core`, `@devkit-forge/import-csv`, `@devkit-forge/import-xlsx`, `@devkit-forge/import-react`, and the optional `@devkit-forge/import-ui` Web Component. The React adapter remains headless; the browser playground and VitePress documentation site are separate applications. The XLSX adapter is an in-memory parser with explicit file-size, archive-expansion, workbook-structure, and row limits; it is separate from the core package. Both examples are runnable workspace apps. The React and Web Component examples use in-memory parsing for ordinary-sized files; use the CSV streaming API directly for large files.
+The current packages are `@rowlith/import-core`, `@rowlith/import-csv`, `@rowlith/import-xlsx`, `@rowlith/import-react`, and the optional `@rowlith/import-ui` Web Component. The React adapter remains headless; the browser playground and VitePress documentation site are separate applications. The XLSX adapter is an in-memory parser with explicit file-size, archive-expansion, workbook-structure, and row limits; it is separate from the core package. Both examples are runnable workspace apps. The React and Web Component examples use in-memory parsing for ordinary-sized files; use the CSV streaming API directly for large files.
 
 ## Package releases
 

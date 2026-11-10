@@ -1,7 +1,7 @@
 {
-  "name": "@devkit-forge/import-react",
+  "name": "@rowlith/import-react",
   "version": "0.1.1",
-  "description": "Headless React hooks for the DevKit Forge data import engine",
+  "description": "Headless React hooks for the Rowlith data import engine",
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
@@ -35,16 +35,16 @@
     "vitest": "^4.1.11"
   },
   "dependencies": {
-    "@devkit-forge/import-core": "workspace:*"
+    "@rowlith/import-core": "workspace:*"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourdevujjawal/devkit-forge.git",
+    "url": "https://github.com/rowlith-labs/rowlith.git",
     "directory": "packages/import-react"
   },
-  "homepage": "https://github.com/yourdevujjawal/devkit-forge/tree/main/packages/import-react#readme",
+  "homepage": "https://github.com/rowlith-labs/rowlith/tree/main/packages/import-react#readme",
   "bugs": {
-    "url": "https://github.com/yourdevujjawal/devkit-forge/issues"
+    "url": "https://github.com/rowlith-labs/rowlith/issues"
   },
   "engines": {
     "node": ">=20"
@@ -53,7 +53,7 @@
     "access": "public"
   },
   "keywords": [
-    "devkit-forge",
+    "rowlith",
     "data-import",
     "typescript",
     "react",
