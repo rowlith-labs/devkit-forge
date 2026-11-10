@@ -50,7 +50,7 @@ const result = importer.processRows([
 
 ## Scope
 
-This package currently processes arrays of in-memory records. File parsing, browser file selection, React UI, XLSX support, streaming, and import execution callbacks are separate layers and are not included yet.
+This package intentionally focuses on schema mapping, transforms, validation, duplicate detection, and structured row results. File parsing is provided by `@devkit-forge/import-csv` and `@devkit-forge/import-xlsx`; React state integration is provided by `@devkit-forge/import-react`; the optional browser UI is provided by `@devkit-forge/import-ui`. Streaming CSV parsing is available in the CSV adapter. Persistence and final import execution remain the responsibility of the consuming application.
 
 ## Performance benchmark
 
