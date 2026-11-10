@@ -53,6 +53,8 @@ A working Vite + React example composes the CSV parser, core schema validation, 
 ```bash
 pnpm install
 pnpm --filter @devkit-forge/example-vite-react dev
+# In another terminal, or instead:
+pnpm --filter @devkit-forge/example-vanilla-ui dev
 ```
 
 See [the React example README](./examples/vite-react/README.md) and [the Web Component example README](./examples/vanilla-ui/README.md) for details.
