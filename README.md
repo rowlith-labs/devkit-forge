@@ -55,7 +55,7 @@ pnpm install
 pnpm --filter @devkit-forge/example-vite-react dev
 ```
 
-See [the example README](./examples/vite-react/README.md) for details.
+See [the React example README](./examples/vite-react/README.md) and [the Web Component example README](./examples/vanilla-ui/README.md) for details.
 
 ## Current scope
 
