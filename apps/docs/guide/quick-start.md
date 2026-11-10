@@ -27,7 +27,7 @@ const config: ImportConfig<Contact> = {
       label: "Email address",
       required: true,
       validate: (value) =>
-        typeof value === "string" && /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(value)
+        typeof value === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
           ? undefined
           : "Enter a valid email address.",
     },
