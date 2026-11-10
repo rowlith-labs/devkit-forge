@@ -105,12 +105,23 @@ export function registerImportUI(
       this.renderResults();
     }
 
-    setRows(rows: RawImportRow[], headers = rows[0] ? Object.keys(rows[0]) : []): void {
+    setRows(rows: RawImportRow[], headers?: string[]): void {
+      if (!Array.isArray(rows)) {
+        throw new TypeError("rows must be an array of record objects.");
+      }
+      if (rows.some((row) => row === null || typeof row !== "object" || Array.isArray(row))) {
+        throw new TypeError("Every row must be a non-null record object.");
+      }
+      if (headers !== undefined && (!Array.isArray(headers) || headers.some((header) => typeof header !== "string"))) {
+        throw new TypeError("headers must be an array of strings.");
+      }
+
+      const nextHeaders = headers ?? (rows[0] ? Object.keys(rows[0]) : []);
       this.loadGeneration += 1;
       this.setBusy(false);
       this.rows = rows.map((row) => ({ ...row }));
       this.filename = "";
-      this.headers = [...headers];
+      this.headers = [...nextHeaders];
       this.mapping = undefined;
       this.latestResult = null;
       this.parserIssues = [];
@@ -125,6 +136,9 @@ export function registerImportUI(
     }
 
     setMapping(mapping: ColumnMapping<Record<string, unknown>>): void {
+      if (mapping === null || typeof mapping !== "object" || Array.isArray(mapping)) {
+        throw new TypeError("mapping must be an object mapping source headers to schema keys.");
+      }
       this.loadGeneration += 1;
       this.setBusy(false);
       this.mapping = { ...mapping };
