@@ -44,11 +44,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Verify release packages
+      - name: Verify release metadata
         run: |
           set -euo pipefail
           pnpm audit --audit-level high
-          pnpm check:pack
           for package in import-core import-csv import-xlsx import-react import-ui; do
             node -e "const p=require('./packages/$package/package.json'); if (!p.version || p.version === '0.1.0') { console.error('Package is not versioned for release:', p.name, p.version); process.exit(1) }"
           done
@@ -61,6 +60,9 @@ jobs:
             pnpm --filter "@devkit-forge/$package" test
             pnpm --filter "@devkit-forge/$package" build
           done
+
+      - name: Verify package archives
+        run: pnpm check:pack
 
       - name: Pack release tarballs
         run: |
