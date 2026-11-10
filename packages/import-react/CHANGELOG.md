@@ -1,4 +1,4 @@
-# @devkit-forge/import-react
+# @rowlith/import-react
 
 ## 0.1.1
 
