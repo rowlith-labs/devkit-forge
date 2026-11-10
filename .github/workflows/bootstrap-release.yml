@@ -1,4 +1,4 @@
-name: Bootstrap npm release
+name: Prepare npm release
 
 on:
   workflow_dispatch:
@@ -112,7 +112,18 @@ jobs:
           pnpm --dir packages/import-react pack --pack-destination "$RUNNER_TEMP/devkit-forge-release"
           pnpm --dir packages/import-ui pack --pack-destination "$RUNNER_TEMP/devkit-forge-release"
 
-      - name: Publish packages in dependency order
+      - name: Verify release tarballs
+        run: |
+          set -euo pipefail
+          release_dir="$RUNNER_TEMP/devkit-forge-release"
+          for package in import-core import-csv import-xlsx import-react import-ui; do
+            version="$(node -p "require('./packages/$package/package.json').version")"
+            tarball="$(find "$release_dir" -maxdepth 1 -type f -name "*$package-$version.tgz" -print -quit)"
+            test -n "$tarball" || { echo "::error::Missing tarball for $package@$version"; exit 1; }
+            echo "Verified $(basename "$tarball")"
+          done
+
+      - name: Commit release versions and changelogs
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
