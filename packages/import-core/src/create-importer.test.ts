@@ -60,6 +60,27 @@ describe("createImporter", () => {
     expect(result.validRows).toEqual([{ email: "a@example.com", name: "Ada" }]);
   });
 
+  it("validates explicit mapping targets and ignores inherited mapping properties", () => {
+    const importer = createImporter<Customer>({ columns: [...customerColumns] });
+
+    expect(() => importer.processRows(
+      [{ contact: "a@example.com", customer: "Ada" }],
+      { contact: "not-a-schema-key" } as never,
+    )).toThrow(/unknown schema key/);
+
+    const inheritedMapping = Object.assign(
+      Object.create({ contact: "email" }) as Record<string, keyof Customer>,
+      { customer: "name" },
+    );
+    const result = importer.processRows(
+      [{ contact: "a@example.com", customer: "Ada" }],
+      inheritedMapping,
+    );
+
+    expect(result.validCount).toBe(0);
+    expect(result.invalidRows[0]?.issues.some((issue) => issue.code === "required")).toBe(true);
+  });
+
   it("treats whitespace-only required values as missing", () => {
     const importer = createImporter<Customer>({ columns: [...customerColumns] });
     const result = importer.processRows([{ Email: "  ", "Full Name": "Ada" }]);
