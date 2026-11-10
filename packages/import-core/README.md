@@ -1,11 +1,11 @@
-# @devkit-forge/import-core
+# @rowlith/import-core
 
 Framework-agnostic row mapping and validation for data-import workflows.
 
 ## Current API
 
 ```ts
-import { createImporter } from "@devkit-forge/import-core";
+import { createImporter } from "@rowlith/import-core";
 
 interface Customer {
   email: string;
@@ -50,14 +50,14 @@ const result = importer.processRows([
 
 ## Scope
 
-This package intentionally focuses on schema mapping, transforms, validation, duplicate detection, and structured row results. File parsing is provided by `@devkit-forge/import-csv` and `@devkit-forge/import-xlsx`; React state integration is provided by `@devkit-forge/import-react`; the optional browser UI is provided by `@devkit-forge/import-ui`. Streaming CSV parsing is available in the CSV adapter. Persistence and final import execution remain the responsibility of the consuming application.
+This package intentionally focuses on schema mapping, transforms, validation, duplicate detection, and structured row results. File parsing is provided by `@rowlith/import-csv` and `@rowlith/import-xlsx`; React state integration is provided by `@rowlith/import-react`; the optional browser UI is provided by `@rowlith/import-ui`. Streaming CSV parsing is available in the CSV adapter. Persistence and final import execution remain the responsibility of the consuming application.
 
 ## Performance benchmark
 
 Run the reproducible local benchmark against 10k, 50k, and 100k rows:
 
 ```sh
-pnpm --filter @devkit-forge/import-core benchmark
+pnpm --filter @rowlith/import-core benchmark
 ```
 
 The benchmark reports the median elapsed time, throughput, and approximate heap growth across three samples on the current machine. The heap figure is neither retained memory nor peak memory usage; it is a rough allocation signal. CI runs the same benchmark to keep a visible baseline in its logs. Treat all measurements as comparative signals, not cross-machine performance guarantees; compare runs under similar Node.js versions and hardware.

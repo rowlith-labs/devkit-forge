@@ -1,5 +1,5 @@
 {
-  "name": "@devkit-forge/example-vanilla-ui",
+  "name": "@rowlith/example-vanilla-ui",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -9,8 +9,8 @@
     "build": "tsc --noEmit && vite build"
   },
   "dependencies": {
-    "@devkit-forge/import-core": "workspace:*",
-    "@devkit-forge/import-ui": "workspace:*"
+    "@rowlith/import-core": "workspace:*",
+    "@rowlith/import-ui": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.7.3",
