@@ -64,6 +64,22 @@ describe("registerImportUI", () => {
     expect(listener).toHaveBeenCalledOnce();
   });
 
+  it("rejects malformed rows, headers, and mappings before changing state", () => {
+    expect(() => element.setRows(null as unknown as Record<string, unknown>[]))
+      .toThrow(/rows must be an array/);
+    expect(() => element.setRows([null as unknown as Record<string, unknown>]))
+      .toThrow(/non-null record/);
+    expect(() => element.setRows([], [42 as unknown as string]))
+      .toThrow(/headers must be an array of strings/);
+    expect(() => element.setMapping(null as unknown as Record<string, string>))
+      .toThrow(/mapping must be an object/);
+    expect(() => element.setMapping([] as unknown as Record<string, string>))
+      .toThrow(/mapping must be an object/);
+
+    element.setRows([{ "Full name": "Ada", Email: "ada@example.com" }]);
+    expect(element.validate().validCount).toBe(1);
+  });
+
   it("supports explicit mappings and reset", () => {
     element.setRows([{ contact: "ada@example.com", customer: "Ada" }]);
     element.setMapping({ contact: "email", customer: "name" });
