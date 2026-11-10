@@ -128,6 +128,15 @@ export async function parseXlsxFile(
   const maxDataValidationCells = options.maxDataValidationCells ?? DEFAULT_MAX_DATA_VALIDATION_CELLS;
   const maxDefinedNameCells = options.maxDefinedNameCells ?? DEFAULT_MAX_DEFINED_NAME_CELLS;
   const headerRow = options.headerRow ?? 1;
+  const formulaPolicy = options.formulaPolicy ?? "cached-value";
+  const emptyRows = options.emptyRows ?? "skip";
+
+  if (!["cached-value", "formula-text", "reject"].includes(formulaPolicy)) {
+    throw new TypeError('formulaPolicy must be "cached-value", "formula-text", or "reject".');
+  }
+  if (emptyRows !== "skip" && emptyRows !== "preserve") {
+    throw new TypeError('emptyRows must be "skip" or "preserve".');
+  }
 
   positiveSafeInteger(maxFileSizeBytes, "maxFileSizeBytes");
   positiveSafeInteger(maxRows, "maxRows");
@@ -235,9 +244,6 @@ export async function parseXlsxFile(
   const lastSourceRow = selectedWorksheet.rowCount;
   const availableRows = Math.max(0, lastSourceRow - headerRow);
   const rowsToRead = Math.min(availableRows, maxRows);
-  const formulaPolicy = options.formulaPolicy ?? "cached-value";
-  const emptyRows = options.emptyRows ?? "skip";
-
   for (let offset = 0; offset < rowsToRead; offset += 1) {
     const sourceRow = selectedWorksheet.getRow(headerRow + offset + 1);
     const sourceCellCount = sourceRow.cellCount;
