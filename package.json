@@ -14,7 +14,8 @@
     "docs:dev": "pnpm --filter @devkit-forge/docs dev",
     "docs:build": "pnpm --filter @devkit-forge/docs build",
     "docs:preview": "pnpm --filter @devkit-forge/docs preview",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "check:pack": "node scripts/check-packages.mjs"
   },
   "devDependencies": {
     "typescript": "^5.7.3",
