@@ -1,13 +1,13 @@
-# @devkit-forge/import-core
+# @rowlith/import-core
 
-The framework-independent processing engine at the centre of DevKit Forge. Use it when you already have records (from an API, CSV parser, XLSX parser, or another source) and need predictable column mapping, transformation, validation, duplicate detection, and row-level results.
+The framework-independent processing engine at the centre of Rowlith. Use it when you already have records (from an API, CSV parser, XLSX parser, or another source) and need predictable column mapping, transformation, validation, duplicate detection, and row-level results.
 
 It deliberately does not read files, render components, upload data, or persist records.
 
 ## Install
 
 ```bash
-npm install @devkit-forge/import-core
+npm install @rowlith/import-core
 ```
 
 ## A realistic import
@@ -15,8 +15,8 @@ npm install @devkit-forge/import-core
 Define the destination shape once, then process plain records from any source:
 
 ```ts
-import { createImporter } from "@devkit-forge/import-core";
-import type { ImportConfig } from "@devkit-forge/import-core";
+import { createImporter } from "@rowlith/import-core";
+import type { ImportConfig } from "@rowlith/import-core";
 
 interface Customer {
   email: string;
@@ -76,7 +76,7 @@ console.log(result.validCount, result.invalidCount);
 
 ## When to use it
 
-Choose core alone when your data is already structured, when you are importing from an API or database export, or when you want to own the file picker and UI. Combine it with `@devkit-forge/import-csv` or `@devkit-forge/import-xlsx` when parsing files; use `@devkit-forge/import-react` for headless React state, or `@devkit-forge/import-ui` for the optional browser component.
+Choose core alone when your data is already structured, when you are importing from an API or database export, or when you want to own the file picker and UI. Combine it with `@rowlith/import-csv` or `@rowlith/import-xlsx` when parsing files; use `@rowlith/import-react` for headless React state, or `@rowlith/import-ui` for the optional browser component.
 
 Do not use core as a streaming parser or as a replacement for database constraints. It processes the supplied rows in memory; persistence, transactional behavior, authorization, and final business rules belong to your application.
 

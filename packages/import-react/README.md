@@ -1,11 +1,11 @@
-# @devkit-forge/import-react
+# @rowlith/import-react
 
-Headless React hooks for the DevKit Forge data import engine.
+Headless React hooks for the Rowlith data import engine.
 
 ## Install
 
 ```bash
-pnpm add @devkit-forge/import-react @devkit-forge/import-core react
+pnpm add @rowlith/import-react @rowlith/import-core react
 ```
 
 React 18 and 19 are supported as peer dependencies. This package does not ship UI components, styles, a CSV parser, or its own validation engine.
@@ -13,8 +13,8 @@ React 18 and 19 are supported as peer dependencies. This package does not ship U
 ## Quick start
 
 ```tsx
-import { useDataImporter } from "@devkit-forge/import-react";
-import type { ImportConfig } from "@devkit-forge/import-core";
+import { useDataImporter } from "@rowlith/import-react";
+import type { ImportConfig } from "@rowlith/import-core";
 
 interface Contact {
   email: string;
@@ -66,10 +66,10 @@ function ContactImport() {
 - `result`: last `ProcessRowsResult<T>`, or `null` before processing
 - `setRows(rows)`: replace records and invalidate the previous result
 - `setMapping(mapping)`: replace mapping and invalidate the previous result
-- `process()`: synchronously process current records through `@devkit-forge/import-core`
+- `process()`: synchronously process current records through `@rowlith/import-core`
 - `reset()`: clear records and result, restoring the initial mapping
 
-The hook deliberately does not parse files. Use `@devkit-forge/import-csv` (or another parser) to produce records, then pass those records to `setRows`. This keeps parsing, framework state, and validation independently usable.
+The hook deliberately does not parse files. Use `@rowlith/import-csv` (or another parser) to produce records, then pass those records to `setRows`. This keeps parsing, framework state, and validation independently usable.
 
 ## Behaviour and limitations
 

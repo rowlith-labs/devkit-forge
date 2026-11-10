@@ -1,17 +1,17 @@
-# @devkit-forge/import-xlsx
+# @rowlith/import-xlsx
 
-XLSX workbook parsing adapter for DevKit Forge. It is deliberately separate from `import-core` and `import-csv`.
+XLSX workbook parsing adapter for Rowlith. It is deliberately separate from `import-core` and `import-csv`.
 
 ## Install
 
 ```bash
-npm install @devkit-forge/import-xlsx @devkit-forge/import-core
+npm install @rowlith/import-xlsx @rowlith/import-core
 ```
 
 ## Quick start
 
 ```ts
-import { parseXlsxFile } from "@devkit-forge/import-xlsx";
+import { parseXlsxFile } from "@rowlith/import-xlsx";
 
 const result = await parseXlsxFile(file, {
   sheet: "Contacts",

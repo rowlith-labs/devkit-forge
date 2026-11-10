@@ -1,17 +1,17 @@
-# @devkit-forge/import-csv
+# @rowlith/import-csv
 
-CSV parsing adapter for the DevKit Forge import engine. It is separate from `@devkit-forge/import-core`, so core-only users do not inherit a CSV parser.
+CSV parsing adapter for the Rowlith import engine. It is separate from `@rowlith/import-core`, so core-only users do not inherit a CSV parser.
 
 ## Install
 
 ```sh
-pnpm add @devkit-forge/import-csv @devkit-forge/import-core
+pnpm add @rowlith/import-csv @rowlith/import-core
 ```
 
 ## Parse CSV text
 
 ```ts
-import { parseCsvText } from "@devkit-forge/import-csv";
+import { parseCsvText } from "@rowlith/import-csv";
 
 const result = parseCsvText(`Name,Email
 Ada,ada@example.com`);
@@ -28,7 +28,7 @@ if (result.records === null || result.hasErrors) {
 For small and medium files, `parseCsvFile` is the convenient API. It reads the full file into memory and rejects files larger than 25 MiB by default. Override `maxFileSizeBytes` when a different in-memory limit is appropriate; use `streamCsvFile` for large files.
 
 ```ts
-import { parseCsvFile } from "@devkit-forge/import-csv";
+import { parseCsvFile } from "@rowlith/import-csv";
 
 const result = await parseCsvFile(file, {
   maxFileSizeBytes: 25 * 1024 * 1024, // default: 25 MiB
@@ -41,7 +41,7 @@ console.log(result.headers, result.records, result.issues);
 For large files, use `streamCsvFile`. It parses in chunks and sends each batch to `onRows`; it does not accumulate the rows in memory.
 
 ```ts
-import { streamCsvFile } from "@devkit-forge/import-csv";
+import { streamCsvFile } from "@rowlith/import-csv";
 
 const summary = await streamCsvFile(file, {
   chunkSize: 1024 * 1024, // 1 MiB input chunks; default

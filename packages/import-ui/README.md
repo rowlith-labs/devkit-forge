@@ -1,19 +1,19 @@
-# @devkit-forge/import-ui
+# @rowlith/import-ui
 
 Accessible, framework-independent Web Component for browser-based CSV and XLSX imports. It uses native browser custom elements, Shadow DOM, and semantic HTML; React, Vue, and other UI frameworks are not required.
 
 ## Install
 
 ```sh
-pnpm add @devkit-forge/import-ui @devkit-forge/import-core @devkit-forge/import-csv @devkit-forge/import-xlsx
+pnpm add @rowlith/import-ui @rowlith/import-core @rowlith/import-csv @rowlith/import-xlsx
 ```
 
 ## Quick start
 
 ```ts
-import { registerImportUI } from "@devkit-forge/import-ui";
-import type { ImportUIElement } from "@devkit-forge/import-ui";
-import type { ImportConfig } from "@devkit-forge/import-core";
+import { registerImportUI } from "@rowlith/import-ui";
+import type { ImportUIElement } from "@rowlith/import-ui";
+import type { ImportConfig } from "@rowlith/import-core";
 
 interface Contact {
   name: string;
