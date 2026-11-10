@@ -1,0 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap");
+
+:root { color-scheme: dark; font-family: "DM Sans", sans-serif; color: #e9edf5; background: #0b1020; font-synthesis: none; }
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; background: radial-gradient(ellipse at 80% 0%, #1c3150 0, transparent 40%), #0b1020; }
+main { max-width: 920px; margin: 0 auto; padding: 56px 24px; }
+header { margin-bottom: 34px; }
+header > a { display: inline-block; color: #9bb6ff; font: 11px "DM Mono", monospace; letter-spacing: .12em; text-decoration: none; margin-bottom: 42px; }
+.eyebrow { color: #88a4ce; font: 11px "DM Mono", monospace; letter-spacing: .12em; }
+h1, h2 { font-family: "Space Grotesk", sans-serif; letter-spacing: -.04em; }
+h1 { max-width: 680px; font-size: clamp(40px, 7vw, 68px); line-height: 1.05; margin: 10px 0 18px; }
+header p:last-child { max-width: 600px; color: #aebbd0; line-height: 1.7; }
+df-data-importer { display: block; --df-accent: #9bbcff; --df-border: #354764; --df-text: #e9edf5; --df-surface: #111b2e; --df-focus: #d2e1ff; }
+.report { margin-top: 22px; padding: 22px; border: 1px solid #293a55; border-radius: 12px; background: rgba(17, 27, 46, .88); }
+h2 { font-size: 19px; margin: 0 0 12px; }
+pre { overflow-x: auto; white-space: pre-wrap; color: #aebbd0; font: 12px/1.8 "DM Mono", monospace; }
+@media (max-width: 600px) { main { padding: 32px 16px; } }
