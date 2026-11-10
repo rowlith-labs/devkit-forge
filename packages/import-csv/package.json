@@ -30,5 +30,27 @@
     "typescript": "^5.7.3",
     "vitest": "^3.0.5",
     "jsdom": "^26.1.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/truerdp/devkit-forge.git",
+    "directory": "packages/import-csv"
+  },
+  "homepage": "https://github.com/truerdp/devkit-forge/tree/main/packages/import-csv#readme",
+  "bugs": {
+    "url": "https://github.com/truerdp/devkit-forge/issues"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "devkit-forge",
+    "data-import",
+    "typescript",
+    "csv",
+    "papaparse"
+  ]
 }
