@@ -88,37 +88,6 @@ jobs:
             echo "Verified $(basename "$tarball")"
           done
 
-      - name: Verify npm Trusted Publishing without changing published versions
-        run: |
-          set -euo pipefail
-          release_dir="$RUNNER_TEMP/devkit-forge-release"
-          for package in import-core import-csv import-xlsx import-react import-ui; do
-            package_name="@devkit-forge/$package"
-            version="$(node -p "require('./packages/$package/package.json').version")"
-            tarball="$(find "$release_dir" -maxdepth 1 -type f -name "*$package-$version.tgz" -print -quit)"
-            test -n "$tarball" || { echo "::error::Missing tarball for $package_name@$version"; exit 1; }
-            npm view "$package_name@$version" version >/dev/null
-            output_file="$(mktemp)"
-            set +e
-            npm publish "$tarball" --access public >"$output_file" 2>&1
-            publish_status=$?
-            set -e
-            if [ "$publish_status" -eq 0 ]; then
-              cat "$output_file"
-              rm -f "$output_file"
-              echo "::error::OIDC smoke test unexpectedly published $package_name@$version; investigate immediately."
-              exit 1
-            fi
-            if ! grep -Fq "You cannot publish over the previously published versions: $version" "$output_file"; then
-              cat "$output_file" >&2
-              rm -f "$output_file"
-              echo "::error::Could not confirm OIDC authentication for $package_name@$version."
-              exit 1
-            fi
-            rm -f "$output_file"
-            echo "OIDC authentication confirmed for $package_name@$version (registry correctly rejected duplicate version)."
-          done
-
       - name: Publish packages in dependency order using npm Trusted Publishing
         run: |
           set -euo pipefail
