@@ -92,6 +92,21 @@ describe("useDataImporter", () => {
     expect(result.current.result).toBeNull();
   });
 
+  it("rejects malformed initial and updated rows or mappings", () => {
+    expect(() => renderHook(() => useDataImporter<Contact>({
+      config,
+      initialRows: null as unknown as RawImportRow[],
+    }))).toThrow(/rows must be an array/);
+
+    const { result } = renderHook(() => useDataImporter<Contact>({ config }));
+    expect(() => result.current.setRows([null as unknown as RawImportRow]))
+      .toThrow(/non-null record/);
+    expect(() => result.current.setMapping(null as unknown as Record<string, keyof Contact>))
+      .toThrow(/mapping must be an object/);
+    expect(() => result.current.setMapping([] as unknown as Record<string, keyof Contact>))
+      .toThrow(/mapping must be an object/);
+  });
+
   it("accepts records produced by the CSV adapter without depending on it", () => {
     const rows: RawImportRow[] = [
       { Email: "ada@example.com", Name: "Ada" },
