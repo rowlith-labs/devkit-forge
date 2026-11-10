@@ -10,7 +10,7 @@ body:
     id: package
     attributes:
       label: Package or area
-      placeholder: "@devkit-forge/import-csv"
+      placeholder: "@rowlith/import-csv"
     validations:
       required: true
   - type: input
