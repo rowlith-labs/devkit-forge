@@ -57,7 +57,7 @@ try {
     if (manifest.name !== expectedName) {
       throw new Error(`Unexpected package name in ${created[0]}: ${manifest.name}`);
     }
-    if (!/^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?$/.test(manifest.version)) {
+    if (!/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(manifest.version)) {
       throw new Error(`Invalid semantic version for ${expectedName}: ${manifest.version}`);
     }
     if (manifest.private === true || manifest.license !== "MIT") {
