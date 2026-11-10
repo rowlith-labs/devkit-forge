@@ -4,7 +4,7 @@
 
 Open-source developer tools built to remove repetitive engineering work.
 
-> **Status:** Early development. APIs and package names may change before the first stable release.
+> **Status:** Public preview (0.1.x). APIs may change before 1.0.0; review the package guides before adopting in production.
 
 ## Data Import Toolkit
 
@@ -71,7 +71,7 @@ The current packages are `@devkit-forge/import-core`, `@devkit-forge/import-csv`
 
 ## Package releases
 
-The npm libraries are maintained under `packages/`. Run `pnpm check:pack` to verify that each built package produces an installable archive with publishable internal dependency versions. See the [release readiness guide](./apps/docs/guide/release-readiness.md) before publishing. No automatic npm publishing is enabled.
+The npm libraries are maintained under `packages/`. Run `pnpm check:pack` to verify that each built package produces an installable archive with publishable internal dependency versions. See the [release readiness guide](./apps/docs/guide/release-readiness.md) before publishing. npm publishing is a deliberate manual GitHub Actions workflow using npm Trusted Publishing (OIDC); pushes and merges never publish automatically.
 
 ## Contributing and security
 
