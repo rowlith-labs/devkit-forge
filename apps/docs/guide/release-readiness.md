@@ -30,15 +30,15 @@ Publishing is deliberately manual. A push, merge, or Changeset does not publish 
 
 The workflow uses npm Trusted Publishing (GitHub Actions OIDC), not a long-lived npm access token. It pins npm CLI 11.5.1, uses Node.js 24, requests the GitHub OIDC identity token, and publishes packages in dependency order:
 
-1. `@devkit-forge/import-core`
-2. `@devkit-forge/import-csv`
-3. `@devkit-forge/import-xlsx`
-4. `@devkit-forge/import-react`
-5. `@devkit-forge/import-ui`
+1. `@rowlith/import-core`
+2. `@rowlith/import-csv`
+3. `@rowlith/import-xlsx`
+4. `@rowlith/import-react`
+5. `@rowlith/import-ui`
 
 Already-published package versions are skipped. Registry lookup errors other than a confirmed missing package stop the workflow rather than being treated as permission to publish.
 
-Each npm package must have a trusted publisher configured for GitHub Actions with owner `yourdevujjawal`, repository `devkit-forge`, and workflow filename `publish-release.yml`. Do not add registry tokens to repository secrets or workflow configuration.
+Each npm package must have a trusted publisher configured for GitHub Actions with owner `yourdevujjawal`, repository `rowlith`, and workflow filename `publish-release.yml`. Do not add registry tokens to repository secrets or workflow configuration.
 
 ## First published versions
 
@@ -46,11 +46,11 @@ The initial public release was published successfully:
 
 | Package | Version |
 |---|---:|
-| `@devkit-forge/import-core` | `0.1.1` |
-| `@devkit-forge/import-csv` | `0.2.0` |
-| `@devkit-forge/import-xlsx` | `0.1.1` |
-| `@devkit-forge/import-react` | `0.1.1` |
-| `@devkit-forge/import-ui` | `0.1.1` |
+| `@rowlith/import-core` | `0.1.1` |
+| `@rowlith/import-csv` | `0.2.0` |
+| `@rowlith/import-xlsx` | `0.1.1` |
+| `@rowlith/import-react` | `0.1.1` |
+| `@rowlith/import-ui` | `0.1.1` |
 
 A successful workflow run confirms what the workflow published; verify package pages and install behavior independently when validating a consumer-facing release.
 

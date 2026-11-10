@@ -7,7 +7,7 @@ The ordinary `parseCsvFile` helper reads the entire file as text and returns all
 Use `streamCsvFile` to parse a browser `File` in chunks and receive row batches:
 
 ```ts
-import { streamCsvFile } from "@devkit-forge/import-csv";
+import { streamCsvFile } from "@rowlith/import-csv";
 
 const summary = await streamCsvFile(file, {
   chunkSize: 1024 * 1024,

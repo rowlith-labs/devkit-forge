@@ -34,7 +34,7 @@ The XLSX adapter is also in-memory. It applies compressed-file, archive-entry ex
 - The playground serializes exported CSV with quoting and neutralizes common spreadsheet formula prefixes (`=`, `+`, `-`, and `@`) by prefixing an apostrophe.
 - Formula neutralization is an export policy, not a guarantee for every spreadsheet application or every downstream workflow. Applications exporting user-controlled data should apply and test their own policy.
 - Do not render imported values as raw HTML. Use framework text rendering or context-appropriate output encoding.
-- Avoid logging sensitive imported records. The playground and example process files locally and do not send file contents to a DevKit Forge server. The Web Component also renders imported values as text rather than raw HTML.
+- Avoid logging sensitive imported records. The playground and example process files locally and do not send file contents to a Rowlith server. The Web Component also renders imported values as text rather than raw HTML.
 
 ## Accessibility
 
