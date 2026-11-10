@@ -90,6 +90,24 @@ describe("registerImportUI", () => {
       .toBe('<img src=x onerror="alert(1)">');
   });
 
+  it("ignores stale file-read results after reset", async () => {
+    const pending = new Promise<string>((resolve) => {
+      void resolve;
+    });
+    const file = new File(["name,email\\nAda,ada@example.com"], "contacts.csv", { type: "text/csv" });
+    const textSpy = vi.spyOn(file, "text").mockReturnValue(pending);
+    const loaded = vi.fn();
+    element.addEventListener("df:loaded", loaded);
+
+    const loading = element.loadFile(file);
+    element.reset();
+    textSpy.mockRestore();
+    await loading;
+
+    expect(element.result).toBeNull();
+    expect(loaded).not.toHaveBeenCalled();
+  });
+
   it("requires configuration and rows before validation", () => {
     const bareTag = `df-empty-${Math.random().toString(36).slice(2)}`;
     registerImportUI(customElements, bareTag);

@@ -128,7 +128,10 @@ export function registerImportUI(
       this.renderResults();
     }
 
+    private loadGeneration = 0;
+
     async loadFile(file: File): Promise<void> {
+      const generation = ++this.loadGeneration;
       this.setBusy(true);
       try {
         const name = file.name.toLowerCase();
@@ -148,6 +151,7 @@ export function registerImportUI(
         } else {
           throw new TypeError("Choose a .csv or .xlsx file.");
         }
+        if (generation !== this.loadGeneration) return;
         if (!records) {
           throw new Error("The file has empty or duplicate headers. Correct the headers before importing.");
         }
@@ -166,9 +170,9 @@ export function registerImportUI(
           composed: true,
         }));
       } catch (error) {
-        this.emitError(error);
+        if (generation === this.loadGeneration) this.emitError(error);
       } finally {
-        this.setBusy(false);
+        if (generation === this.loadGeneration) this.setBusy(false);
       }
     }
 
@@ -188,6 +192,8 @@ export function registerImportUI(
     }
 
     reset(): void {
+      this.loadGeneration += 1;
+      this.setBusy(false);
       this.rows = [];
       this.headers = [];
       this.mapping = undefined;
