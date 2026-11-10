@@ -12,6 +12,15 @@ const customerColumns = [
 ] as const;
 
 describe("createImporter", () => {
+  it("validates importer configuration and input row shapes", () => {
+    expect(() => createImporter<Customer>({ columns: [] })).toThrow(/at least one column/);
+    expect(() => createImporter<Customer>({ columns: [{ key: "email", label: " " }] })).toThrow(/non-empty label/);
+    const importer = createImporter<Customer>({ columns: [...customerColumns] });
+    expect(() => importer.processRows(null as unknown as never)).toThrow(/sourceRows must be an array/);
+    expect(() => importer.processRows([null as unknown as never])).toThrow(/non-null record object/);
+    expect(() => importer.processRows([{ Email: "x", "Full Name": "A" }], null as unknown as never)).toThrow(/mapping must be an object/);
+  });
+
   it("maps rows and reports required, invalid, and duplicate values", () => {
     const importer = createImporter<Customer>({
       columns: [

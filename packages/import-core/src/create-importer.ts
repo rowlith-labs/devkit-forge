@@ -43,6 +43,25 @@ function setOwnValue(target: Record<string, unknown>, key: string, value: unknow
 export function createImporter<T extends object>(
   config: ImportConfig<T>,
 ): Importer<T> {
+  if (!config || !Array.isArray(config.columns) || config.columns.length === 0) {
+    throw new TypeError("Import config must define at least one column.");
+  }
+
+  for (const [index, column] of config.columns.entries()) {
+    if (!column || typeof column.key !== "string" || column.key.length === 0) {
+      throw new TypeError(`Import column at index ${index} must have a non-empty string key.`);
+    }
+    if (typeof column.label !== "string" || column.label.trim().length === 0) {
+      throw new TypeError(`Import column "${column.key}" must have a non-empty label.`);
+    }
+    if (column.transform !== undefined && typeof column.transform !== "function") {
+      throw new TypeError(`Transform for column "${column.key}" must be a function.`);
+    }
+    if (column.validate !== undefined && typeof column.validate !== "function") {
+      throw new TypeError(`Validator for column "${column.key}" must be a function.`);
+    }
+  }
+
   const configuredKeys = new Set(config.columns.map((column) => column.key));
 
   if (configuredKeys.size !== config.columns.length) {
@@ -57,6 +76,16 @@ export function createImporter<T extends object>(
 
   return {
     processRows(sourceRows, suppliedMapping) {
+      if (!Array.isArray(sourceRows)) {
+        throw new TypeError("sourceRows must be an array of records.");
+      }
+      if (sourceRows.some((row) => row === null || typeof row !== "object" || Array.isArray(row))) {
+        throw new TypeError("Every source row must be a non-null record object.");
+      }
+      if (suppliedMapping !== undefined && (suppliedMapping === null || typeof suppliedMapping !== "object" || Array.isArray(suppliedMapping))) {
+        throw new TypeError("mapping must be an object mapping source headers to schema keys.");
+      }
+
       const validRows: T[] = [];
       const invalidRows: ProcessRowsResult<T>["invalidRows"] = [];
       const seen = new Map<string, Set<string>>();
