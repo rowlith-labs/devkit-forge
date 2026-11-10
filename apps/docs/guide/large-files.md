@@ -1,6 +1,6 @@
 # Working with large files
 
-The ordinary `parseCsvFile` helper reads the entire file as text and returns all parsed records. The React hook also stores all source rows and the latest result in React state. These are convenient APIs, but they are not intended for very large files.
+The ordinary `parseCsvFile` helper reads the entire file as text and returns all parsed records. It rejects files larger than 25 MiB by default; set `maxFileSizeBytes` to an appropriate positive safe integer to change that limit. The React hook also stores all source rows and the latest result in React state. These are convenient APIs, but they are not intended for very large files.
 
 ## Stream CSV in batches
 
