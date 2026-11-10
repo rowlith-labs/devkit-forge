@@ -25,12 +25,14 @@ if (result.records === null || result.hasErrors) {
 
 ## Parse a browser File
 
-For small and medium files, `parseCsvFile` is the convenient API. It reads the full file into memory.
+For small and medium files, `parseCsvFile` is the convenient API. It reads the full file into memory and rejects files larger than 25 MiB by default. Override `maxFileSizeBytes` when a different in-memory limit is appropriate; use `streamCsvFile` for large files.
 
 ```ts
 import { parseCsvFile } from "@devkit-forge/import-csv";
 
-const result = await parseCsvFile(file);
+const result = await parseCsvFile(file, {
+  maxFileSizeBytes: 25 * 1024 * 1024, // default: 25 MiB
+});
 console.log(result.headers, result.records, result.issues);
 ```
 
