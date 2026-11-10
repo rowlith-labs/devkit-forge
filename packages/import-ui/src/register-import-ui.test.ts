@@ -92,7 +92,7 @@ describe("registerImportUI", () => {
 
   it("ignores stale file-read results after reset", async () => {
     let resolveRead!: (value: { records: Array<{ name: string; email: string }>; headers: string[]; issues: never[] }) => void;
-    const pending = new Promise<{ records: Array<{ name: string; email: string }>; headers: string[]; issues: never[] }>((resolve) => {
+    const pending = new Promise<import("@devkit-forge/import-csv").CsvParseResult>((resolve) => {
       resolveRead = resolve;
     });
     const csvModule = await import("@devkit-forge/import-csv");
@@ -106,7 +106,11 @@ describe("registerImportUI", () => {
     resolveRead({
       records: [{ name: "Ada", email: "ada@example.com" }],
       headers: ["name", "email"],
+      data: [["Ada", "ada@example.com"]],
       issues: [],
+      delimiter: ",",
+      rowCount: 1,
+      hasErrors: false,
     });
     await loading;
     parseSpy.mockRestore();
