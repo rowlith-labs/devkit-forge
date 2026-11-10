@@ -24,6 +24,11 @@ export interface CsvParseOptions {
   trimHeaders?: boolean;
 }
 
+export interface CsvFileParseOptions extends CsvParseOptions {
+  /** Maximum input file size in bytes. Defaults to 25 MiB. */
+  maxFileSizeBytes?: number;
+}
+
 export interface CsvParseResult {
   /** Header labels in source order. Duplicate labels are preserved. */
   headers: string[];
