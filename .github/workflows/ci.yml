@@ -53,6 +53,8 @@ jobs:
         run: pnpm --filter @devkit-forge/import-react test
       - name: Build React adapter
         run: pnpm --filter @devkit-forge/import-react build
+      - name: Verify publishable package archives
+        run: pnpm check:pack
       - name: Typecheck playground
         run: pnpm --filter @devkit-forge/playground typecheck
       - name: Test playground exports
