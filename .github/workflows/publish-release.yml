@@ -1,0 +1,107 @@
+name: Publish npm release
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: Type PUBLISH to confirm publishing the current main release
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: npm-publish-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main' && inputs.confirm == 'PUBLISH'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v7
+        with:
+          ref: main
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 9.15.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Verify release packages
+        run: |
+          set -euo pipefail
+          pnpm audit --audit-level high
+          pnpm check:pack
+          for package in import-core import-csv import-xlsx import-react import-ui; do
+            node -e "const p=require('./packages/$package/package.json'); if (!p.version || p.version === '0.1.0') { console.error('Package is not versioned for release:', p.name, p.version); process.exit(1) }"
+          done
+
+      - name: Build and test packages
+        run: |
+          set -euo pipefail
+          for package in import-core import-csv import-xlsx import-react import-ui; do
+            pnpm --filter "@devkit-forge/$package" typecheck
+            pnpm --filter "@devkit-forge/$package" test
+            pnpm --filter "@devkit-forge/$package" build
+          done
+
+      - name: Pack release tarballs
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/devkit-forge-release"
+          for package in import-core import-csv import-xlsx import-react import-ui; do
+            pnpm --dir "packages/$package" pack --pack-destination "$RUNNER_TEMP/devkit-forge-release"
+          done
+
+      - name: Verify release tarballs
+        run: |
+          set -euo pipefail
+          release_dir="$RUNNER_TEMP/devkit-forge-release"
+          for package in import-core import-csv import-xlsx import-react import-ui; do
+            version="$(node -p "require('./packages/$package/package.json').version")"
+            tarball="$(find "$release_dir" -maxdepth 1 -type f -name "*$package-$version.tgz" -print -quit)"
+            test -n "$tarball" || { echo "::error::Missing tarball for $package@$version"; exit 1; }
+            echo "Verified $(basename "$tarball")"
+          done
+
+      - name: Publish packages in dependency order
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          set -euo pipefail
+          release_dir="$RUNNER_TEMP/devkit-forge-release"
+          publish_if_missing() {
+            package_name="$1"
+            package_dir="$2"
+            package_slug="$3"
+            version="$(node -p "require('./$package_dir/package.json').version")"
+            if npm view "$package_name@$version" version >/dev/null 2>&1; then
+              echo "$package_name@$version is already published; skipping."
+              return
+            fi
+            tarball="$(find "$release_dir" -maxdepth 1 -type f -name "*$package_slug-$version.tgz" -print -quit)"
+            test -n "$tarball" || { echo "::error::Missing tarball for $package_name@$version"; exit 1; }
+            npm publish "$tarball" --access public
+          }
+          publish_if_missing "@devkit-forge/import-core" "packages/import-core" "import-core"
+          publish_if_missing "@devkit-forge/import-csv" "packages/import-csv" "import-csv"
+          publish_if_missing "@devkit-forge/import-xlsx" "packages/import-xlsx" "import-xlsx"
+          publish_if_missing "@devkit-forge/import-react" "packages/import-react" "import-react"
+          publish_if_missing "@devkit-forge/import-ui" "packages/import-ui" "import-ui"
