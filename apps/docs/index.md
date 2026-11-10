@@ -34,7 +34,7 @@ A common product requirement sounds simple: *let a user upload a spreadsheet and
 
 But the actual work quickly grows:
 
-- A customer uploads \`Full Name\`, while your database expects \`name\`.
+- A customer uploads `Full Name`, while your database expects `name`.
 - A required email is blank or malformed.
 - The same customer appears twice in the file.
 - A spreadsheet has duplicate or empty column headers.
@@ -80,19 +80,19 @@ These are examples of workflows you can build with the libraries—not turnkey b
 
 | Package | Use it when you need |
 | --- | --- |
-| [\`import-core\`](/packages/import-core) | Column mapping, transforms, schema validation, duplicate detection, and row-level results. |
-| [\`import-csv\`](/packages/import-csv) | CSV text/file parsing, header diagnostics, or batch streaming for large CSV files. |
-| [\`import-xlsx\`](/packages/import-xlsx) | Read XLSX workbooks and worksheets with explicit parsing limits. |
-| [\`import-react\`](/packages/import-react) | Keep import rows, mappings, and validation results in React state. |
-| [\`import-ui\`](/packages/import-ui) | Add a small framework-independent browser import component. |
+| [`import-core`](/packages/import-core) | Column mapping, transforms, schema validation, duplicate detection, and row-level results. |
+| [`import-csv`](/packages/import-csv) | CSV text/file parsing, header diagnostics, or batch streaming for large CSV files. |
+| [`import-xlsx`](/packages/import-xlsx) | Read XLSX workbooks and worksheets with explicit parsing limits. |
+| [`import-react`](/packages/import-react) | Keep import rows, mappings, and validation results in React state. |
+| [`import-ui`](/packages/import-ui) | Add a small framework-independent browser import component. |
 
-You do not need every package. For example, a React application importing CSV files can combine \`import-core\`, \`import-csv\`, and \`import-react\`. A Node.js service that already receives parsed objects may only need \`import-core\`.
+You do not need every package. For example, a React application importing CSV files can combine `import-core`, `import-csv`, and `import-react`. A Node.js service that already receives parsed objects may only need `import-core`.
 
 ## A quick example
 
 Define the shape your application expects, then process source rows against it:
 
-\`\`\`ts
+```ts
 import { createImporter } from "@devkit-forge/import-core";
 
 const importer = createImporter({
@@ -110,7 +110,7 @@ const result = importer.processRows([
 
 console.log(result.validRows);   // records ready for your next step
 console.log(result.invalidRows); // rows with structured issues
-\`\`\`
+```
 
 This is the core validation step; add a file parser when your input is a CSV or XLSX file. See the [quick start](/guide/quick-start) for a complete CSV example.
 
