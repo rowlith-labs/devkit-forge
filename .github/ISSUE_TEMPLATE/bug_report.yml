@@ -1,0 +1,47 @@
+name: Bug report
+description: Report a reproducible defect in a package, example, or documentation.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: "Do not include private data, credentials, customer files, or security-sensitive details. For vulnerabilities, follow SECURITY.md."
+  - type: input
+    id: package
+    attributes:
+      label: Package or area
+      placeholder: "@devkit-forge/import-csv"
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Include a minimal code sample and synthetic input only.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Node/browser version, OS, package manager, and relevant configuration.
+    validations:
+      required: false
