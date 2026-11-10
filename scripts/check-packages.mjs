@@ -79,6 +79,18 @@ try {
       throw new Error(`${expectedName} has inconsistent runtime/type entry points`);
     }
 
+    // Keep the public export map aligned with the tarball's actual contents.
+    for (const [subpath, target] of Object.entries(manifest.exports ?? {})) {
+      const exportTargets = typeof target === "string"
+        ? [target]
+        : Object.values(target ?? {}).filter((value) => typeof value === "string");
+      for (const exportTarget of exportTargets) {
+        if (typeof exportTarget !== "string" || !exportTarget.startsWith("./")) {
+          throw new Error(`${expectedName} has an unsupported export target for ${subpath}`);
+        }
+      }
+    }
+
     const dependencies = {
       ...manifest.dependencies,
       ...manifest.optionalDependencies,
@@ -93,14 +105,33 @@ try {
     }
 
     const entries = spawnSync("tar", ["-tzf", tarball], { encoding: "utf8" });
+    if (entries.status !== 0) {
+      throw new Error(`Could not list packed output for ${expectedName}`);
+    }
     const packedEntries = new Set(entries.stdout.split("\n"));
-    for (const requiredEntry of [
+    const requiredEntries = new Set([
       "package/dist/index.js",
       "package/dist/index.d.ts",
       "package/README.md",
       "package/LICENSE",
+    ]);
+
+    for (const target of [
+      manifest.main,
+      manifest.types,
+      ...Object.values(manifest.exports ?? {}).flatMap((entry) => (
+        typeof entry === "string"
+          ? [entry]
+          : Object.values(entry ?? {}).filter((value) => typeof value === "string")
+      )),
     ]) {
-      if (entries.status !== 0 || !packedEntries.has(requiredEntry)) {
+      if (typeof target === "string" && target.startsWith("./")) {
+        requiredEntries.add(`package/${target.slice(2)}`);
+      }
+    }
+
+    for (const requiredEntry of requiredEntries) {
+      if (!packedEntries.has(requiredEntry)) {
         throw new Error(`Packed output for ${expectedName} is missing ${requiredEntry}`);
       }
     }
