@@ -1,4 +1,4 @@
-# @devkit-forge/import-csv
+# @rowlith/import-csv
 
 ## 0.2.0
 
