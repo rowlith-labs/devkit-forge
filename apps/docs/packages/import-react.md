@@ -1,6 +1,8 @@
 # @devkit-forge/import-react
 
-Headless React state management for the DevKit Forge importer.
+A headless React hook that connects React state to the framework-independent `@devkit-forge/import-core` engine. Use it when you want to build your own React file-import experience while keeping parsing, UI, and validation separate.
+
+It does not render a file picker, parse CSV/XLSX files, upload records, or persist data.
 
 ## Install
 
@@ -10,12 +12,9 @@ npm install @devkit-forge/import-react @devkit-forge/import-core react
 
 React 18 and 19 are supported as peer dependencies.
 
-## `useDataImporter<T>({ config, initialRows?, initialMapping? })`
-
-Creates a hook instance backed by `@devkit-forge/import-core`.
+## Quick start
 
 ```tsx
-import { useEffect } from "react";
 import { useDataImporter } from "@devkit-forge/import-react";
 import type { ImportConfig } from "@devkit-forge/import-core";
 
@@ -29,36 +28,66 @@ const config: ImportConfig<Contact> = {
     { key: "email", label: "Email", required: true },
     { key: "name", label: "Name", required: true },
   ],
+  duplicateKeys: ["email"],
 };
 
-function ContactImport({ records }: { records: Record<string, unknown>[] }) {
+function ContactImport({ records }: {
+  records: Record<string, unknown>[];
+}) {
   const importer = useDataImporter<Contact>({ config });
 
-  useEffect(() => {
-    importer.setRows(records);
-  }, [importer.setRows, records]);
-
   function validate() {
+    importer.setRows(records);
     const result = importer.process();
-    console.log(result.validRows, result.invalidRows);
+
+    if (result.invalidCount === 0) {
+      // Hand result.validRows to your application's save workflow.
+    }
   }
 
-  return <button onClick={validate}>Validate records</button>;
+  return (
+    <section>
+      <button onClick={validate} disabled={records.length === 0}>
+        Validate {records.length} rows
+      </button>
+      {importer.result && (
+        <p>
+          {importer.result.validCount} valid, {importer.result.invalidCount} invalid
+        </p>
+      )}
+    </section>
+  );
 }
 ```
 
-## Returned values
+For a file workflow, parse the browser `File` with `@devkit-forge/import-csv` or `@devkit-forge/import-xlsx`, then pass the resulting records to `setRows`.
 
-| Member | Description |
+## Hook API
+
+`useDataImporter<T>({ config, initialRows?, initialMapping? })` returns:
+
+| Member | Behavior |
 | --- | --- |
 | `rows` | Current source records |
 | `mapping` | Current source-header to destination-key mapping |
-| `result` | Latest result, or null before processing |
-| `setRows(rows)` | Replace rows and invalidate the previous result |
+| `result` | Latest `ProcessRowsResult<T>`, or `null` before processing |
+| `setRows(rows)` | Replace records and invalidate the previous result |
 | `setMapping(mapping)` | Replace mapping and invalidate the previous result |
-| `process()` | Process current rows synchronously |
+| `process()` | Synchronously process current rows through core |
 | `reset()` | Clear rows and result, restoring the initial mapping |
 
-The hook does not parse files, render UI, upload data, or persist records. Use the CSV adapter or another parser to produce records, then pass them to `setRows`.
+Processing is explicit: changing rows or mapping does not automatically validate.
 
-Keep `config` referentially stable. Changing it creates a new core importer while retaining current rows and mappings.
+## Configuration and lifecycle
+
+Keep `config` referentially stable (define it outside the component or memoize it). A new config object creates a new core importer while current rows and mappings are retained. Avoid recreating configuration on every render.
+
+## When to use it
+
+Choose this package when you need React state and want full control over markup, accessibility, design system, file selection, and workflow. It composes naturally with `import-core` and either file adapter.
+
+Do not use it as a large-file streaming abstraction. The hook stores rows and a complete result in React state, so it is intended for ordinary in-memory imports. For large CSV files, consume `streamCsvFile` batches outside the hook instead of accumulating the whole file in React state.
+
+Your application remains responsible for upload authorization, persistence, transactions, retries, and user confirmation before committing imported records. If you prefer a ready-made framework-independent browser interface, consider `@devkit-forge/import-ui`.
+
+See [Architecture](/guide/architecture) and [Import UI](/guide/import-ui).
