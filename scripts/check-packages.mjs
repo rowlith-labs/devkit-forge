@@ -24,7 +24,6 @@ try {
   for (const name of packages) {
     const packageDir = `packages/${name}`;
     const expectedName = `@devkit-forge/${name}`;
-    const sourceManifest = manifests.get(expectedName);
     const before = new Set(await readdir(output));
     const packed = spawnSync("pnpm", [
       "--dir", packageDir,
