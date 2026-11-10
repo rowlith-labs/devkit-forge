@@ -3,6 +3,7 @@ import { defineConfig } from "vitepress";
 export default defineConfig({
   title: "DevKit Forge",
   description: "TypeScript-first tools for reliable data import workflows.",
+  base: "/devkit-forge/",
   cleanUrls: true,
   themeConfig: {
     siteTitle: "DevKit Forge",
