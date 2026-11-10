@@ -15,7 +15,7 @@ hero:
       text: Try the playground
       link: https://github.com/rowlith-labs/rowlith/tree/main/apps/playground
   image:
-    src: /devkit-mark.svg
+    src: /rowlith-mark.svg
     alt: Rowlith mark
 features:
   - title: Stop writing the same import plumbing

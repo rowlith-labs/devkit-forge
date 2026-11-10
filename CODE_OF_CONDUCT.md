@@ -1,6 +1,6 @@
 # Code of Conduct
 
-DevKit Forge is committed to a welcoming, respectful, and constructive community.
+Rowlith is committed to a welcoming, respectful, and constructive community.
 
 ## Expected behaviour
 

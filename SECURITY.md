@@ -1,6 +1,6 @@
 # Security policy
 
-DevKit Forge parses user-supplied CSV and XLSX files. Treat all imported files and cell values as untrusted input.
+Rowlith parses user-supplied CSV and XLSX files. Treat all imported files and cell values as untrusted input.
 
 ## Reporting a vulnerability
 
@@ -16,7 +16,7 @@ Before the first stable release, the latest code on the default branch is the on
 
 ## Security boundaries
 
-- CSV and XLSX parsing happens in the consuming application; imported data is not sent to a DevKit Forge hosted service by these libraries.
+- CSV and XLSX parsing happens in the consuming application; imported data is not sent to a Rowlith hosted service by these libraries.
 - CSV cells are not evaluated as formulas or JavaScript by the parser.
 - XLSX formulas are not calculated. Cached values, formula text, and rejection are explicit policies.
 - XLSX resource limits reduce exposure to oversized archive entries and workbook structures but cannot guarantee safety for every malformed or adversarial file.
