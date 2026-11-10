@@ -25,6 +25,7 @@ Parses a browser `File` in chunks. Requires an `onRows(rows, rowOffset)` callbac
 ## Types
 
 - `CsvParseOptions`: optional delimiter, empty-line behavior, and header trimming.
+- `CsvFileParseOptions`: CSV parse options plus a positive safe-integer `maxFileSizeBytes` limit (25 MiB by default).
 - `CsvFileParseOptions`: CSV parse options plus the in-memory file-size limit (25 MiB by default).
 - `CsvParseResult`: headers, cell arrays, records, issues, delimiter, row count, and error flag.
 - `CsvStreamOptions`: parse options, chunk size, and row callback.
