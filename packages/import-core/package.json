@@ -1,5 +1,5 @@
 {
-  "name": "@devkit-forge/import-core",
+  "name": "@rowlith/import-core",
   "version": "0.1.1",
   "description": "Framework-agnostic, TypeScript-first data import and validation engine",
   "license": "MIT",
@@ -28,12 +28,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourdevujjawal/devkit-forge.git",
+    "url": "https://github.com/rowlith-labs/rowlith.git",
     "directory": "packages/import-core"
   },
-  "homepage": "https://github.com/yourdevujjawal/devkit-forge/tree/main/packages/import-core#readme",
+  "homepage": "https://github.com/rowlith-labs/rowlith/tree/main/packages/import-core#readme",
   "bugs": {
-    "url": "https://github.com/yourdevujjawal/devkit-forge/issues"
+    "url": "https://github.com/rowlith-labs/rowlith/issues"
   },
   "engines": {
     "node": ">=20"
@@ -42,7 +42,7 @@
     "access": "public"
   },
   "keywords": [
-    "devkit-forge",
+    "rowlith",
     "data-import",
     "typescript",
     "validation",
