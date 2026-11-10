@@ -5,7 +5,7 @@ export interface ImportIssue {
   rowIndex: number;
   column: string;
   value: unknown;
-  code: "required" | "invalid" | "duplicate" | "unmapped" | "ambiguous";
+  code: "required" | "invalid" | "duplicate" | "ambiguous";
   message: string;
 }
 

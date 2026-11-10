@@ -56,6 +56,6 @@ Normalizes a header for matching by ignoring case, spaces, and punctuation.
 
 ## Issue codes
 
-`required`, `invalid`, `duplicate`, `unmapped`, and `ambiguous`.
+`required`, `invalid`, `duplicate`, and `ambiguous`.
 
 See [Validation and mapping](/guide/validation-and-mapping) for mapping semantics and duplicate behavior.
