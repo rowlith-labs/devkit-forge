@@ -34,6 +34,13 @@ describe("parseXlsxFile", () => {
     expect((await parseXlsxFile(bytes, { sheet: 1 })).selectedSheet).toBe("Other");
   });
 
+  it.each([-1, 1.5, Number.NaN, Number.POSITIVE_INFINITY, Number.MAX_SAFE_INTEGER + 1])(
+    "rejects invalid worksheet index %s",
+    async (sheet) => {
+      await expect(parseXlsxFile(await makeWorkbook(), { sheet })).rejects.toThrow(RangeError);
+    },
+  );
+
   it("reports missing sheets without throwing", async () => {
     const result = await parseXlsxFile(await makeWorkbook(), { sheet: "Missing" });
     expect(result.sheetNames).toEqual(["Contacts", "Other"]);
