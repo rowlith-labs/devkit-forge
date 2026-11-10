@@ -5,11 +5,11 @@ The toolkit separates schema processing, file parsing, framework adapters, and o
 ```text
 Your application
   ├─ File selection and user experience
-  ├─ @devkit-forge/import-ui (optional Web Component)
-  ├─ @devkit-forge/import-react (optional React state adapter)
-  ├─ @devkit-forge/import-xlsx (optional XLSX parser)
-  ├─ @devkit-forge/import-csv (optional CSV parser)
-  └─ @devkit-forge/import-core
+  ├─ @rowlith/import-ui (optional Web Component)
+  ├─ @rowlith/import-react (optional React state adapter)
+  ├─ @rowlith/import-xlsx (optional XLSX parser)
+  ├─ @rowlith/import-csv (optional CSV parser)
+  └─ @rowlith/import-core
        ├─ Header matching / explicit mapping
        ├─ Column transforms
        ├─ Required and custom validation

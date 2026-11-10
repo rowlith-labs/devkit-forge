@@ -5,7 +5,7 @@ The CSV adapter exposes three entry points.
 ## Parse text
 
 ```ts
-import { parseCsvText } from "@devkit-forge/import-csv";
+import { parseCsvText } from "@rowlith/import-csv";
 
 const parsed = parseCsvText("Name;Email\nAda;ada@example.com", {
   delimiter: ";",
@@ -21,7 +21,7 @@ If the delimiter is omitted, Papa Parse attempts delimiter detection. Cell value
 ## Parse a browser File
 
 ```ts
-import { parseCsvFile } from "@devkit-forge/import-csv";
+import { parseCsvFile } from "@rowlith/import-csv";
 
 const parsed = await parseCsvFile(file, {
   maxFileSizeBytes: 25 * 1024 * 1024, // default: 25 MiB

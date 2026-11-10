@@ -5,14 +5,14 @@ This walkthrough defines a schema, parses CSV text, and validates the resulting 
 ## 1. Install
 
 ```bash
-npm install @devkit-forge/import-core @devkit-forge/import-csv
+npm install @rowlith/import-core @rowlith/import-csv
 ```
 
 ## 2. Define your destination schema
 
 ```ts
-import { createImporter } from "@devkit-forge/import-core";
-import type { ImportConfig } from "@devkit-forge/import-core";
+import { createImporter } from "@rowlith/import-core";
+import type { ImportConfig } from "@rowlith/import-core";
 
 interface Contact {
   name: string;
@@ -43,7 +43,7 @@ A column's `key` is the property in your destination type. Its `label` is the hu
 ## 3. Parse and validate
 
 ```ts
-import { parseCsvText } from "@devkit-forge/import-csv";
+import { parseCsvText } from "@rowlith/import-csv";
 
 const csv = `Full name,Email address
 Ada Lovelace,ada@example.com
@@ -81,4 +81,4 @@ The library deliberately leaves saving, API calls, and transaction handling to y
 
 ## Try the playground
 
-The repository includes a browser playground with sample data, column mapping, row filters, and CSV exports. See the [playground README](https://github.com/truerdp/devkit-forge/blob/main/apps/playground/README.md).
+The repository includes a browser playground with sample data, column mapping, row filters, and CSV exports. See the [playground README](https://github.com/truerdp/rowlith/blob/main/apps/playground/README.md).

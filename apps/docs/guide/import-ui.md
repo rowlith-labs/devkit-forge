@@ -1,19 +1,19 @@
 # Import UI
 
-`@devkit-forge/import-ui` provides a small, accessible browser UI as a native Web Component. It is framework-independent: no React, Vue, or UI library is required.
+`@rowlith/import-ui` provides a small, accessible browser UI as a native Web Component. It is framework-independent: no React, Vue, or UI library is required.
 
 ## Install
 
 ```sh
-pnpm add @devkit-forge/import-ui @devkit-forge/import-core @devkit-forge/import-csv @devkit-forge/import-xlsx
+pnpm add @rowlith/import-ui @rowlith/import-core @rowlith/import-csv @rowlith/import-xlsx
 ```
 
 ## Register and configure
 
 ```ts
-import { registerImportUI } from "@devkit-forge/import-ui";
-import type { ImportUIElement } from "@devkit-forge/import-ui";
-import type { ImportConfig } from "@devkit-forge/import-core";
+import { registerImportUI } from "@rowlith/import-ui";
+import type { ImportUIElement } from "@rowlith/import-ui";
+import type { ImportConfig } from "@rowlith/import-core";
 
 interface Customer {
   name: string;
