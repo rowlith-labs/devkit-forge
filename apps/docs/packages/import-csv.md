@@ -1,6 +1,6 @@
 # @devkit-forge/import-csv
 
-CSV parsing adapter for the DevKit Forge import engine.
+A CSV parsing adapter that turns text or a browser `File` into headers, source rows, diagnostics, and (when safe) object records. It is separate from `@devkit-forge/import-core`, so applications that do not import CSV do not need a CSV parser dependency.
 
 ## Install
 
@@ -8,37 +8,82 @@ CSV parsing adapter for the DevKit Forge import engine.
 npm install @devkit-forge/import-csv @devkit-forge/import-core
 ```
 
-## Functions
+## Parse CSV text
 
-### `parseCsvText(input, options?)`
+```ts
+import { parseCsvText } from "@devkit-forge/import-csv";
 
-Parses CSV text and returns headers, source arrays, object records (when headers are safe), parser issues, detected delimiter, row count, and an error flag.
+const parsed = parseCsvText(`Name,Email
+Ada,ada@example.com`);
 
-### `parseCsvFile(file, options?)`
+if (parsed.records === null || parsed.hasErrors) {
+  console.error(parsed.issues);
+} else {
+  console.log(parsed.records);
+}
+```
 
-Reads a browser `File` into memory and parses its text. Rejects files larger than 25 MiB by default; configure `maxFileSizeBytes` through `CsvFileParseOptions` to change the limit. Prefer this for small and medium files.
+Use `parseCsvText` when the CSV text is already available, such as from an API response or a text editor.
 
-### `streamCsvFile(file, options)`
+## Parse a browser File
 
-Parses a browser `File` in chunks. Requires an `onRows(rows, rowOffset)` callback. The callback is synchronous; throwing aborts parsing and rejects the promise.
+`parseCsvFile(file, options?)` is convenient for small and medium browser uploads. It reads the complete file into memory and enforces a 25 MiB default limit.
 
-## Types
+```ts
+import { parseCsvFile } from "@devkit-forge/import-csv";
 
-- `CsvParseOptions`: optional delimiter, empty-line behavior, and header trimming.
-- `CsvFileParseOptions`: CSV parse options plus a positive safe-integer `maxFileSizeBytes` limit (25 MiB by default).
-- `CsvFileParseOptions`: CSV parse options plus the in-memory file-size limit (25 MiB by default).
-- `CsvParseResult`: headers, cell arrays, records, issues, delimiter, row count, and error flag.
-- `CsvStreamOptions`: parse options, chunk size, and row callback.
-- `CsvStreamResult`: headers, issues, delimiter, row count, and error flag.
-- `CsvIssue`: parser/header/row-width issue code and message, with optional row and column indexes.
+const parsed = await parseCsvFile(file, {
+  maxFileSizeBytes: 25 * 1024 * 1024, // default: 25 MiB
+});
+```
 
-## Important behavior
+Use this API when the file comfortably fits your application's memory budget. Raising the size limit does not make parsing streaming.
 
-- Cell values remain strings; implicit type conversion is disabled.
+## Stream a large CSV
+
+`streamCsvFile(file, options)` parses a browser `File` in chunks and passes batches to a synchronous callback. It does not accumulate all parsed rows for you.
+
+```ts
+import { streamCsvFile } from "@devkit-forge/import-csv";
+
+const summary = await streamCsvFile(file, {
+  chunkSize: 1024 * 1024, // 1 MiB input chunks; default
+  onRows(rows, rowOffset) {
+    // Consume this batch before returning; do not retain every batch.
+    console.log("Batch starts at data row", rowOffset, rows);
+  },
+});
+
+console.log(summary.headers, summary.rowCount, summary.issues);
+```
+
+The callback is synchronous by design. Throwing from it aborts parsing and rejects the promise. `rowOffset` and issue `rowIndex` are zero-based data-row indexes (the header is excluded). `chunkSize` and `maxIssues` must be positive safe integers. Diagnostics are capped at 1,000 by default; excess diagnostics are summarized by an `issues-truncated` issue while `totalIssueCount` preserves the full count. File APIs require the browser `File` API.
+
+## Parsing behavior and edge cases
+
+- Cell values remain strings; there is no implicit number or date conversion.
 - Header order is preserved.
 - Duplicate and empty headers are reported.
-- `records` is null when headers are not all non-empty and unique.
+- `records` is `null` unless every header is non-empty and unique. The source cell arrays remain available, so duplicate names cannot overwrite one another.
 - Blank lines are skipped by default.
 - Quoted delimiters and embedded newlines are supported.
+- Row-width mismatches and parser errors are reported as issues.
 
-See [CSV imports](/guide/csv-imports), [XLSX imports](/guide/xlsx-imports), and [large files](/guide/large-files).
+## Options and result types
+
+- `parseCsvText(input, options?)`: parse a string synchronously.
+- `parseCsvFile(file, options?)`: read and parse a browser file in memory.
+- `streamCsvFile(file, options)`: process batches from a browser file.
+- `CsvParseOptions`: optional delimiter, empty-line behavior, and header trimming.
+- `CsvFileParseOptions`: CSV options plus a positive safe-integer `maxFileSizeBytes` (25 MiB by default).
+- `CsvStreamOptions`: CSV options, chunk size, diagnostic cap, and required `onRows` callback.
+- `CsvParseResult` / `CsvStreamResult`: parsed data or stream summary, issues, delimiter, row count, and error state.
+- `CsvIssue`: issue code and message, with optional row and column indexes.
+
+## When to use it
+
+Use this package when CSV is an input format and you need parser diagnostics or chunked file processing. Pass its object records to `@devkit-forge/import-core` for schema mapping and validation. For React state, add `@devkit-forge/import-react`; for the ready-made browser interface, use `@devkit-forge/import-ui`.
+
+Do not use `parseCsvFile` for very large files or expect the streaming callback to perform asynchronous work. The parser does not validate your business schema, upload data, or persist records.
+
+See [CSV imports](/guide/csv-imports), [Large files](/guide/large-files), and [Validation and mapping](/guide/validation-and-mapping).
