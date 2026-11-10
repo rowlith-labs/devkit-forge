@@ -15,6 +15,7 @@ React 18 and 19 are supported as peer dependencies.
 ## Quick start
 
 ```tsx
+import { useEffect } from "react";
 import { useDataImporter } from "@devkit-forge/import-react";
 import type { ImportConfig } from "@devkit-forge/import-core";
 
@@ -36,10 +37,14 @@ function ContactImport({ records }: {
 }) {
   const importer = useDataImporter<Contact>({ config });
 
-  function validate() {
+  // Update hook state when parsed records arrive. Processing is a separate
+  // user action, after React has rendered the updated state.
+  useEffect(() => {
     importer.setRows(records);
-    const result = importer.process();
+  }, [importer.setRows, records]);
 
+  function validate() {
+    const result = importer.process();
     if (result.invalidCount === 0) {
       // Hand result.validRows to your application's save workflow.
     }
@@ -47,8 +52,8 @@ function ContactImport({ records }: {
 
   return (
     <section>
-      <button onClick={validate} disabled={records.length === 0}>
-        Validate {records.length} rows
+      <button onClick={validate} disabled={importer.rows.length === 0}>
+        Validate {importer.rows.length} rows
       </button>
       {importer.result && (
         <p>
