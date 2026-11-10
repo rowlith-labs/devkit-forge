@@ -68,6 +68,10 @@ jobs:
         run: pnpm --filter @devkit-forge/example-vite-react typecheck
       - name: Build React example
         run: pnpm --filter @devkit-forge/example-vite-react build
+      - name: Typecheck Web Component example
+        run: pnpm --filter @devkit-forge/example-vanilla-ui typecheck
+      - name: Build Web Component example
+        run: pnpm --filter @devkit-forge/example-vanilla-ui build
       - name: Build documentation
         run: pnpm --filter @devkit-forge/docs build
       - name: Install Chromium for browser tests
