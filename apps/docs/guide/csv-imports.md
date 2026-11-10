@@ -23,10 +23,12 @@ If the delimiter is omitted, Papa Parse attempts delimiter detection. Cell value
 ```ts
 import { parseCsvFile } from "@devkit-forge/import-csv";
 
-const parsed = await parseCsvFile(file);
+const parsed = await parseCsvFile(file, {
+  maxFileSizeBytes: 25 * 1024 * 1024, // default: 25 MiB
+});
 ```
 
-This convenience API reads the complete file into memory before parsing. Use it for small and medium files where that memory cost is acceptable.
+This convenience API reads the complete file into memory before parsing and rejects files larger than 25 MiB by default. Set `maxFileSizeBytes` to a different positive safe integer when appropriate. Use `streamCsvFile` for large files.
 
 ## Header diagnostics
 
