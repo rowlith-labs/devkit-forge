@@ -1,6 +1,6 @@
 {
   "name": "@devkit-forge/import-react",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Headless React hooks for the DevKit Forge data import engine",
   "license": "MIT",
   "type": "module",

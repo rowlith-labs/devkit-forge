@@ -1,6 +1,6 @@
 {
   "name": "@devkit-forge/import-xlsx",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "XLSX workbook parsing adapter for the DevKit Forge data import engine",
   "license": "MIT",
   "type": "module",
