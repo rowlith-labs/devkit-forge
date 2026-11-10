@@ -51,6 +51,16 @@ describe("streamCsvFile", () => {
     expect(result.hasErrors).toBe(true);
   });
 
+  it("enforces a file-size limit before reading a CSV file into memory", async () => {
+    const file = createFile("name\nAda");
+    await expect(import("./stream-csv-file.js").then(({ parseCsvFile }) =>
+      parseCsvFile(file, { maxFileSizeBytes: 2 }),
+    )).rejects.toThrow(/configured limit/);
+    await expect(import("./stream-csv-file.js").then(({ parseCsvFile }) =>
+      parseCsvFile(file, { maxFileSizeBytes: 0 }),
+    )).rejects.toThrow(/positive safe integer/);
+  });
+
   it("rejects when the consumer callback throws", async () => {
     await expect(
       streamCsvFile(createFile("name,age\nAda,37"), {
