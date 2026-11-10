@@ -97,14 +97,17 @@ export function registerImportUI(
     configure<T extends object>(config: ImportConfig<T>): void {
       // The public generic schema is retained by the caller; the UI exposes a
       // string-keyed result shape because custom elements cannot carry TS generics.
-      this.config = config as unknown as ImportConfig<Record<string, unknown>>;
-      createImporter(this.config);
+      const nextConfig = config as unknown as ImportConfig<Record<string, unknown>>;
+      createImporter(nextConfig);
+      this.config = nextConfig;
       this.latestResult = null;
       this.renderMapping();
       this.renderResults();
     }
 
     setRows(rows: RawImportRow[], headers = rows[0] ? Object.keys(rows[0]) : []): void {
+      this.loadGeneration += 1;
+      this.setBusy(false);
       this.rows = rows.map((row) => ({ ...row }));
       this.filename = "";
       this.headers = [...headers];
@@ -122,6 +125,8 @@ export function registerImportUI(
     }
 
     setMapping(mapping: ColumnMapping<Record<string, unknown>>): void {
+      this.loadGeneration += 1;
+      this.setBusy(false);
       this.mapping = { ...mapping };
       this.latestResult = null;
       this.renderMapping();

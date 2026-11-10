@@ -120,6 +120,39 @@ describe("registerImportUI", () => {
     expect(loaded).not.toHaveBeenCalled();
   });
 
+  it("does not let a pending file load overwrite rows set explicitly", async () => {
+    type ParsedCsv = import("@devkit-forge/import-csv").CsvParseResult;
+    let resolveRead!: (value: ParsedCsv) => void;
+    const pending = new Promise<ParsedCsv>((resolve) => { resolveRead = resolve; });
+    const csvModule = await import("@devkit-forge/import-csv");
+    const parseSpy = vi.spyOn(csvModule, "parseCsvFile").mockReturnValue(pending);
+    const file = new File(["ignored"], "contacts.csv", { type: "text/csv" });
+
+    const loading = element.loadFile(file);
+    element.setRows([{ "Full name": "Grace", Email: "grace@example.com" }]);
+    resolveRead({
+      records: [{ "Full name": "Ada", Email: "ada@example.com" }],
+      headers: ["Full name", "Email"],
+      data: [["Ada", "ada@example.com"]],
+      issues: [],
+      delimiter: ",",
+      rowCount: 1,
+      hasErrors: false,
+    });
+    await loading;
+    parseSpy.mockRestore();
+
+    expect(element.validate().validRows).toEqual([
+      { name: "Grace", email: "grace@example.com" },
+    ]);
+  });
+
+  it("keeps the prior schema when a new configuration is invalid", () => {
+    expect(() => element.configure<Contact>({ columns: [] })).toThrow();
+    element.setRows([{ "Full name": "Ada", Email: "ada@example.com" }]);
+    expect(element.validate().validCount).toBe(1);
+  });
+
   it("requires configuration and rows before validation", () => {
     const bareTag = `df-empty-${Math.random().toString(36).slice(2)}`;
     registerImportUI(customElements, bareTag);
