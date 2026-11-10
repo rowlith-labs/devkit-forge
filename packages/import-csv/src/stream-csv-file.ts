@@ -2,7 +2,7 @@ import Papa from "papaparse";
 import { parseCsvText } from "./parse-csv.js";
 import type {
   CsvIssue,
-  CsvParseOptions,
+  CsvFileParseOptions,
   CsvStreamOptions,
   CsvStreamResult,
 } from "./types.js";
@@ -191,7 +191,17 @@ export function streamCsvFile(
 /** Convenience helper for small files; reads the full file into memory. */
 export async function parseCsvFile(
   file: File,
-  options: CsvParseOptions = {},
+  options: CsvFileParseOptions = {},
 ) {
-  return parseCsvText(await file.text(), options);
+  const maxFileSizeBytes = options.maxFileSizeBytes ?? 25 * 1024 * 1024;
+  if (!Number.isSafeInteger(maxFileSizeBytes) || maxFileSizeBytes <= 0) {
+    throw new RangeError("maxFileSizeBytes must be a positive safe integer.");
+  }
+  if (file.size > maxFileSizeBytes) {
+    throw new RangeError(
+      `CSV file is ${file.size} bytes; the configured limit is ${maxFileSizeBytes} bytes.`,
+    );
+  }
+  const { maxFileSizeBytes: _maxFileSizeBytes, ...parseOptions } = options;
+  return parseCsvText(await file.text(), parseOptions);
 }
