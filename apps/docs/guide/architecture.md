@@ -1,14 +1,14 @@
 # Architecture
 
-The import toolkit separates schema processing, file parsing, framework adapters, and optional UI. Each package has a narrow responsibility and can be used independently where appropriate.
+The toolkit separates schema processing, file parsing, framework adapters, and optional UI. Each package has a narrow responsibility and can be used independently where appropriate.
 
 ```text
 Your application
   ├─ File selection and user experience
   ├─ @devkit-forge/import-ui (optional Web Component)
-  ├─ @devkit-forge/import-react (optional state adapter)
-  ├─ @devkit-forge/import-xlsx (optional parser)
-  ├─ @devkit-forge/import-csv (optional parser)
+  ├─ @devkit-forge/import-react (optional React state adapter)
+  ├─ @devkit-forge/import-xlsx (optional XLSX parser)
+  ├─ @devkit-forge/import-csv (optional CSV parser)
   └─ @devkit-forge/import-core
        ├─ Header matching / explicit mapping
        ├─ Column transforms
@@ -28,7 +28,11 @@ The CSV package turns CSV text or browser files into records. It reports parser 
 
 For files too large to hold as one parsed object array, `streamCsvFile` emits row batches to a synchronous callback. The consumer must process each batch and avoid retaining it if bounded memory is the goal.
 
-## XLSX adapter\n\nThe XLSX package loads a workbook, exposes worksheet names, selects a worksheet, reads a configurable header row, and converts cell values into source records. It is an optional parser adapter and does not add spreadsheet dependencies to core. It is currently an in-memory parser with configurable file-size and row limits.\n\n## UI package
+## XLSX adapter
+
+The XLSX package loads a workbook, exposes worksheet names, selects a worksheet, reads a configurable header row, and converts cell values into source records. It is an optional parser adapter and does not add spreadsheet dependencies to core. It is currently an in-memory parser with configurable file-size, archive-expansion, workbook-structure, and row limits.
+
+## UI package
 
 The optional `import-ui` package composes the core, CSV, and XLSX adapters into an accessible native Web Component. It is framework-independent and registers explicitly, so importing the package has no global side effects. It is a baseline in-memory file UI, not a streaming or persistence layer.
 
