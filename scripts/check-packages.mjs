@@ -53,7 +53,7 @@ try {
     if (manifest.name !== expectedName) {
       throw new Error(`Unexpected package name in ${created[0]}: ${manifest.name}`);
     }
-    if (!/^\\d+\\.\\d+\\.\\d+(?:-[0-9A-Za-z.-]+)?$/.test(manifest.version)) {
+    if (!/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(manifest.version)) {
       throw new Error(`Invalid semantic version for ${expectedName}: ${manifest.version}`);
     }
     if (manifest.private === true || manifest.license !== "MIT") {
@@ -89,7 +89,7 @@ try {
     }
 
     const entries = spawnSync("tar", ["-tzf", tarball], { encoding: "utf8" });
-    const packedEntries = new Set(entries.stdout.split("\\n"));
+    const packedEntries = new Set(entries.stdout.split("\n"));
     for (const requiredEntry of [
       "package/dist/index.js",
       "package/dist/index.d.ts",
@@ -101,7 +101,7 @@ try {
       }
     }
 
-    process.stdout.write(`Pack check passed: ${manifest.name}@${manifest.version}\\n`);
+    process.stdout.write(`Pack check passed: ${manifest.name}@${manifest.version}\n`);
   }
 } finally {
   await rm(output, { recursive: true, force: true });
