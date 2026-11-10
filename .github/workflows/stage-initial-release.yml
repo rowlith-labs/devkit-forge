@@ -1,0 +1,78 @@
+name: Stage initial npm release
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: Type STAGE to upload the five initial package versions for review
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: npm-initial-stage
+  cancel-in-progress: false
+
+jobs:
+  stage:
+    if: github.ref == 'refs/heads/main' && inputs.confirm == 'STAGE'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v7
+        with:
+          ref: main
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 9.15.0
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          package-manager-cache: false
+      - name: Install npm CLI with staged publishing support
+        run: |
+          npm install --global npm@11.15.0
+          test "$(npm --version)" = "11.15.0"
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Audit, test, build, and verify archives
+        run: |
+          set -euo pipefail
+          pnpm audit --audit-level high
+          for package in import-core import-csv import-xlsx import-react import-ui; do
+            pnpm --filter "@rowlith/$package" typecheck
+            pnpm --filter "@rowlith/$package" test
+            pnpm --filter "@rowlith/$package" build
+          done
+          pnpm check:pack
+      - name: Pack packages in dependency order
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/rowlith-release"
+          for package in import-core import-csv import-xlsx import-react import-ui; do
+            pnpm --dir "packages/$package" pack --pack-destination "$RUNNER_TEMP/rowlith-release"
+          done
+      - name: Stage initial versions for maintainer approval
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_STAGE_TOKEN }}
+        run: |
+          set -euo pipefail
+          test -n "${NODE_AUTH_TOKEN:-}" || { echo "::error::Add the NPM_STAGE_TOKEN repository secret before running this workflow."; exit 1; }
+          release_dir="$RUNNER_TEMP/rowlith-release"
+          for package in import-core import-csv import-xlsx import-react import-ui; do
+            version="$(node -p "require('./packages/$package/package.json').version")"
+            tarball="$(find "$release_dir" -maxdepth 1 -type f -name "*$package-$version.tgz" -print -quit)"
+            test -n "$tarball" || { echo "::error::Missing tarball for $package@$version"; exit 1; }
+            stage_dir="$(mktemp -d)"
+            tar -xzf "$tarball" -C "$stage_dir"
+            echo "::group::Stage @rowlith/$package@$version"
+            (cd "$stage_dir/package" && npm stage publish --access public)
+            echo "::endgroup::"
+            rm -rf "$stage_dir"
+          done
