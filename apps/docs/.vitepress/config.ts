@@ -19,6 +19,7 @@ export default defineConfig({
           text: "Getting started",
           items: [
             { text: "What is DevKit Forge?", link: "/guide/what-is-devkit-forge" },
+            { text: "Use cases", link: "/guide/use-cases" },
             { text: "Installation", link: "/guide/installation" },
             { text: "Quick start", link: "/guide/quick-start" },
             { text: "Architecture", link: "/guide/architecture" },
