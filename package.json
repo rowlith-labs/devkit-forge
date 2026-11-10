@@ -14,7 +14,9 @@
     "docs:build": "pnpm --filter @devkit-forge/docs build",
     "docs:preview": "pnpm --filter @devkit-forge/docs preview",
     "test:e2e": "playwright test && playwright test --config playwright.vanilla.config.ts",
-    "check:pack": "node scripts/check-packages.mjs"
+    "check:pack": "node scripts/check-packages.mjs",
+    "changeset": "changeset",
+    "version-packages": "changeset version"
   },
   "pnpm": {
     "overrides": {
@@ -24,6 +26,7 @@
   "devDependencies": {
     "typescript": "^5.7.3",
     "vitest": "^4.1.11",
-    "@playwright/test": "^1.56.1"
+    "@playwright/test": "^1.56.1",
+    "@changesets/cli": "^2.31.1"
   }
 }
