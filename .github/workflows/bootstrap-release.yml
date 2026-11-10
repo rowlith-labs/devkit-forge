@@ -124,39 +124,6 @@ jobs:
           done
 
       - name: Commit release versions and changelogs
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          set -euo pipefail
-          release_dir="$RUNNER_TEMP/devkit-forge-release"
-
-          publish_if_missing() {
-            package_name="$1"
-            package_dir="$2"
-            package_slug="$3"
-            version="$(node -p "require('./$package_dir/package.json').version")"
-
-            if npm view "$package_name@$version" version >/dev/null 2>&1; then
-              echo "$package_name@$version is already published; skipping."
-              return
-            fi
-
-            tarball="$(find "$release_dir" -maxdepth 1 -type f -name "*$package_slug-$version.tgz" -print -quit)"
-            if [ -z "$tarball" ]; then
-              echo "::error::Could not locate release tarball for $package_name@$version"
-              exit 1
-            fi
-
-            npm publish "$tarball" --access public
-          }
-
-          publish_if_missing "@devkit-forge/import-core" "packages/import-core" "import-core"
-          publish_if_missing "@devkit-forge/import-csv" "packages/import-csv" "import-csv"
-          publish_if_missing "@devkit-forge/import-xlsx" "packages/import-xlsx" "import-xlsx"
-          publish_if_missing "@devkit-forge/import-react" "packages/import-react" "import-react"
-          publish_if_missing "@devkit-forge/import-ui" "packages/import-ui" "import-ui"
-
-      - name: Commit release versions and changelogs
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
