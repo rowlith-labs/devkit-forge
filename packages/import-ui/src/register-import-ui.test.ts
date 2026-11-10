@@ -107,12 +107,12 @@ describe("registerImportUI", () => {
   });
 
   it("ignores stale file-read results after reset", async () => {
-    type ParsedCsv = import("@devkit-forge/import-csv").CsvParseResult;
+    type ParsedCsv = import("@rowlith/import-csv").CsvParseResult;
     let resolveRead!: (value: ParsedCsv) => void;
     const pending: Promise<ParsedCsv> = new Promise<ParsedCsv>((resolve) => {
       resolveRead = resolve;
     });
-    const csvModule = await import("@devkit-forge/import-csv");
+    const csvModule = await import("@rowlith/import-csv");
     const parseSpy = vi.spyOn(csvModule, "parseCsvFile").mockReturnValue(pending);
     const file = new File(["name,email\\nAda,ada@example.com"], "contacts.csv", { type: "text/csv" });
     const loaded = vi.fn();
@@ -137,10 +137,10 @@ describe("registerImportUI", () => {
   });
 
   it("does not let a pending file load overwrite rows set explicitly", async () => {
-    type ParsedCsv = import("@devkit-forge/import-csv").CsvParseResult;
+    type ParsedCsv = import("@rowlith/import-csv").CsvParseResult;
     let resolveRead!: (value: ParsedCsv) => void;
     const pending = new Promise<ParsedCsv>((resolve) => { resolveRead = resolve; });
-    const csvModule = await import("@devkit-forge/import-csv");
+    const csvModule = await import("@rowlith/import-csv");
     const parseSpy = vi.spyOn(csvModule, "parseCsvFile").mockReturnValue(pending);
     const file = new File(["ignored"], "contacts.csv", { type: "text/csv" });
 

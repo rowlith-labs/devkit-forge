@@ -3,7 +3,7 @@ import type {
   ImportConfig,
   ProcessRowsResult,
   RawImportRow,
-} from "@devkit-forge/import-core";
+} from "@rowlith/import-core";
 
 export interface UseDataImporterOptions<T extends object> {
   /** Schema and validation rules shared with the framework-agnostic core. */

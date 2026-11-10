@@ -2,7 +2,7 @@
 import { act, renderHook } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { useDataImporter } from "./use-data-importer.js";
-import type { ImportConfig, RawImportRow } from "@devkit-forge/import-core";
+import type { ImportConfig, RawImportRow } from "@rowlith/import-core";
 
 interface Contact {
   email: string;

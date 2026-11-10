@@ -3,7 +3,7 @@ import type {
   ImportConfig,
   ProcessRowsResult,
   RawImportRow,
-} from "@devkit-forge/import-core";
+} from "@rowlith/import-core";
 
 export interface ImportUILoadedDetail {
   filename: string;

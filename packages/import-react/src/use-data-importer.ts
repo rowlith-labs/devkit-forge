@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
-import { createImporter } from "@devkit-forge/import-core";
-import type { ColumnMapping, RawImportRow } from "@devkit-forge/import-core";
+import { createImporter } from "@rowlith/import-core";
+import type { ColumnMapping, RawImportRow } from "@rowlith/import-core";
 import type { UseDataImporterOptions, UseDataImporterResult } from "./types.js";
 
 function assertRows(rows: unknown): asserts rows is RawImportRow[] {

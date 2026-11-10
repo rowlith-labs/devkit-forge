@@ -1,4 +1,4 @@
-import { streamCsvFile } from "@devkit-forge/import-csv";
+import { streamCsvFile } from "@rowlith/import-csv";
 
 const status = document.querySelector<HTMLOutputElement>("#status");
 const rowTotal = 25_000;

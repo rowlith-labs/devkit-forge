@@ -1,5 +1,5 @@
 import Papa from "papaparse";
-import type { RawImportRow } from "@devkit-forge/import-core";
+import type { RawImportRow } from "@rowlith/import-core";
 import type { CsvIssue, CsvParseOptions, CsvParseResult } from "./types.js";
 
 function setOwnValue(target: Record<string, unknown>, key: string, value: unknown): void {

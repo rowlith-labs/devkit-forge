@@ -1,5 +1,5 @@
 import ExcelJS from "exceljs-hardened";
-import type { RawImportRow } from "@devkit-forge/import-core";
+import type { RawImportRow } from "@rowlith/import-core";
 import type {
   XlsxIssue,
   XlsxParseOptions,

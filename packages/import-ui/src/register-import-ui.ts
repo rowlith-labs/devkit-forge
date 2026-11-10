@@ -1,12 +1,12 @@
-import { createImporter, normalizeHeader } from "@devkit-forge/import-core";
+import { createImporter, normalizeHeader } from "@rowlith/import-core";
 import type {
   ColumnMapping,
   ImportConfig,
   ProcessRowsResult,
   RawImportRow,
-} from "@devkit-forge/import-core";
-import { parseCsvFile } from "@devkit-forge/import-csv";
-import { parseXlsxFile } from "@devkit-forge/import-xlsx";
+} from "@rowlith/import-core";
+import { parseCsvFile } from "@rowlith/import-csv";
+import { parseXlsxFile } from "@rowlith/import-xlsx";
 import type {
   ImportUIElement,
   ImportUIErrorDetail,

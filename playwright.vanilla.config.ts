@@ -13,7 +13,7 @@ export default defineConfig({
     { name: "vanilla-webkit", use: { ...devices["Desktop Safari"], baseURL: "http://127.0.0.1:5174" } },
   ],
   webServer: {
-    command: "pnpm --filter @devkit-forge/example-vanilla-ui dev",
+    command: "pnpm --filter @rowlith/example-vanilla-ui dev",
     url: "http://127.0.0.1:5174",
     reuseExistingServer: !process.env.CI,
     timeout: 30_000,

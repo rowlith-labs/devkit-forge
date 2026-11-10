@@ -14,7 +14,7 @@ export default defineConfig({
     { name: "webkit", use: { ...devices["Desktop Safari"] } },
   ],
   webServer: {
-    command: "pnpm --filter @devkit-forge/playground dev",
+    command: "pnpm --filter @rowlith/playground dev",
     url: "http://127.0.0.1:5173",
     reuseExistingServer: !process.env.CI,
     timeout: 30_000,

@@ -1,4 +1,4 @@
-import type { RawImportRow } from "@devkit-forge/import-core";
+import type { RawImportRow } from "@rowlith/import-core";
 
 export type CsvIssueCode =
   | "duplicate-header"
