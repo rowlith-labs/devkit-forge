@@ -61,6 +61,10 @@ jobs:
         run: pnpm --filter @devkit-forge/playground test
       - name: Build playground
         run: pnpm --filter @devkit-forge/playground build
+      - name: Typecheck React example
+        run: pnpm --filter @devkit-forge/example-vite-react typecheck
+      - name: Build React example
+        run: pnpm --filter @devkit-forge/example-vite-react build
       - name: Build documentation
         run: pnpm --filter @devkit-forge/docs build
       - name: Install Chromium for browser tests
