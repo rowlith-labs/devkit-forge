@@ -91,18 +91,25 @@ describe("registerImportUI", () => {
   });
 
   it("ignores stale file-read results after reset", async () => {
-    const pending = new Promise<string>((resolve) => {
-      void resolve;
+    let resolveRead!: (value: { records: Array<{ name: string; email: string }>; headers: string[]; issues: never[] }) => void;
+    const pending = new Promise<{ records: Array<{ name: string; email: string }>; headers: string[]; issues: never[] }>((resolve) => {
+      resolveRead = resolve;
     });
+    const csvModule = await import("@devkit-forge/import-csv");
+    const parseSpy = vi.spyOn(csvModule, "parseCsvFile").mockReturnValue(pending);
     const file = new File(["name,email\\nAda,ada@example.com"], "contacts.csv", { type: "text/csv" });
-    const textSpy = vi.spyOn(file, "text").mockReturnValue(pending);
     const loaded = vi.fn();
     element.addEventListener("df:loaded", loaded);
 
     const loading = element.loadFile(file);
     element.reset();
-    textSpy.mockRestore();
+    resolveRead({
+      records: [{ name: "Ada", email: "ada@example.com" }],
+      headers: ["name", "email"],
+      issues: [],
+    });
     await loading;
+    parseSpy.mockRestore();
 
     expect(element.result).toBeNull();
     expect(loaded).not.toHaveBeenCalled();
