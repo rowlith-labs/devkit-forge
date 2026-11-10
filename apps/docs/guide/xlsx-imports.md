@@ -1,11 +1,11 @@
 # XLSX imports
 
-Use `@devkit-forge/import-xlsx` when your source is an Excel workbook. The adapter is optional and does not add spreadsheet dependencies to `import-core`.
+Use `@rowlith/import-xlsx` when your source is an Excel workbook. The adapter is optional and does not add spreadsheet dependencies to `import-core`.
 
 ## Parse a workbook
 
 ```ts
-import { parseXlsxFile } from "@devkit-forge/import-xlsx";
+import { parseXlsxFile } from "@rowlith/import-xlsx";
 
 const parsed = await parseXlsxFile(file, {
   sheet: "Contacts",

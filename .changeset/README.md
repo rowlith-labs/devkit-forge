@@ -6,7 +6,7 @@ Every user-visible change to one or more publishable packages should include a c
 pnpm changeset
 ```
 
-Select the affected `@devkit-forge/*` packages and choose the smallest correct SemVer bump:
+Select the affected `@rowlith/*` packages and choose the smallest correct SemVer bump:
 
 - **patch**: backwards-compatible bug fix or internal correction
 - **minor**: backwards-compatible public API or feature addition

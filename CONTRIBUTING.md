@@ -1,4 +1,4 @@
-# Contributing to DevKit Forge
+# Contributing to Rowlith
 
 Thanks for considering a contribution. The project is an early-stage TypeScript monorepo; small, focused changes with tests and documentation are easiest to review.
 
@@ -14,8 +14,8 @@ Thanks for considering a contribution. The project is an early-stage TypeScript 
 Requirements: Node.js 20 or newer and pnpm 9 or newer.
 
 ```sh
-git clone https://github.com/yourdevujjawal/devkit-forge.git
-cd devkit-forge
+git clone https://github.com/rowlith-labs/rowlith.git
+cd rowlith
 pnpm install
 ```
 
@@ -28,8 +28,8 @@ pnpm test
 pnpm typecheck
 pnpm build
 pnpm check:pack
-pnpm --filter @devkit-forge/example-vite-react build
-pnpm --filter @devkit-forge/docs build
+pnpm --filter @rowlith/example-vite-react build
+pnpm --filter @rowlith/docs build
 pnpm exec playwright install chromium firefox webkit
 pnpm test:e2e
 ```
