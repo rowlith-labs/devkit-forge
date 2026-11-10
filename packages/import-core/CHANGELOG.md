@@ -1,4 +1,4 @@
-# @devkit-forge/import-core
+# @rowlith/import-core
 
 ## 0.1.1
 
