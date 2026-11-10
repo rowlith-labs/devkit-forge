@@ -87,7 +87,7 @@ jobs:
             echo "Verified $(basename "$tarball")"
           done
 
-      - name: Publish packages in dependency order using npm Trusted Publishing
+      - name: Stage packages in dependency order using npm Trusted Publishing
         run: |
           set -euo pipefail
           release_dir="$RUNNER_TEMP/rowlith-release"
@@ -110,11 +110,17 @@ jobs:
                 return "$npm_view_status"
               fi
               rm -f "$npm_view_error"
-              echo "$package_name@$version is not present on npm; publishing."
+              echo "$package_name@$version is not present on npm; staging for maintainer approval."
             fi
             tarball="$(find "$release_dir" -maxdepth 1 -type f -name "*$package_slug-$version.tgz" -print -quit)"
             test -n "$tarball" || { echo "::error::Missing tarball for $package_name@$version"; exit 1; }
-            npm publish "$tarball" --access public
+            stage_dir="$(mktemp -d)"
+            tar -xzf "$tarball" -C "$stage_dir"
+            (
+              cd "$stage_dir/package"
+              npm stage publish --access public
+            )
+            rm -rf "$stage_dir"
           }
           publish_if_missing "@rowlith/import-core" "packages/import-core" "import-core"
           publish_if_missing "@rowlith/import-csv" "packages/import-csv" "import-csv"
