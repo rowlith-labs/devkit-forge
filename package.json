@@ -13,7 +13,7 @@
     "docs:dev": "pnpm --filter @devkit-forge/docs dev",
     "docs:build": "pnpm --filter @devkit-forge/docs build",
     "docs:preview": "pnpm --filter @devkit-forge/docs preview",
-    "test:e2e": "playwright test",
+    "test:e2e": "playwright test && playwright test --config playwright.vanilla.config.ts",
     "check:pack": "node scripts/check-packages.mjs"
   },
   "pnpm": {
