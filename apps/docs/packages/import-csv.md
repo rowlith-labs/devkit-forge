@@ -1,17 +1,17 @@
-# @devkit-forge/import-csv
+# @rowlith/import-csv
 
-A CSV parsing adapter that turns text or a browser `File` into headers, source rows, diagnostics, and (when safe) object records. It is separate from `@devkit-forge/import-core`, so applications that do not import CSV do not need a CSV parser dependency.
+A CSV parsing adapter that turns text or a browser `File` into headers, source rows, diagnostics, and (when safe) object records. It is separate from `@rowlith/import-core`, so applications that do not import CSV do not need a CSV parser dependency.
 
 ## Install
 
 ```bash
-npm install @devkit-forge/import-csv @devkit-forge/import-core
+npm install @rowlith/import-csv @rowlith/import-core
 ```
 
 ## Parse CSV text
 
 ```ts
-import { parseCsvText } from "@devkit-forge/import-csv";
+import { parseCsvText } from "@rowlith/import-csv";
 
 const parsed = parseCsvText(`Name,Email
 Ada,ada@example.com`);
@@ -30,7 +30,7 @@ Use `parseCsvText` when the CSV text is already available, such as from an API r
 `parseCsvFile(file, options?)` is convenient for small and medium browser uploads. It reads the complete file into memory and enforces a 25 MiB default limit.
 
 ```ts
-import { parseCsvFile } from "@devkit-forge/import-csv";
+import { parseCsvFile } from "@rowlith/import-csv";
 
 const parsed = await parseCsvFile(file, {
   maxFileSizeBytes: 25 * 1024 * 1024, // default: 25 MiB
@@ -44,7 +44,7 @@ Use this API when the file comfortably fits your application's memory budget. Ra
 `streamCsvFile(file, options)` parses a browser `File` in chunks and passes batches to a synchronous callback. It does not accumulate all parsed rows for you.
 
 ```ts
-import { streamCsvFile } from "@devkit-forge/import-csv";
+import { streamCsvFile } from "@rowlith/import-csv";
 
 const summary = await streamCsvFile(file, {
   chunkSize: 1024 * 1024, // 1 MiB input chunks; default
@@ -82,7 +82,7 @@ The callback is synchronous by design. Throwing from it aborts parsing and rejec
 
 ## When to use it
 
-Use this package when CSV is an input format and you need parser diagnostics or chunked file processing. Pass its object records to `@devkit-forge/import-core` for schema mapping and validation. For React state, add `@devkit-forge/import-react`; for the ready-made browser interface, use `@devkit-forge/import-ui`.
+Use this package when CSV is an input format and you need parser diagnostics or chunked file processing. Pass its object records to `@rowlith/import-core` for schema mapping and validation. For React state, add `@rowlith/import-react`; for the ready-made browser interface, use `@rowlith/import-ui`.
 
 Do not use `parseCsvFile` for very large files or expect the streaming callback to perform asynchronous work. The parser does not validate your business schema, upload data, or persist records.
 

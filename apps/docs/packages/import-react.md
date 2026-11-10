@@ -1,13 +1,13 @@
-# @devkit-forge/import-react
+# @rowlith/import-react
 
-A headless React hook that connects React state to the framework-independent `@devkit-forge/import-core` engine. Use it when you want to build your own React file-import experience while keeping parsing, UI, and validation separate.
+A headless React hook that connects React state to the framework-independent `@rowlith/import-core` engine. Use it when you want to build your own React file-import experience while keeping parsing, UI, and validation separate.
 
 It does not render a file picker, parse CSV/XLSX files, upload records, or persist data.
 
 ## Install
 
 ```bash
-npm install @devkit-forge/import-react @devkit-forge/import-core react
+npm install @rowlith/import-react @rowlith/import-core react
 ```
 
 React 18 and 19 are supported as peer dependencies.
@@ -16,8 +16,8 @@ React 18 and 19 are supported as peer dependencies.
 
 ```tsx
 import { useEffect } from "react";
-import { useDataImporter } from "@devkit-forge/import-react";
-import type { ImportConfig } from "@devkit-forge/import-core";
+import { useDataImporter } from "@rowlith/import-react";
+import type { ImportConfig } from "@rowlith/import-core";
 
 interface Contact {
   email: string;
@@ -65,7 +65,7 @@ function ContactImport({ records }: {
 }
 ```
 
-For a file workflow, parse the browser `File` with `@devkit-forge/import-csv` or `@devkit-forge/import-xlsx`, then pass the resulting records to `setRows`.
+For a file workflow, parse the browser `File` with `@rowlith/import-csv` or `@rowlith/import-xlsx`, then pass the resulting records to `setRows`.
 
 ## Hook API
 
@@ -93,6 +93,6 @@ Choose this package when you need React state and want full control over markup,
 
 Do not use it as a large-file streaming abstraction. The hook stores rows and a complete result in React state, so it is intended for ordinary in-memory imports. For large CSV files, consume `streamCsvFile` batches outside the hook instead of accumulating the whole file in React state.
 
-Your application remains responsible for upload authorization, persistence, transactions, retries, and user confirmation before committing imported records. If you prefer a ready-made framework-independent browser interface, consider `@devkit-forge/import-ui`.
+Your application remains responsible for upload authorization, persistence, transactions, retries, and user confirmation before committing imported records. If you prefer a ready-made framework-independent browser interface, consider `@rowlith/import-ui`.
 
 See [Architecture](/guide/architecture) and [Import UI](/guide/import-ui).

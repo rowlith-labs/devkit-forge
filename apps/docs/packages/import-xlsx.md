@@ -1,19 +1,19 @@
-# @devkit-forge/import-xlsx
+# @rowlith/import-xlsx
 
-An XLSX workbook parsing adapter for browser-based spreadsheet imports. It extracts worksheet data and diagnostics; use `@devkit-forge/import-core` afterwards for destination-column mapping, transforms, validation, and duplicate detection.
+An XLSX workbook parsing adapter for browser-based spreadsheet imports. It extracts worksheet data and diagnostics; use `@rowlith/import-core` afterwards for destination-column mapping, transforms, validation, and duplicate detection.
 
 It is optional. Applications that only accept CSV or structured records do not need this dependency.
 
 ## Install
 
 ```bash
-npm install @devkit-forge/import-xlsx @devkit-forge/import-core
+npm install @rowlith/import-xlsx @rowlith/import-core
 ```
 
 ## Quick start
 
 ```ts
-import { parseXlsxFile } from "@devkit-forge/import-xlsx";
+import { parseXlsxFile } from "@rowlith/import-xlsx";
 
 const parsed = await parseXlsxFile(file, {
   sheet: "Contacts",

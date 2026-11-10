@@ -5,25 +5,25 @@ Install only the packages your application needs. The package manager will resol
 ## Core only
 
 ```bash
-npm install @devkit-forge/import-core
+npm install @rowlith/import-core
 ```
 
 ## CSV parsing
 
 ```bash
-npm install @devkit-forge/import-csv @devkit-forge/import-core
+npm install @rowlith/import-csv @rowlith/import-core
 ```
 
 ## XLSX parsing
 
 ```bash
-npm install @devkit-forge/import-xlsx @devkit-forge/import-core
+npm install @rowlith/import-xlsx @rowlith/import-core
 ```
 
 ## React integration
 
 ```bash
-npm install @devkit-forge/import-react @devkit-forge/import-core react
+npm install @rowlith/import-react @rowlith/import-core react
 ```
 
 The React adapter declares React 18 and React 19 as peer dependency versions.

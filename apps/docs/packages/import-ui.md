@@ -1,13 +1,13 @@
-# @devkit-forge/import-ui
+# @rowlith/import-ui
 
 A small, framework-independent browser import interface delivered as a native Web Component. It provides a file picker, column mapping, validation, and row-level results without requiring React, Vue, or a UI framework.
 
-Use it when the default browser UI is useful and you do not need to own every interaction. Choose `@devkit-forge/import-react` instead when you want to build the interface yourself in React.
+Use it when the default browser UI is useful and you do not need to own every interaction. Choose `@rowlith/import-react` instead when you want to build the interface yourself in React.
 
 ## Install
 
 ```bash
-npm install @devkit-forge/import-ui @devkit-forge/import-core @devkit-forge/import-csv @devkit-forge/import-xlsx
+npm install @rowlith/import-ui @rowlith/import-core @rowlith/import-csv @rowlith/import-xlsx
 ```
 
 ## Register and configure
@@ -15,9 +15,9 @@ npm install @devkit-forge/import-ui @devkit-forge/import-core @devkit-forge/impo
 Registration is explicit. Importing the package does not automatically mutate the global custom-element registry, which avoids unexpected side effects during server-side rendering.
 
 ```ts
-import { registerImportUI } from "@devkit-forge/import-ui";
-import type { ImportUIElement } from "@devkit-forge/import-ui";
-import type { ImportConfig } from "@devkit-forge/import-core";
+import { registerImportUI } from "@rowlith/import-ui";
+import type { ImportUIElement } from "@rowlith/import-ui";
+import type { ImportConfig } from "@rowlith/import-core";
 
 interface Contact {
   name: string;
