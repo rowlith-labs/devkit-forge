@@ -38,13 +38,13 @@ The workflow uses npm Trusted Publishing (GitHub Actions OIDC), not a long-lived
 
 Already-published package versions are skipped. Registry lookup errors other than a confirmed missing package stop the workflow rather than being treated as permission to publish.
 
-Each npm package must have a trusted publisher configured for GitHub Actions with owner `yourdevujjawal`, repository `rowlith`, and workflow filename `publish-release.yml`. Do not add registry tokens to repository secrets or workflow configuration.
+Each npm package must have a trusted publisher configured for GitHub Actions with owner `rowlith-labs`, repository `rowlith`, and workflow filename `publish-release.yml`. The owner is the current GitHub organization, not the former personal account. Configure this separately on each npm package before publishing. Do not add registry tokens to repository secrets or workflow configuration.
 
-## First published versions
+## Proposed first release versions
 
-The initial public release was published successfully:
+The following versions are currently configured in the package manifests. They are **not confirmed as published**; publishing has not yet been performed from the Rowlith repository.
 
-| Package | Version |
+| Package | Manifest version |
 |---|---:|
 | `@rowlith/import-core` | `0.1.1` |
 | `@rowlith/import-csv` | `0.2.0` |
@@ -52,7 +52,7 @@ The initial public release was published successfully:
 | `@rowlith/import-react` | `0.1.1` |
 | `@rowlith/import-ui` | `0.1.1` |
 
-A successful workflow run confirms what the workflow published; verify package pages and install behavior independently when validating a consumer-facing release.
+Before the first publish, verify each package name and version directly on the npm registry, confirm the `rowlith` npm organization controls the scope, and configure the GitHub Actions trusted publisher on every package. Do not infer successful publication from the versions in `package.json` or from a successful CI run.
 
 ## Security
 
