@@ -1,0 +1,165 @@
+name: Bootstrap npm release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: npm-bootstrap-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v7
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Require npm publishing credential
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [ -z "$NODE_AUTH_TOKEN" ]; then
+            echo "::error::Add the NPM_TOKEN repository secret before running this workflow."
+            exit 1
+          fi
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 9.15.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Verify pending Changesets
+        run: pnpm changeset status
+
+      - name: Apply release versions and changelogs
+        run: pnpm changeset version
+
+      - name: Refresh workspace lockfile
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Audit dependencies
+        run: pnpm audit --audit-level high
+
+      - name: Test and build core
+        run: |
+          pnpm --filter @devkit-forge/import-core typecheck
+          pnpm --filter @devkit-forge/import-core test
+          pnpm --filter @devkit-forge/import-core build
+          pnpm --filter @devkit-forge/import-core benchmark
+
+      - name: Test and build CSV adapter
+        run: |
+          pnpm --filter @devkit-forge/import-csv typecheck
+          pnpm --filter @devkit-forge/import-csv test
+          pnpm --filter @devkit-forge/import-csv build
+
+      - name: Test and build XLSX adapter
+        run: |
+          pnpm --filter @devkit-forge/import-xlsx typecheck
+          pnpm --filter @devkit-forge/import-xlsx test
+          pnpm --filter @devkit-forge/import-xlsx build
+
+      - name: Test and build React adapter
+        run: |
+          pnpm --filter @devkit-forge/import-react typecheck
+          pnpm --filter @devkit-forge/import-react test
+          pnpm --filter @devkit-forge/import-react build
+
+      - name: Test and build UI package
+        run: |
+          pnpm --filter @devkit-forge/import-ui typecheck
+          pnpm --filter @devkit-forge/import-ui test
+          pnpm --filter @devkit-forge/import-ui build
+
+      - name: Verify package archives
+        run: pnpm check:pack
+
+      - name: Validate playground, examples, and docs
+        run: |
+          pnpm --filter @devkit-forge/playground typecheck
+          pnpm --filter @devkit-forge/playground test
+          pnpm --filter @devkit-forge/playground build
+          pnpm --filter @devkit-forge/example-vite-react typecheck
+          pnpm --filter @devkit-forge/example-vite-react build
+          pnpm --filter @devkit-forge/example-vanilla-ui typecheck
+          pnpm --filter @devkit-forge/example-vanilla-ui build
+          pnpm --filter @devkit-forge/docs build
+
+      - name: Install browser test engines
+        run: pnpm exec playwright install --with-deps chromium firefox webkit
+
+      - name: Run browser tests
+        run: pnpm test:e2e
+
+      - name: Pack release tarballs
+        run: |
+          mkdir -p "$RUNNER_TEMP/devkit-forge-release"
+          pnpm --dir packages/import-core pack --pack-destination "$RUNNER_TEMP/devkit-forge-release"
+          pnpm --dir packages/import-csv pack --pack-destination "$RUNNER_TEMP/devkit-forge-release"
+          pnpm --dir packages/import-xlsx pack --pack-destination "$RUNNER_TEMP/devkit-forge-release"
+          pnpm --dir packages/import-react pack --pack-destination "$RUNNER_TEMP/devkit-forge-release"
+          pnpm --dir packages/import-ui pack --pack-destination "$RUNNER_TEMP/devkit-forge-release"
+
+      - name: Publish packages in dependency order
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          set -euo pipefail
+          release_dir="$RUNNER_TEMP/devkit-forge-release"
+
+          publish_if_missing() {
+            package_name="$1"
+            package_dir="$2"
+            package_slug="$3"
+            version="$(node -p "require('./$package_dir/package.json').version")"
+
+            if npm view "$package_name@$version" version >/dev/null 2>&1; then
+              echo "$package_name@$version is already published; skipping."
+              return
+            fi
+
+            tarball="$(find "$release_dir" -maxdepth 1 -type f -name "*$package_slug-$version.tgz" -print -quit)"
+            if [ -z "$tarball" ]; then
+              echo "::error::Could not locate release tarball for $package_name@$version"
+              exit 1
+            fi
+
+            npm publish "$tarball" --access public
+          }
+
+          publish_if_missing "@devkit-forge/import-core" "packages/import-core" "import-core"
+          publish_if_missing "@devkit-forge/import-csv" "packages/import-csv" "import-csv"
+          publish_if_missing "@devkit-forge/import-xlsx" "packages/import-xlsx" "import-xlsx"
+          publish_if_missing "@devkit-forge/import-react" "packages/import-react" "import-react"
+          publish_if_missing "@devkit-forge/import-ui" "packages/import-ui" "import-ui"
+
+      - name: Commit release versions and changelogs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A packages .changeset pnpm-lock.yaml
+          if git diff --cached --quiet; then
+            echo "No release metadata changes to commit."
+            exit 0
+          fi
+          git commit -m "chore(release): publish DevKit Forge packages"
+          git push origin HEAD:main
