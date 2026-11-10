@@ -53,7 +53,23 @@ features:
     <p>Keep rows, mappings, and validation results in React state with a headless hook.</p>
     <span>Explore React →</span>
   </a>
+  <a class="package-card" href="/packages/import-xlsx">
+    <span class="package-tag">XLSX ADAPTER</span>
+    <h3>@devkit-forge/import-xlsx</h3>
+    <p>Read worksheets, typed cell values, and configurable header rows with explicit workbook limits.</p>
+    <span>Explore XLSX →</span>
+  </a>
+  <a class="package-card" href="/packages/import-ui">
+    <span class="package-tag">WEB COMPONENT</span>
+    <h3>@devkit-forge/import-ui</h3>
+    <p>Add a framework-independent browser import interface with Shadow DOM encapsulation.</p>
+    <span>Explore UI →</span>
+  </a>
 </div>
+
+## Try a working example
+
+Run the [Vite + React example](/guide/examples) locally to parse a CSV, validate records, and review row-level issues. Or explore the [browser playground](https://github.com/truerdp/devkit-forge/tree/main/apps/playground).
 
 ## A small, predictable workflow
 
