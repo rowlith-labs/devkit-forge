@@ -138,6 +138,14 @@ describe("parseXlsxFile", () => {
     expect(rowLimited.issues.some((issue) => issue.code === "row-limit")).toBe(true);
   });
 
+  it("rejects unsupported formula and empty-row policies", async () => {
+    const bytes = await makeWorkbook();
+    await expect(parseXlsxFile(bytes, { formulaPolicy: "execute" as never }))
+      .rejects.toThrow(/formulaPolicy/);
+    await expect(parseXlsxFile(bytes, { emptyRows: "include" as never }))
+      .rejects.toThrow(/emptyRows/);
+  });
+
   it("rejects invalid numeric limits", async () => {
     const bytes = await makeWorkbook();
     await expect(parseXlsxFile(bytes, { maxRows: 0 })).rejects.toThrow(RangeError);
