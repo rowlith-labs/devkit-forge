@@ -1,28 +1,59 @@
 # What is DevKit Forge?
 
-DevKit Forge is an open-source collection of TypeScript tools for building data-import workflows. Its first project focuses on bringing external tabular data into application-specific record shapes with predictable mapping and validation results.
+DevKit Forge is an open-source TypeScript toolkit for the part of an application that turns uploaded tabular data into records your software can safely work with.
 
-The project is designed as independent layers rather than one all-inclusive import UI.
+Imagine adding a CSV or Excel upload feature to a CRM. The file may have unfamiliar column names, missing required values, duplicate customers, or malformed rows. Your application needs to read the file, map its columns to your data model, validate the records, and tell the user what needs fixing.
 
-## Design principles
+Those steps are common across products, but developers often rebuild them for every import screen. DevKit Forge provides reusable building blocks for that import-processing work.
 
-- **Framework-independent core:** the schema and validation engine works with plain records.
-- **Optional adapters:** CSV parsing and React state management are separate packages.
-- **Explicit behavior:** automatic header matching is available, while an explicitly supplied mapping is authoritative.
-- **Useful diagnostics:** invalid records include row indexes and structured issues.
-- **Local-first:** parsing and validation run in the consuming application. No hosted upload service is required.
-- **Application-owned persistence:** the library does not silently submit or store imported data.
+## The problem it is designed to solve
 
-## Current packages
+A file upload control is only the beginning. A useful import workflow also needs to answer:
 
-| Package | Responsibility |
+- Which source column maps to each field in my application?
+- What happens when a required value is missing?
+- How do I detect duplicate identifiers in one upload?
+- Can I show the user exactly which row failed and why?
+- Can I process large CSV files without holding the entire file in memory?
+
+DevKit Forge provides APIs for parsing supported file formats, mapping source data, validating records, detecting duplicates, and reporting structured issues.
+
+## How it fits into your application
+
+1. Your application receives a file or already-parsed records.
+2. A file adapter reads CSV or XLSX input when needed.
+3. The core importer maps source columns and validates each row against the schema you define.
+4. Your UI displays valid rows and actionable errors.
+5. Your application decides whether and how to save accepted records.
+
+DevKit Forge does not upload files to a DevKit Forge server, authenticate users, call your backend, or persist records. Those responsibilities stay with your application.
+
+## Package responsibilities
+
+| Package | What it does |
 | --- | --- |
-| `@devkit-forge/import-core` | Mapping, schema transforms, validation, duplicate detection |
-| `@devkit-forge/import-csv` | CSV text and browser File parsing, streaming |
-| `@devkit-forge/import-react` | Headless React state adapter |
+| \`@devkit-forge/import-core\` | Framework-independent mapping, transforms, validation, duplicate detection, and structured row results |
+| \`@devkit-forge/import-csv\` | CSV text and browser File parsing, diagnostics, and batch streaming |
+| \`@devkit-forge/import-xlsx\` | XLSX workbook and worksheet parsing with explicit safety limits |
+| \`@devkit-forge/import-react\` | Headless React hook for import rows, mappings, and results |
+| \`@devkit-forge/import-ui\` | Optional framework-independent browser Web Component |
 
-The packages are in early development and use a `0.1.0` version. APIs may change before a stable release.
+You do not have to install every package. Combine only the pieces your application needs.
 
-## What it is not
+## When it is a good fit
 
-DevKit Forge is not currently a hosted ETL platform, a database, a background job service, or a prebuilt design system. It gives your application composable primitives for implementing its own import experience.
+- SaaS products with admin bulk-import screens.
+- CRM, inventory, catalogue, or contact imports.
+- File-based migration from a legacy system.
+- Internal finance, HR, support, or operations portals.
+- Applications that need consistent import validation across multiple screens.
+
+Read [practical use cases](/guide/use-cases) for scenarios, package combinations, and limitations.
+
+## When it is not the right tool
+
+DevKit Forge is not a full ETL platform, scheduled integration service, hosted upload product, database migration framework, or complete spreadsheet editor. It provides import-processing primitives; it does not replace your application's business workflow.
+
+## Try it
+
+Start with the [quick start](/guide/quick-start), or explore the [runnable examples](/guide/examples) to see the packages composed in an application.
